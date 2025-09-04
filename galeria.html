@@ -62,6 +62,19 @@ h1 { text-align:center; font-family:'Playfair Display', serif; font-size:2.5rem;
   width: 100px; height:100px; object-fit:cover;
   margin:0.25rem; border-radius:12px; box-shadow:0 2px 6px rgba(0,0,0,0.2);
 }
+body { padding-top: 100px; } /* espacio para navbar fijo */
+
+.btn-container.btn-right {
+  text-align: right;
+  margin: 1.5rem 0;
+}
+
+main.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
 </style>
 </head>
 <body>
@@ -75,13 +88,14 @@ h1 { text-align:center; font-family:'Playfair Display', serif; font-size:2.5rem;
   <button class="hamburger" aria-label="Abrir menú" aria-expanded="false">☰</button>
 </header>
 
-<h1>Galería de fotos de nuestra boda</h1>
+<main class="container">
+  <h1>Galería de fotos de nuestra boda</h1>
 
-<div class="btn-container">
-  <a href="/index.html" class="btn btn-gold btn-lg">Volver al inicio</a>
-</div>
+  <div class="btn-container btn-right">
+    <a href="/index.html" class="btn btn-gold btn-lg">Volver al inicio</a>
+  </div>
 
-<form id="upload-form">
+  <form id="upload-form">
   <label class="custom-file-upload">
     <input type="file" id="photo-input" accept="image/*" multiple required />
     Seleccionar fotos
@@ -91,7 +105,8 @@ h1 { text-align:center; font-family:'Playfair Display', serif; font-size:2.5rem;
   <div id="preview-container"></div>
 </form>
 
-<div id="gallery" aria-live="polite">Cargando fotos…</div>
+  <div id="gallery" aria-live="polite">Cargando fotos…</div>
+</main>
 
 <footer class="footer" style="text-align:center;margin:2rem 0;">
   Con ❤️ por Adriana & Santiago — Nos vemos el 21/03/2026
