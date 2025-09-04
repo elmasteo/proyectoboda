@@ -1,3 +1,6 @@
+/* Fuente decorativa para iniciales */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Great+Vibes&display=swap');
+
 :root {
   --bg: #fffdf9;
   --fg: #2b2b2b;
@@ -263,5 +266,77 @@ input:focus, select:focus, textarea:focus {
   margin-top: 0.5rem;
   font-size: 1rem;
   color: #555;
+}
+
+/* Fuente decorativa */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Great+Vibes&display=swap');
+
+/* Iniciales gigantes */
+.initial {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: 8rem;
+  font-weight: 700;
+  color: #d4af37;
+  text-shadow: 3px 3px 10px rgba(0,0,0,0.25);
+  display: inline-block;
+  line-height: 1;
+  margin: 0 0.5rem;
+}
+
+.hero-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.hero-title .amp {
+  font-family: 'Great Vibes', cursive;
+  font-size: 4rem;
+  color: #444;
+}
+
+/* Contador gigante */
+.countdown-grid {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+}
+
+.countdown-item {
+  background: #fff;
+  border: 2px solid #d4af37;
+  border-radius: 1rem;
+  padding: 1.5rem 2rem;
+  text-align: center;
+  min-width: 120px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.countdown-item span {
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #222;
+  font-family: 'Cinzel Decorative', serif;
+  display: block;
+}
+
+.countdown-item p {
+  font-size: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-top: 0.5rem;
+  color: #555;
+}
+
+.countdown-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+  font-family: 'Great Vibes', cursive;
+  color: #d4af37;
 }
 
