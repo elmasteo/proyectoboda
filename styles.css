@@ -228,8 +228,10 @@ input:focus, select:focus, textarea:focus {
 .big-italic {
   font-family: 'Times New Roman', serif;
   font-style: italic;
-  font-size: 3rem;
+  font-size: 4.5rem; /* antes estaba en 3rem */
+  font-weight: bold;
   color: #d4af37;
+  line-height: 1;
 }
 
 /* Contador */

@@ -25,23 +25,6 @@ const CONFIG = {
   API_RSVP: '/.netlify/functions/rsvp'
 };
 
-// Countdown (fecha evento: 2026-03-21 16:00 local)
-// Validación teléfono
-function validatePhone(country, number) {
-  const clean = number.replace(/\D/g,'');
-  if(country === '+57') return clean.length === 10;
-  if(country === '+1') return clean.length === 10;
-  return false;
-}
-
-phoneNumber.addEventListener('input', ()=>{
-  if(phoneNumber.value.length > 10){
-    phoneNumber.value = phoneNumber.value.slice(0,10);
-  }
-  const isValid = validatePhone(phoneCountry.value, phoneNumber.value);
-  phoneError.style.display = isValid ? 'none' : 'inline';
-});
-
 // Countdown estilizado
 (function initCountdown(){
   const target = new Date('2026-03-22T16:00:00'); 
@@ -128,25 +111,27 @@ const phoneCountry = document.getElementById('phone-country');
 const phoneNumber = document.getElementById('phone-number');
 const phoneError = document.getElementById('phone-error');
 
-// Función de validación según país
+// Validación teléfono
 function validatePhone(country, number) {
-  const clean = number.replace(/\D/g,''); // quitar espacios o guiones
+  const clean = number.replace(/\D/g,''); 
   if(country === '+57') return clean.length === 10;
   if(country === '+1') return clean.length === 10;
   return false;
 }
 
-// Validación en tiempo real
-phoneNumber.addEventListener('input', ()=>{
-  const isValid = validatePhone(phoneCountry.value, phoneNumber.value);
-  phoneError.style.display = isValid ? 'none' : 'inline';
-});
-phoneCountry.addEventListener('change', ()=>{
+phoneNumber?.addEventListener('input', ()=>{
+  if(phoneNumber.value.length > 10){
+    phoneNumber.value = phoneNumber.value.slice(0,10);
+  }
   const isValid = validatePhone(phoneCountry.value, phoneNumber.value);
   phoneError.style.display = isValid ? 'none' : 'inline';
 });
 
-// Modificar envío del formulario para unir indicativo + número
+phoneCountry?.addEventListener('change', ()=>{
+  const isValid = validatePhone(phoneCountry.value, phoneNumber.value);
+  phoneError.style.display = isValid ? 'none' : 'inline';
+});
+
 rsvpForm?.addEventListener('submit', async (e)=>{
   e.preventDefault();
   
@@ -160,8 +145,6 @@ rsvpForm?.addEventListener('submit', async (e)=>{
   
   rsvpStatus.textContent = 'Enviando…';
   const formData = Object.fromEntries(new FormData(rsvpForm).entries());
-  
-  // Reemplazar phone con indicativo + número
   formData.phone = `${country}${number}`;
   
   try{
@@ -170,10 +153,7 @@ rsvpForm?.addEventListener('submit', async (e)=>{
       headers:{'Content-Type':'application/json'},
       body: JSON.stringify(formData)
     });
-    if(!res.ok) {
-      const text = await res.text();
-      throw new Error(text || 'Error servidor');
-    }
+    if(!res.ok) throw new Error(await res.text() || 'Error servidor');
     const body = await res.json();
     if(!body.ok) throw new Error(body.message || 'No OK');
     rsvpForm.reset();
@@ -184,4 +164,3 @@ rsvpForm?.addEventListener('submit', async (e)=>{
     rsvpStatus.textContent = 'Error enviando Confirmación. Intenta de nuevo.';
   }
 });
-
