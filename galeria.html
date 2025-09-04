@@ -16,6 +16,8 @@
     .gallery-item img { width:100%; display:block; transition: transform .3s ease; border-radius:16px; }
     .gallery-item img:hover { transform: scale(1.05); }
     .btn-container { text-align:center; margin:2rem 0; }
+    #upload-form { text-align:center; margin:2rem auto; }
+    #upload-form input[type="file"] { margin-right:1rem; }
     @media(max-width:900px){ #gallery { column-count:2; } }
     @media(max-width:600px){ #gallery { column-count:1; } }
   </style>
@@ -36,6 +38,13 @@
   <div class="btn-container">
     <a href="/index.html" class="btn btn-gold btn-lg">Volver al inicio</a>
   </div>
+
+  <!-- Formulario de subida -->
+  <form id="upload-form">
+    <input type="file" id="photo-input" accept="image/*" required />
+    <button type="submit" class="btn btn-gold btn-lg">Subir foto</button>
+    <span id="upload-status"></span>
+  </form>
 
   <div id="gallery" aria-live="polite">Cargando fotos…</div>
 
@@ -92,6 +101,52 @@
     }
 
     loadGallery();
+
+    // Subir foto al servicio upload-photo.js
+    const uploadForm = document.getElementById('upload-form');
+    const photoInput = document.getElementById('photo-input');
+    const uploadStatus = document.getElementById('upload-status');
+
+    uploadForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!photoInput.files.length) return;
+
+      const file = photoInput.files[0];
+      uploadStatus.textContent = 'Subiendo…';
+
+      try {
+        // Subir a Cloudinary (o cualquier endpoint de imagen)
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'netlify_upload'); // Ajusta según Cloudinary
+        const cloudRes = await fetch('https://api.cloudinary.com/v1_1/drssjjayn/image/upload', {
+          method: 'POST',
+          body: formData
+        });
+        const cloudData = await cloudRes.json();
+        if (!cloudData.secure_url) throw new Error('Error subiendo imagen a Cloudinary');
+
+        // Llamar a Netlify function upload-photo.js para actualizar photos.json
+        const res = await fetch('/.netlify/functions/upload-photo', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            filename: file.name,
+            cloudinaryUrl: cloudData.secure_url
+          })
+        });
+
+        const result = await res.json();
+        if (!result.ok) throw new Error('Error guardando foto en GitHub');
+
+        uploadStatus.textContent = 'Foto subida correctamente!';
+        photoInput.value = '';
+        loadGallery(); // refrescar galería
+      } catch (err) {
+        console.error(err);
+        uploadStatus.textContent = 'Error subiendo la foto';
+      }
+    });
   </script>
 </body>
 </html>
