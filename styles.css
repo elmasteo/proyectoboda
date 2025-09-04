@@ -75,7 +75,7 @@ h2 { font-size: clamp(1.6rem, 3.2vw, 2.4rem); }
 body { padding-top:70px; } /* evita solapamiento con header fijo */
 
 .nav .brand {
-  font-family: 'Playfair Display', serif;
+  /*font-family: 'Playfair Display', serif;*/
   text-decoration: none;
   color: var(--fg);
   font-size: 1.2rem;
@@ -269,9 +269,6 @@ input:focus, select:focus, textarea:focus {
   font-size: 1rem;
   color: #555;
 }
-
-/* Fuente decorativa */
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Great+Vibes&display=swap');
 
 /* Iniciales gigantes */
 .initial {
