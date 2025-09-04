@@ -65,13 +65,15 @@
     <a href="/index.html" class="btn btn-gold btn-lg">Volver al inicio</a>
   </div>
 
+<!-- Formulario de subida -->
 <form id="upload-form">
   <label class="custom-file-upload">
     <input type="file" id="photo-input" accept="image/*" multiple required />
     Seleccionar fotos
   </label>
   <button type="submit" class="btn btn-gold btn-lg">Subir fotos</button>
-  <span id="upload-status"></span>
+  <div id="upload-status"></div>
+  <div id="preview-container" style="margin-top:1rem;"></div>
 </form>
 
   <div id="gallery" aria-live="polite">Cargando fotos…</div>
@@ -132,51 +134,85 @@
 
     // Subir fotos al servicio upload-photo.js
     const uploadForm = document.getElementById('upload-form');
-    const photoInput = document.getElementById('photo-input');
-    const uploadStatus = document.getElementById('upload-status');
+const photoInput = document.getElementById('photo-input');
+const uploadStatus = document.getElementById('upload-status');
+const previewContainer = document.getElementById('preview-container');
 
-    uploadForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      if (!photoInput.files.length) return;
+// Mostrar previsualización al seleccionar archivos
+photoInput.addEventListener('change', () => {
+  previewContainer.innerHTML = '';
+  const files = Array.from(photoInput.files);
+  if (!files.length) return;
+  
+  uploadStatus.textContent = `${files.length} foto(s) seleccionada(s)`;
 
-      const files = Array.from(photoInput.files);
-      uploadStatus.textContent = `Subiendo ${files.length} archivo(s)…`;
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = document.createElement('img');
+      img.src = e.target.result;
+      img.alt = file.name;
+      img.style.width = '100px';
+      img.style.height = '100px';
+      img.style.objectFit = 'cover';
+      img.style.marginRight = '0.5rem';
+      img.style.marginBottom = '0.5rem';
+      img.style.borderRadius = '12px';
+      img.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
+      previewContainer.appendChild(img);
+    };
+    reader.readAsDataURL(file);
+  });
+});
 
-      for (const file of files) {
-        try {
-          // Subir a Cloudinary
-          const formData = new FormData();
-          formData.append('file', file);
-          formData.append('upload_preset', 'netlify_upload'); // Ajusta según Cloudinary
-          const cloudRes = await fetch('https://api.cloudinary.com/v1_1/drssjjayn/image/upload', {
-            method: 'POST',
-            body: formData
-          });
-          const cloudData = await cloudRes.json();
-          if (!cloudData.secure_url) throw new Error('Error subiendo imagen a Cloudinary');
+// Subir fotos al servicio upload-photo.js
+uploadForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (!photoInput.files.length) return;
 
-          // Llamar a Netlify function upload-photo.js
-          const res = await fetch('/.netlify/functions/upload-photo', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              filename: file.name,
-              cloudinaryUrl: cloudData.secure_url
-            })
-          });
+  const files = Array.from(photoInput.files);
+  uploadStatus.textContent = `Subiendo ${files.length} archivo(s)…`;
 
-          const result = await res.json();
-          if (!result.ok) throw new Error('Error guardando foto en GitHub');
-        } catch (err) {
-          console.error(err);
-          uploadStatus.textContent = `Error subiendo ${file.name}`;
-        }
-      }
+  let successCount = 0;
 
-      uploadStatus.textContent = 'Fotos subidas correctamente!';
-      photoInput.value = '';
-      loadGallery();
-    });
+  for (const file of files) {
+    try {
+      // Subir a Cloudinary
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'netlify_upload'); // Ajusta según Cloudinary
+      const cloudRes = await fetch('https://api.cloudinary.com/v1_1/drssjjayn/image/upload', {
+        method: 'POST',
+        body: formData
+      });
+      const cloudData = await cloudRes.json();
+      if (!cloudData.secure_url) throw new Error('Error subiendo imagen a Cloudinary');
+
+      // Llamar a Netlify function upload-photo.js
+      const res = await fetch('/.netlify/functions/upload-photo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          filename: file.name,
+          cloudinaryUrl: cloudData.secure_url
+        })
+      });
+
+      const result = await res.json();
+      if (!result.ok) throw new Error('Error guardando foto en GitHub');
+
+      successCount++;
+    } catch (err) {
+      console.error(err);
+      uploadStatus.textContent = `Error subiendo ${file.name}`;
+    }
+  }
+
+  uploadStatus.textContent = `${successCount} de ${files.length} fotos subidas correctamente!`;
+  photoInput.value = '';
+  previewContainer.innerHTML = '';
+  loadGallery(); // refrescar galería
+});
   </script>
 </body>
 </html>
