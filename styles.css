@@ -231,7 +231,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .big-italic {
-  font-family: 'Times New Roman', serif;
+  /*font-family: 'Times New Roman', serif;*/
   font-style: italic;
   font-size: 4.5rem; /* antes estaba en 3rem */
   font-weight: bold;
@@ -272,7 +272,7 @@ input:focus, select:focus, textarea:focus {
 
 /* Iniciales gigantes */
 .initial {
-  font-family: 'Cinzel Decorative', cursive;
+  /*font-family: 'Cinzel Decorative', cursive;*/
   font-size: 8rem;
   font-weight: 700;
   color: #d4af37;
@@ -291,7 +291,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .hero-title .amp {
-  font-family: 'Great Vibes', cursive;
+  /*font-family: 'Great Vibes', cursive;*/
   font-size: 4rem;
   color: #444;
 }
@@ -319,7 +319,7 @@ input:focus, select:focus, textarea:focus {
   font-size: 3.5rem;
   font-weight: bold;
   color: #222;
-  font-family: 'Cinzel Decorative', serif;
+  /*font-family: 'Cinzel Decorative', serif;*/
   display: block;
 }
 
@@ -335,7 +335,7 @@ input:focus, select:focus, textarea:focus {
   font-size: 2rem;
   text-align: center;
   margin-bottom: 1rem;
-  font-family: 'Great Vibes', cursive;
+  /*font-family: 'Great Vibes', cursive;*/
   color: #d4af37;
 }
 
