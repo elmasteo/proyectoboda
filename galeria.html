@@ -66,9 +66,7 @@ body { padding-top: 100px; } /* espacio para navbar fijo */
   margin: 2rem 0; /* solo margin, sin text-align */
 }
 
-.btn-container.btn-right {
-  margin: 1.5rem 0;
-}
+.btn-container { text-align:center; margin:2rem 0; }
 
 main.container {
   max-width: 1200px;
@@ -81,12 +79,6 @@ main.container {
 <body>
 <header class="nav">
   <a href="/index.html" class="brand">A ❤ S</a>
-  <div id="countdown" aria-live="polite">
-      <span id="cd-days">--</span>d
-      <span id="cd-hours">--</span>h
-      <span id="cd-mins">--</span>m
-      <span id="cd-secs">--</span>s
-    </div>
   <nav>
     <a href="/index.html#inicio" class="btn btn-gold btn-lg">Inicio</a>
     <a href="/index.html#detalle" class="btn btn-gold btn-lg">Detalles</a>
@@ -96,6 +88,12 @@ main.container {
 </header>
 
 <main class="container">
+  <div id="countdown" aria-live="polite">
+      <span id="cd-days">--</span>d
+      <span id="cd-hours">--</span>h
+      <span id="cd-mins">--</span>m
+      <span id="cd-secs">--</span>s
+    </div>
   <h1>Galería de fotos de nuestra boda</h1>
 
   <div class="btn-container btn-right">
