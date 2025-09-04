@@ -20,6 +20,32 @@
     #upload-form input[type="file"] { margin-right:1rem; }
     @media(max-width:900px){ #gallery { column-count:2; } }
     @media(max-width:600px){ #gallery { column-count:1; } }
+    .custom-file-upload {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    border-radius: 12px;
+    background: linear-gradient(135deg, #f9f5f0, #fff3e6);
+    border: 2px solid #d4af37;
+    color: #333;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-right: 1rem;
+  }
+
+  .custom-file-upload:hover {
+    background: linear-gradient(135deg, #fff3e6, #f9f5f0);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+
+  .custom-file-upload input[type="file"] {
+    display: none; /* Oculta el input real */
+  }
+
+  /* Ajuste del botón de subir */
+  #upload-form button {
+    margin-top: 0.5rem;
+  }
   </style>
 </head>
 <body>
@@ -39,12 +65,14 @@
     <a href="/index.html" class="btn btn-gold btn-lg">Volver al inicio</a>
   </div>
 
-  <!-- Formulario de subida -->
-  <form id="upload-form">
-    <input type="file" id="photo-input" accept="image/*" required />
-    <button type="submit" class="btn btn-gold btn-lg">Subir foto</button>
-    <span id="upload-status"></span>
-  </form>
+<form id="upload-form">
+  <label class="custom-file-upload">
+    <input type="file" id="photo-input" accept="image/*" multiple required />
+    Seleccionar fotos
+  </label>
+  <button type="submit" class="btn btn-gold btn-lg">Subir fotos</button>
+  <span id="upload-status"></span>
+</form>
 
   <div id="gallery" aria-live="polite">Cargando fotos…</div>
 
@@ -102,7 +130,7 @@
 
     loadGallery();
 
-    // Subir foto al servicio upload-photo.js
+    // Subir fotos al servicio upload-photo.js
     const uploadForm = document.getElementById('upload-form');
     const photoInput = document.getElementById('photo-input');
     const uploadStatus = document.getElementById('upload-status');
@@ -111,41 +139,43 @@
       e.preventDefault();
       if (!photoInput.files.length) return;
 
-      const file = photoInput.files[0];
-      uploadStatus.textContent = 'Subiendo…';
+      const files = Array.from(photoInput.files);
+      uploadStatus.textContent = `Subiendo ${files.length} archivo(s)…`;
 
-      try {
-        // Subir a Cloudinary (o cualquier endpoint de imagen)
-        const formData = new FormData();
-        formData.append('file', file);
-        formData.append('upload_preset', 'netlify_upload'); // Ajusta según Cloudinary
-        const cloudRes = await fetch('https://api.cloudinary.com/v1_1/drssjjayn/image/upload', {
-          method: 'POST',
-          body: formData
-        });
-        const cloudData = await cloudRes.json();
-        if (!cloudData.secure_url) throw new Error('Error subiendo imagen a Cloudinary');
+      for (const file of files) {
+        try {
+          // Subir a Cloudinary
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append('upload_preset', 'netlify_upload'); // Ajusta según Cloudinary
+          const cloudRes = await fetch('https://api.cloudinary.com/v1_1/drssjjayn/image/upload', {
+            method: 'POST',
+            body: formData
+          });
+          const cloudData = await cloudRes.json();
+          if (!cloudData.secure_url) throw new Error('Error subiendo imagen a Cloudinary');
 
-        // Llamar a Netlify function upload-photo.js para actualizar photos.json
-        const res = await fetch('/.netlify/functions/upload-photo', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            filename: file.name,
-            cloudinaryUrl: cloudData.secure_url
-          })
-        });
+          // Llamar a Netlify function upload-photo.js
+          const res = await fetch('/.netlify/functions/upload-photo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              filename: file.name,
+              cloudinaryUrl: cloudData.secure_url
+            })
+          });
 
-        const result = await res.json();
-        if (!result.ok) throw new Error('Error guardando foto en GitHub');
-
-        uploadStatus.textContent = 'Foto subida correctamente!';
-        photoInput.value = '';
-        loadGallery(); // refrescar galería
-      } catch (err) {
-        console.error(err);
-        uploadStatus.textContent = 'Error subiendo la foto';
+          const result = await res.json();
+          if (!result.ok) throw new Error('Error guardando foto en GitHub');
+        } catch (err) {
+          console.error(err);
+          uploadStatus.textContent = `Error subiendo ${file.name}`;
+        }
       }
+
+      uploadStatus.textContent = 'Fotos subidas correctamente!';
+      photoInput.value = '';
+      loadGallery();
     });
   </script>
 </body>
