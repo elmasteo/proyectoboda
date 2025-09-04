@@ -4,27 +4,20 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Nuestra Boda — Adriana & Santiago</title>
-  <meta name="description" content="Invitación de boda — fecha, lugar, RSVP y galería de fotos" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css" />
+  <link href="styles.css" rel="stylesheet" />
 </head>
 <body>
   <header class="nav">
     <a href="#inicio" class="brand">A ❤ S</a>
-
-    <!-- contador -->
     <div id="countdown" aria-live="polite">
       <span id="cd-days">--</span>d
       <span id="cd-hours">--</span>h
       <span id="cd-mins">--</span>m
       <span id="cd-secs">--</span>s
     </div>
-
     <nav>
       <a href="#detalle" class="btn btn-gold">Detalles</a>
-      <a href="#galeria" class="btn btn-gold">Galería</a>
+      <a href="galeria.html" class="btn btn-gold">Galería</a>
       <a href="#rsvp" class="btn btn-gold">Confirmar asistencia</a>
     </nav>
     <button class="hamburger" aria-label="Abrir menú" aria-expanded="false">☰</button>
@@ -49,48 +42,16 @@
           <p><strong>Hora:</strong> 4:00 PM</p>
           <p><strong>Lugar:</strong> Mozarella Bussines Center Calle 116 No 70c-04 (Bogota – Colombia)</p>
           <div class="map">
-            <iframe
-              title="Mapa"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-              src="https://www.google.com/maps?q=Mozarella+Bussines+Center+Calle+116+No+70c-04+Bogota+Colombia&output=embed"
-              allowfullscreen>
-            </iframe>
+            <iframe src="https://www.google.com/maps?q=Mozarella+Bussines+Center+Calle+116+No+70c-04+Bogota+Colombia&output=embed" allowfullscreen></iframe>
           </div>
         </div>
         <div class="card reveal-right">
           <h3>Recepción</h3>
           <p><strong>Hora:</strong> 6:00 PM</p>
           <p><strong>Dress code:</strong> Elegante</p>
-          <ul class="details">
-            <li>Parqueadero disponible</li>
-          </ul>
+          <ul class="details"><li>Parqueadero disponible</li></ul>
         </div>
       </div>
-
-      <div class="grid-3 mt-32">
-        <figure class="photo reveal-up"><img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?q=80&w=1200&auto=format&fit=crop" alt="Foto pareja 1"></figure>
-        <figure class="photo reveal-up"><img src="https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=1200&auto=format&fit=crop" alt="Foto pareja 2"></figure>
-        <figure class="photo reveal-up"><img src="https://images.unsplash.com/photo-1496439786094-e697d3bb9cde?q=80&w=1200&auto=format&fit=crop" alt="Foto pareja 3"></figure>
-      </div>
-    </div>
-  </section>
-
-  <section id="galeria" class="section section--alt">
-    <div class="container">
-      <h2 class="section__title reveal-up">Galería & Carga de fotos</h2>
-      <p class="center muted">Comparte tus fotos de la boda. Puedes subirlas aquí y se guardarán en nuestra galería.</p>
-
-      <div class="uploader card reveal-up">
-        <div class="uploader__controls">
-          <input id="photoInput" type="file" accept="image/*" multiple />
-          <button id="uploadBtn" class="btn">Subir seleccionadas</button>
-          <span id="uploadStatus" role="status" class="status"></span>
-        </div>
-        <div id="preview" class="preview"></div>
-      </div>
-
-      <div id="gallery" class="masonry reveal-up" aria-live="polite"></div>
     </div>
   </section>
 
@@ -102,14 +63,11 @@
           <label>Nombre completo
             <input name="name" required placeholder="Tu nombre" />
           </label>
-          <label>Email
-            <input name="email" type="email" required placeholder="tucorreo@email.com" />
-          </label>
-        </div>
-        <div class="grid-2">
           <label>Teléfono (con indicativo, p.ej. +573001112233)
             <input name="phone" type="tel" required placeholder="+57..." />
           </label>
+        </div>
+        <div class="grid-2">
           <label>Asistirás?
             <select name="attendance" required>
               <option value="">Selecciona…</option>
@@ -118,8 +76,6 @@
               <option value="Tal vez">Tal vez</option>
             </select>
           </label>
-        </div>
-        <div class="grid-2">
           <label>Número de acompañantes
             <input name="guests" type="number" min="0" max="8" value="0" />
           </label>
