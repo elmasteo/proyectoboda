@@ -27,7 +27,7 @@ html { scroll-behavior: smooth; }
 h1, h2, h3, a, footer {
   font-family: 'Alex Brush', cursive;
   font-weight: 600;
-  font-size: 5vh;
+  font-size: 2vh;
 }
 
 h1 { font-size: clamp(2.2rem, 5vw, 4rem); }
