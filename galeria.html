@@ -17,35 +17,27 @@
     .gallery-item img:hover { transform: scale(1.05); }
     .btn-container { text-align:center; margin:2rem 0; }
     #upload-form { text-align:center; margin:2rem auto; }
-    #upload-form input[type="file"] { margin-right:1rem; }
+    #upload-form input[type="file"] { display:none; }
+    .custom-file-upload {
+      display: inline-block;
+      padding: 0.6rem 1.2rem;
+      cursor: pointer;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f9f5f0, #fff3e6);
+      border: 2px solid #d4af37;
+      color: #333;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      margin-right: 1rem;
+    }
+    .custom-file-upload:hover {
+      background: linear-gradient(135deg, #fff3e6, #f9f5f0);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    #upload-form button { margin-top: 0.5rem; }
+    #preview-container img { width: 100px; height: 100px; object-fit: cover; margin-right:0.5rem; margin-bottom:0.5rem; border-radius:12px; box-shadow: 0 2px 6px rgba(0,0,0,0.2); }
     @media(max-width:900px){ #gallery { column-count:2; } }
     @media(max-width:600px){ #gallery { column-count:1; } }
-    .custom-file-upload {
-    display: inline-block;
-    padding: 0.6rem 1.2rem;
-    cursor: pointer;
-    border-radius: 12px;
-    background: linear-gradient(135deg, #f9f5f0, #fff3e6);
-    border: 2px solid #d4af37;
-    color: #333;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    margin-right: 1rem;
-  }
-
-  .custom-file-upload:hover {
-    background: linear-gradient(135deg, #fff3e6, #f9f5f0);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
-  }
-
-  .custom-file-upload input[type="file"] {
-    display: none; /* Oculta el input real */
-  }
-
-  /* Ajuste del botón de subir */
-  #upload-form button {
-    margin-top: 0.5rem;
-  }
   </style>
 </head>
 <body>
@@ -65,16 +57,15 @@
     <a href="/index.html" class="btn btn-gold btn-lg">Volver al inicio</a>
   </div>
 
-<!-- Formulario de subida -->
-<form id="upload-form">
-  <label class="custom-file-upload">
-    <input type="file" id="photo-input" accept="image/*" multiple required />
-    Seleccionar fotos
-  </label>
-  <button type="submit" class="btn btn-gold btn-lg">Subir fotos</button>
-  <div id="upload-status"></div>
-  <div id="preview-container" style="margin-top:1rem;"></div>
-</form>
+  <form id="upload-form">
+    <label class="custom-file-upload">
+      <input type="file" id="photo-input" accept="image/*" multiple required />
+      Seleccionar fotos
+    </label>
+    <button type="submit" class="btn btn-gold btn-lg">Subir fotos</button>
+    <div id="upload-status"></div>
+    <div id="preview-container"></div>
+  </form>
 
   <div id="gallery" aria-live="polite">Cargando fotos…</div>
 
@@ -82,137 +73,140 @@
     Con ❤️ por Adriana & Santiago — Nos vemos el 21/03/2026
   </footer>
 
-  <script>
-    // Menú móvil simple
-    document.querySelector('.hamburger')?.addEventListener('click', (e)=>{
-      const nav = document.querySelector('.nav nav');
-      const btn = e.currentTarget;
-      const isOpen = nav.style.display === 'flex';
-      nav.style.display = isOpen ? 'none' : 'flex';
-      btn.setAttribute('aria-expanded', String(!isOpen));
-    });
+<script>
+  const gallery = document.getElementById('gallery');
+  const uploadForm = document.getElementById('upload-form');
+  const photoInput = document.getElementById('photo-input');
+  const uploadStatus = document.getElementById('upload-status');
+  const previewContainer = document.getElementById('preview-container');
 
-    // Animaciones con IntersectionObserver
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(el=>{
-        if(el.isIntersecting){
-          el.target.classList.add('revealed');
-          io.unobserve(el.target);
-        }
-      });
-    },{threshold:.12});
-    document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(el=>io.observe(el));
-
-    // Cargar fotos desde photos.json
-    async function loadGallery() {
-      const gallery = document.getElementById('gallery');
-      gallery.innerHTML = 'Cargando fotos…';
-      try {
-        const res = await fetch('/photos.json');
-        if(!res.ok) throw new Error('No se pudo cargar photos.json');
-        const data = await res.json();
-
-        if(!data.length){ gallery.innerHTML = '<p>No hay fotos aún.</p>'; return; }
-
-        gallery.innerHTML = '';
-        data.reverse().forEach(photo => {
-          const div = document.createElement('div');
-          div.className = 'gallery-item reveal-up';
-          const img = document.createElement('img');
-          img.src = photo.url;
-          img.alt = photo.filename || 'Foto de la boda';
-          div.appendChild(img);
-          gallery.appendChild(div);
-        });
-      } catch(err) {
-        console.error(err);
-        gallery.innerHTML = '<p>Error cargando fotos.</p>';
-      }
-    }
-
-    loadGallery();
-
-    // Subir fotos al servicio upload-photo.js
-    const uploadForm = document.getElementById('upload-form');
-const photoInput = document.getElementById('photo-input');
-const uploadStatus = document.getElementById('upload-status');
-const previewContainer = document.getElementById('preview-container');
-
-// Mostrar previsualización al seleccionar archivos
-photoInput.addEventListener('change', () => {
-  previewContainer.innerHTML = '';
-  const files = Array.from(photoInput.files);
-  if (!files.length) return;
-  
-  uploadStatus.textContent = `${files.length} foto(s) seleccionada(s)`;
-
-  files.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const img = document.createElement('img');
-      img.src = e.target.result;
-      img.alt = file.name;
-      img.style.width = '100px';
-      img.style.height = '100px';
-      img.style.objectFit = 'cover';
-      img.style.marginRight = '0.5rem';
-      img.style.marginBottom = '0.5rem';
-      img.style.borderRadius = '12px';
-      img.style.boxShadow = '0 2px 6px rgba(0,0,0,0.2)';
-      previewContainer.appendChild(img);
-    };
-    reader.readAsDataURL(file);
+  // Menú móvil
+  document.querySelector('.hamburger')?.addEventListener('click', (e)=>{
+    const nav = document.querySelector('.nav nav');
+    const btn = e.currentTarget;
+    const isOpen = nav.style.display === 'flex';
+    nav.style.display = isOpen ? 'none' : 'flex';
+    btn.setAttribute('aria-expanded', String(!isOpen));
   });
-});
 
-// Subir fotos al servicio upload-photo.js
-uploadForm.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  if (!photoInput.files.length) return;
+  // IntersectionObserver
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(el=>{
+      if(el.isIntersecting){
+        el.target.classList.add('revealed');
+        io.unobserve(el.target);
+      }
+    });
+  },{threshold:.12});
+  document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(el=>io.observe(el));
 
-  const files = Array.from(photoInput.files);
-  uploadStatus.textContent = `Subiendo ${files.length} archivo(s)…`;
+  // Renderizar galería
+  function renderGallery(photos) {
+    gallery.innerHTML = '';
+    photos.forEach(photo => {
+      const div = document.createElement('div');
+      div.className = 'gallery-item reveal-up';
+      const img = document.createElement('img');
+      img.src = photo.url;
+      img.alt = photo.filename || 'Foto de la boda';
+      div.appendChild(img);
+      gallery.appendChild(div);
+    });
+  }
 
-  let successCount = 0;
-
-  for (const file of files) {
+  // Cargar fotos desde JSON y localStorage
+  async function loadGallery() {
+    gallery.innerHTML = 'Cargando fotos…';
     try {
-      // Subir a Cloudinary
-      const formData = new FormData();
-      formData.append('file', file);
-      formData.append('upload_preset', 'netlify_upload'); // Ajusta según Cloudinary
-      const cloudRes = await fetch('https://api.cloudinary.com/v1_1/drssjjayn/image/upload', {
-        method: 'POST',
-        body: formData
-      });
-      const cloudData = await cloudRes.json();
-      if (!cloudData.secure_url) throw new Error('Error subiendo imagen a Cloudinary');
+      const res = await fetch('/photos.json');
+      const data = res.ok ? await res.json() : [];
 
-      // Llamar a Netlify function upload-photo.js
-      const res = await fetch('/.netlify/functions/upload-photo', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          filename: file.name,
-          cloudinaryUrl: cloudData.secure_url
-        })
-      });
+      let stored = JSON.parse(localStorage.getItem('localPhotos') || '[]');
 
-      const result = await res.json();
-      if (!result.ok) throw new Error('Error guardando foto en GitHub');
+      // Filtrar fotos ya existentes en GitHub
+      if (data.length) {
+        const githubUrls = data.map(p => p.url);
+        stored = stored.filter(p => !githubUrls.includes(p.url));
+        localStorage.setItem('localPhotos', JSON.stringify(stored));
+      }
 
-      successCount++;
+      const combined = [...data, ...stored];
+      if (!combined.length) {
+        gallery.innerHTML = '<p>No hay fotos aún.</p>';
+        return;
+      }
+      renderGallery(combined.reverse());
     } catch (err) {
       console.error(err);
-      uploadStatus.textContent = `Error subiendo ${file.name}`;
+      gallery.innerHTML = '<p>Error cargando fotos.</p>';
     }
   }
 
-  uploadStatus.textContent = `${successCount} de ${files.length} fotos subidas correctamente!`;
-  photoInput.value = '';
-  previewContainer.innerHTML = '';
-  loadGallery(); // refrescar galería
-});
-  </script>
+  loadGallery();
+
+  // Previsualización de fotos
+  photoInput.addEventListener('change', () => {
+    previewContainer.innerHTML = '';
+    const files = Array.from(photoInput.files);
+    if (!files.length) return;
+    uploadStatus.textContent = `${files.length} foto(s) seleccionada(s)`;
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onload = e => {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.alt = file.name;
+        previewContainer.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
+  });
+
+  // Subida de fotos y almacenamiento local
+  uploadForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!photoInput.files.length) return;
+    const files = Array.from(photoInput.files);
+    uploadStatus.textContent = `Subiendo ${files.length} archivo(s)…`;
+
+    let successCount = 0;
+    let localPhotos = JSON.parse(localStorage.getItem('localPhotos') || '[]');
+
+    for (const file of files) {
+      try {
+        // Subir a Cloudinary
+        const formData = new FormData();
+        formData.append('file', file);
+        formData.append('upload_preset', 'netlify_upload');
+        const cloudRes = await fetch('https://api.cloudinary.com/v1_1/drssjjayn/image/upload', { method:'POST', body:formData });
+        const cloudData = await cloudRes.json();
+        if (!cloudData.secure_url) throw new Error('Error subiendo imagen a Cloudinary');
+
+        // Guardar en localStorage inmediatamente
+        localPhotos.push({ filename: file.name, url: cloudData.secure_url, uploaded_at: new Date().toISOString() });
+        localStorage.setItem('localPhotos', JSON.stringify(localPhotos));
+
+        // Llamar a Netlify function upload-photo
+        const res = await fetch('/.netlify/functions/upload-photo', {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({ filename:file.name, cloudinaryUrl: cloudData.secure_url })
+        });
+        const result = await res.json();
+        if (!result.ok) throw new Error('Error guardando foto en GitHub');
+
+        successCount++;
+      } catch (err) {
+        console.error(err);
+        uploadStatus.textContent = `Error subiendo ${file.name}`;
+      }
+    }
+
+    uploadStatus.textContent = `${successCount} de ${files.length} fotos subidas correctamente!`;
+    photoInput.value = '';
+    previewContainer.innerHTML = '';
+    loadGallery(); // refrescar galería y limpiar duplicados en localStorage
+  });
+</script>
 </body>
 </html>

@@ -7,9 +7,11 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { filename, cloudinaryUrl } = JSON.parse(event.body || '{}');
-    if (!filename || !cloudinaryUrl) {
-      return { statusCode: 400, body: 'filename y cloudinaryUrl son requeridos' };
+    const body = JSON.parse(event.body || '{}');
+    const photos = Array.isArray(body) ? body : [body]; // Permite envío masivo o individual
+
+    if (!photos.length) {
+      return { statusCode: 400, body: 'No se recibieron fotos' };
     }
 
     // Variables GitHub
@@ -34,16 +36,13 @@ exports.handler = async (event) => {
     if (getRes.ok) {
       const data = await getRes.json();
       sha = data.sha;
-
       try {
         existing = JSON.parse(Buffer.from(data.content, 'base64').toString('utf-8'));
         if (!Array.isArray(existing)) existing = [];
-      } catch (parseErr) {
-        console.warn('No se pudo parsear photos.json, se crea uno nuevo.');
+      } catch {
         existing = [];
       }
     } else if (getRes.status === 404) {
-      // Si el archivo no existe, lo creamos
       existing = [];
     } else {
       const txt = await getRes.text();
@@ -51,15 +50,18 @@ exports.handler = async (event) => {
       return { statusCode: 502, body: 'Error leyendo photos.json en GitHub' };
     }
 
-    // 2️⃣ Agregar nueva foto
-    existing.push({ filename, url: cloudinaryUrl, uploaded_at: new Date().toISOString() });
+    // 2️⃣ Agregar nuevas fotos
+    photos.forEach(photo => {
+      if (!photo.filename || !photo.cloudinaryUrl) return;
+      existing.push({ filename: photo.filename, url: photo.cloudinaryUrl, uploaded_at: new Date().toISOString() });
+    });
 
     // 3️⃣ Subir JSON actualizado
     const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {
       method: 'PUT',
       headers: { 'Authorization': `Bearer ${TOKEN}`, 'Accept': 'application/vnd.github+json' },
       body: JSON.stringify({
-        message: `Agregar foto: ${filename} (${new Date().toISOString()})`,
+        message: `Agregar ${photos.length} foto(s) (${new Date().toISOString()})`,
         content: Buffer.from(JSON.stringify(existing, null, 2)).toString('base64'),
         branch: BRANCH,
         sha
@@ -72,7 +74,7 @@ exports.handler = async (event) => {
       return { statusCode: 502, body: 'Error guardando photos.json en GitHub' };
     }
 
-    return { statusCode: 200, body: JSON.stringify({ ok: true, url: cloudinaryUrl }) };
+    return { statusCode: 200, body: JSON.stringify({ ok: true, uploaded: photos.length }) };
 
   } catch (err) {
     console.error('Error interno:', err);
