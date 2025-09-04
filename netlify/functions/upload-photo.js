@@ -7,7 +7,7 @@ exports.handler = async (event) => {
   }
 
   try {
-    const { filename, contentBase64, cloudinaryUrl } = JSON.parse(event.body || '{}');
+    const { filename, cloudinaryUrl } = JSON.parse(event.body || '{}');
     if (!filename || !cloudinaryUrl) {
       return { statusCode: 400, body: 'filename y cloudinaryUrl son requeridos' };
     }
@@ -34,7 +34,21 @@ exports.handler = async (event) => {
     if (getRes.ok) {
       const data = await getRes.json();
       sha = data.sha;
-      existing = JSON.parse(Buffer.from(data.content, 'base64').toString('utf-8'));
+
+      try {
+        existing = JSON.parse(Buffer.from(data.content, 'base64').toString('utf-8'));
+        if (!Array.isArray(existing)) existing = [];
+      } catch (parseErr) {
+        console.warn('No se pudo parsear photos.json, se crea uno nuevo.');
+        existing = [];
+      }
+    } else if (getRes.status === 404) {
+      // Si el archivo no existe, lo creamos
+      existing = [];
+    } else {
+      const txt = await getRes.text();
+      console.error('GitHub GET error:', txt);
+      return { statusCode: 502, body: 'Error leyendo photos.json en GitHub' };
     }
 
     // 2️⃣ Agregar nueva foto
@@ -61,7 +75,7 @@ exports.handler = async (event) => {
     return { statusCode: 200, body: JSON.stringify({ ok: true, url: cloudinaryUrl }) };
 
   } catch (err) {
-    console.error(err);
+    console.error('Error interno:', err);
     return { statusCode: 500, body: 'Error interno' };
   }
 };
