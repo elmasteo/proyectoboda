@@ -108,6 +108,7 @@ body { padding-top:70px; } /* evita solapamiento con header fijo */
   text-align:center;
   overflow:hidden;
 }
+/*
 .hero__bg {
   position:absolute;
   inset:0;
@@ -117,6 +118,16 @@ body { padding-top:70px; } /* evita solapamiento con header fijo */
     linear-gradient(180deg, #fff, #fffaf0 60%, #fff7e6);
   animation:bg-pan 18s linear infinite alternate;
 }
+*/
+.hero__bg {
+  position: absolute;
+  inset: 0;
+  background: 
+    linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
+    url("images/nosotros.jpg") center center / cover no-repeat fixed;
+  z-index: -1;
+}
+
 @keyframes bg-pan {
   from{transform:translateX(-2%);}
   to{transform:translateX(2%);}
