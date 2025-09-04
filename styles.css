@@ -123,8 +123,8 @@ body { padding-top:70px; } /* evita solapamiento con header fijo */
   position: absolute;
   inset: 0;
   background: 
-    linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)),
-    url("assets/nosotros.jpg") center center / cover no-repeat fixed;
+    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+    url("assets/nosotros.jpg") center top / cover no-repeat fixed;
   z-index: -1;
 }
 
