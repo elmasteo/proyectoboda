@@ -8,44 +8,67 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
   <style>
-    body { font-family: 'Inter', sans-serif; margin:0; background:#fefefe; color:#333; }
-    header { background:#fff; padding:1rem; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 5px rgba(0,0,0,.1);}
-    header .brand { font-family:'Playfair Display', serif; font-size:1.5rem; text-decoration:none; color:#bfa14b;}
-    nav a { margin-left:1rem; text-decoration:none; color:#333; font-weight:500;}
-    h1 { text-align:center; font-family:'Playfair Display', serif; font-size:2rem; margin:2rem 0 1rem; }
+    h1 { text-align:center; font-family:'Playfair Display', serif; font-size:2.5rem; margin:2rem 0; }
     #gallery { column-count: 3; column-gap: 1rem; max-width:1200px; margin:2rem auto; }
-    .gallery-item { break-inside: avoid; margin-bottom: 1rem; border-radius:8px; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,.1);}
-    .gallery-item img { width:100%; display:block; transition: transform .3s ease; }
+    .gallery-item { break-inside: avoid; margin-bottom: 1rem; border-radius:16px; overflow:hidden; box-shadow:var(--shadow);}
+    .gallery-item img { width:100%; display:block; transition: transform .3s ease; border-radius:16px; }
     .gallery-item img:hover { transform: scale(1.05); }
+    .btn-container { text-align:center; margin:2rem 0; }
     @media(max-width:900px){ #gallery { column-count:2; } }
     @media(max-width:600px){ #gallery { column-count:1; } }
-    footer { text-align:center; padding:2rem 1rem; font-size:.9rem; color:#666; }
   </style>
 </head>
 <body>
-  <header>
+  <header class="nav">
     <a href="/index.html" class="brand">A ❤ S</a>
     <nav>
-      <a href="/index.html#inicio">Inicio</a>
-      <a href="/index.html#detalle">Detalles</a>
-      <a href="/index.html#rsvp">RSVP</a>
+      <a href="/index.html#inicio" class="btn btn-gold btn-lg">Inicio</a>
+      <a href="/index.html#detalle" class="btn btn-gold btn-lg">Detalles</a>
+      <a href="/index.html#rsvp" class="btn btn-gold btn-lg">RSVP</a>
     </nav>
+    <button class="hamburger" aria-label="Abrir menú" aria-expanded="false">☰</button>
   </header>
 
   <h1>Galería de fotos de nuestra boda</h1>
+
+  <div class="btn-container">
+    <a href="/index.html" class="btn btn-gold btn-lg">Volver al inicio</a>
+  </div>
+
   <div id="gallery" aria-live="polite">Cargando fotos…</div>
 
-  <footer>
+  <footer class="footer">
     Con ❤️ por Adriana & Santiago — Nos vemos el 21/03/2026
   </footer>
 
   <script>
+    // Menú móvil simple
+    document.querySelector('.hamburger')?.addEventListener('click', (e)=>{
+      const nav = document.querySelector('.nav nav');
+      const btn = e.currentTarget;
+      const isOpen = nav.style.display === 'flex';
+      nav.style.display = isOpen ? 'none' : 'flex';
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+
+    // Animaciones con IntersectionObserver
+    const io = new IntersectionObserver((entries)=>{
+      entries.forEach(el=>{
+        if(el.isIntersecting){
+          el.target.classList.add('revealed');
+          io.unobserve(el.target);
+        }
+      });
+    },{threshold:.12});
+    document.querySelectorAll('.reveal-up, .reveal-left, .reveal-right').forEach(el=>io.observe(el));
+
+    // Cargar fotos desde photos.json
     async function loadGallery() {
       const gallery = document.getElementById('gallery');
       gallery.innerHTML = 'Cargando fotos…';
       try {
-        // Fetch directo a photos.json local
         const res = await fetch('/photos.json');
         if(!res.ok) throw new Error('No se pudo cargar photos.json');
         const data = await res.json();
@@ -55,7 +78,7 @@
         gallery.innerHTML = '';
         data.reverse().forEach(photo => {
           const div = document.createElement('div');
-          div.className = 'gallery-item';
+          div.className = 'gallery-item reveal-up';
           const img = document.createElement('img');
           img.src = photo.url;
           img.alt = photo.filename || 'Foto de la boda';
