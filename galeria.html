@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Galería de fotos — Adriana & Santiago</title>
+  <meta name="description" content="Galería de fotos de nuestra boda" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; margin:0; background:#fefefe; color:#333; }
+    header { background:#fff; padding:1rem; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 5px rgba(0,0,0,.1);}
+    header .brand { font-family:'Playfair Display', serif; font-size:1.5rem; text-decoration:none; color:#bfa14b;}
+    nav a { margin-left:1rem; text-decoration:none; color:#333; font-weight:500;}
+    h1 { text-align:center; font-family:'Playfair Display', serif; font-size:2rem; margin:2rem 0 1rem; }
+    #gallery { column-count: 3; column-gap: 1rem; max-width:1200px; margin:2rem auto; }
+    .gallery-item { break-inside: avoid; margin-bottom: 1rem; border-radius:8px; overflow:hidden; box-shadow:0 2px 5px rgba(0,0,0,.1);}
+    .gallery-item img { width:100%; display:block; transition: transform .3s ease; }
+    .gallery-item img:hover { transform: scale(1.05); }
+    @media(max-width:900px){ #gallery { column-count:2; } }
+    @media(max-width:600px){ #gallery { column-count:1; } }
+    footer { text-align:center; padding:2rem 1rem; font-size:.9rem; color:#666; }
+  </style>
+</head>
+<body>
+  <header>
+    <a href="/index.html" class="brand">A ❤ S</a>
+    <nav>
+      <a href="/index.html#inicio">Inicio</a>
+      <a href="/index.html#detalle">Detalles</a>
+      <a href="/index.html#rsvp">RSVP</a>
+    </nav>
+  </header>
+
+  <h1>Galería de fotos de nuestra boda</h1>
+  <div id="gallery" aria-live="polite">Cargando fotos…</div>
+
+  <footer>
+    Con ❤️ por Adriana & Santiago — Nos vemos el 21/03/2026
+  </footer>
+
+  <script>
+    async function loadGallery() {
+      const gallery = document.getElementById('gallery');
+      gallery.innerHTML = 'Cargando fotos…';
+      try {
+        // Fetch directo a photos.json local
+        const res = await fetch('/photos.json');
+        if(!res.ok) throw new Error('No se pudo cargar photos.json');
+        const data = await res.json();
+
+        if(!data.length){ gallery.innerHTML = '<p>No hay fotos aún.</p>'; return; }
+
+        gallery.innerHTML = '';
+        data.reverse().forEach(photo => {
+          const div = document.createElement('div');
+          div.className = 'gallery-item';
+          const img = document.createElement('img');
+          img.src = photo.url;
+          img.alt = photo.filename || 'Foto de la boda';
+          div.appendChild(img);
+          gallery.appendChild(div);
+        });
+      } catch(err) {
+        console.error(err);
+        gallery.innerHTML = '<p>Error cargando fotos.</p>';
+      }
+    }
+
+    loadGallery();
+  </script>
+</body>
+</html>
