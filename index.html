@@ -20,18 +20,38 @@
   <main id="inicio" class="hero">
     <div class="hero__bg" aria-hidden="true"></div>
     <div class="hero__content reveal-up">
-      <h1>Adriana & Santiago</h1>
+      <h1>
+        <span class="big-italic">A</span>driana & 
+        <span class="big-italic">S</span>antiago
+      </h1>
       <p class="subtitle">Nos casamos</p>
       <p class="date">Domingo, 22 de Marzo de 2026</p>
-     <div id="countdown" aria-live="polite">
-      <span id="cd-days">--</span>d
-      <span id="cd-hours">--</span>h
-      <span id="cd-mins">--</span>m
-      <span id="cd-secs">--</span>s
-    </div>
       <a href="#rsvp" class="btn btn-gold btn-lg">Confirmar asistencia</a>
     </div>
   </main>
+
+  <!-- SECCIÓN CONTADOR -->
+  <section id="contador" class="section countdown-section">
+    <h2 class="countdown-title">Faltan</h2>
+    <div class="countdown-grid">
+      <div class="countdown-item">
+        <span id="cd-days">--</span>
+        <p>Días</p>
+      </div>
+      <div class="countdown-item">
+        <span id="cd-hours">--</span>
+        <p>Horas</p>
+      </div>
+      <div class="countdown-item">
+        <span id="cd-mins">--</span>
+        <p>Minutos</p>
+      </div>
+      <div class="countdown-item">
+        <span id="cd-secs">--</span>
+        <p>Segundos</p>
+      </div>
+    </div>
+  </section>
 
   <section id="detalle" class="section">
     <div class="container">
@@ -50,9 +70,9 @@
           <p><strong>Hora:</strong> 6:00 PM</p>
           <p><strong>Dress code:</strong> Elegante</p>
           <ul class="details">
-          	<li>Parqueadero disponible (8 cupos)</li>
+            <li>Parqueadero disponible (8 cupos)</li>
             <li>Lleva la mejor actitud, vamos a divertirnos</li>
-          	<li>Los niños se quedan en casa</li>
+            <li>Los niños se quedan en casa</li>
             <li>Lluvia de sobres</li>
           </ul>
         </div>
@@ -69,15 +89,15 @@
             <input name="name" required placeholder="Tu nombre" />
           </label>
           <label>Teléfono
-			  <div style="display:flex; gap:0.5rem; align-items:center;">
-			    <select id="phone-country" required>
-			      <option value="+57">Colombia (+57)</option>
-			      <option value="+1">EEUU (+1)</option>
-			    </select>
-			    <input id="phone-number" type="tel" placeholder="Ej: 3001112233" required />
-			  </div>
-			  <span id="phone-error" style="color:red; font-size:0.9rem; display:none;">Número inválido</span>
-			</label>
+            <div style="display:flex; gap:0.5rem; align-items:center;">
+              <select id="phone-country" required>
+                <option value="+57">Colombia (+57)</option>
+                <option value="+1">EEUU (+1)</option>
+              </select>
+              <input id="phone-number" type="tel" maxlength="10" placeholder="Ej: 3001112233" required />
+            </div>
+            <span id="phone-error" style="color:red; font-size:0.9rem; display:none;">Número inválido</span>
+          </label>
         </div>
         <div class="grid-2">
           <label>Asistirás?

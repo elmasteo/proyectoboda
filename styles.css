@@ -224,3 +224,42 @@ input:focus, select:focus, textarea:focus {
   .nav nav { display: none; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg); flex-direction: column; padding: 0.5rem 1rem; }
   .hamburger { display: block; }
 }
+
+.big-italic {
+  font-family: 'Times New Roman', serif;
+  font-style: italic;
+  font-size: 3rem;
+  color: #d4af37;
+}
+
+/* Contador */
+.countdown-section {
+  text-align: center;
+  padding: 3rem 1rem;
+  background: #fffaf0;
+  border-top: 3px solid #d4af37;
+  border-bottom: 3px solid #d4af37;
+}
+.countdown-title {
+  font-style: italic;
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: #333;
+}
+.countdown-grid {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+}
+.countdown-item span {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: #d4af37;
+  display: block;
+}
+.countdown-item p {
+  margin-top: 0.5rem;
+  font-size: 1rem;
+  color: #555;
+}
+

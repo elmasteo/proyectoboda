@@ -26,6 +26,23 @@ const CONFIG = {
 };
 
 // Countdown (fecha evento: 2026-03-21 16:00 local)
+// Validación teléfono
+function validatePhone(country, number) {
+  const clean = number.replace(/\D/g,'');
+  if(country === '+57') return clean.length === 10;
+  if(country === '+1') return clean.length === 10;
+  return false;
+}
+
+phoneNumber.addEventListener('input', ()=>{
+  if(phoneNumber.value.length > 10){
+    phoneNumber.value = phoneNumber.value.slice(0,10);
+  }
+  const isValid = validatePhone(phoneCountry.value, phoneNumber.value);
+  phoneError.style.display = isValid ? 'none' : 'inline';
+});
+
+// Countdown estilizado
 (function initCountdown(){
   const target = new Date('2026-03-22T16:00:00'); 
   const elDays = document.getElementById('cd-days');
@@ -44,10 +61,10 @@ const CONFIG = {
     diff -= mins * (1000*60);
     const secs = Math.floor(diff / 1000);
 
-    if(elDays) elDays.textContent = String(days);
-    if(elHours) elHours.textContent = String(hours).padStart(2,'0');
-    if(elMins) elMins.textContent = String(mins).padStart(2,'0');
-    if(elSecs) elSecs.textContent = String(secs).padStart(2,'0');
+    elDays.textContent = String(days);
+    elHours.textContent = String(hours).padStart(2,'0');
+    elMins.textContent = String(mins).padStart(2,'0');
+    elSecs.textContent = String(secs).padStart(2,'0');
   }
   tick();
   setInterval(tick, 1000);
