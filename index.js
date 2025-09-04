@@ -107,15 +107,51 @@ uploadBtn?.addEventListener('click', async ()=>{
 const rsvpForm = document.getElementById('rsvpForm');
 const rsvpStatus = document.getElementById('rsvpStatus');
 
+const phoneCountry = document.getElementById('phone-country');
+const phoneNumber = document.getElementById('phone-number');
+const phoneError = document.getElementById('phone-error');
+
+// Función de validación según país
+function validatePhone(country, number) {
+  const clean = number.replace(/\D/g,''); // quitar espacios o guiones
+  if(country === '+57') return clean.length === 10;
+  if(country === '+1') return clean.length === 10;
+  return false;
+}
+
+// Validación en tiempo real
+phoneNumber.addEventListener('input', ()=>{
+  const isValid = validatePhone(phoneCountry.value, phoneNumber.value);
+  phoneError.style.display = isValid ? 'none' : 'inline';
+});
+phoneCountry.addEventListener('change', ()=>{
+  const isValid = validatePhone(phoneCountry.value, phoneNumber.value);
+  phoneError.style.display = isValid ? 'none' : 'inline';
+});
+
+// Modificar envío del formulario para unir indicativo + número
 rsvpForm?.addEventListener('submit', async (e)=>{
   e.preventDefault();
+  
+  const country = phoneCountry.value;
+  const number = phoneNumber.value.replace(/\D/g,'');
+  if(!validatePhone(country, number)){
+    phoneError.style.display = 'inline';
+    phoneNumber.focus();
+    return;
+  }
+  
   rsvpStatus.textContent = 'Enviando…';
-  const data = Object.fromEntries(new FormData(rsvpForm).entries());
+  const formData = Object.fromEntries(new FormData(rsvpForm).entries());
+  
+  // Reemplazar phone con indicativo + número
+  formData.phone = `${country}${number}`;
+  
   try{
     const res = await fetch(CONFIG.API_RSVP, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify(data)
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body: JSON.stringify(formData)
     });
     if(!res.ok) {
       const text = await res.text();
@@ -124,9 +160,11 @@ rsvpForm?.addEventListener('submit', async (e)=>{
     const body = await res.json();
     if(!body.ok) throw new Error(body.message || 'No OK');
     rsvpForm.reset();
+    phoneError.style.display = 'none';
     rsvpStatus.textContent = '¡Recibido! Te llegará una confirmación por WhatsApp.';
   }catch(err){
     console.error(err);
-    rsvpStatus.textContent = 'Error enviando RSVP. Intenta de nuevo.';
+    rsvpStatus.textContent = 'Error enviando Confirmación. Intenta de nuevo.';
   }
 });
+

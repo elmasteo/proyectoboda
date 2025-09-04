@@ -63,9 +63,16 @@
           <label>Nombre completo
             <input name="name" required placeholder="Tu nombre" />
           </label>
-          <label>Teléfono (con indicativo, p.ej. +573001112233)
-            <input name="phone" type="tel" required placeholder="+57..." />
-          </label>
+          <label>Teléfono
+			  <div style="display:flex; gap:0.5rem; align-items:center;">
+			    <select id="phone-country" required>
+			      <option value="+57">Colombia (+57)</option>
+			      <option value="+1">EEUU (+1)</option>
+			    </select>
+			    <input id="phone-number" type="tel" placeholder="Ej: 3001112233" required />
+			  </div>
+			  <span id="phone-error" style="color:red; font-size:0.9rem; display:none;">Número inválido</span>
+			</label>
         </div>
         <div class="grid-2">
           <label>Asistirás?
