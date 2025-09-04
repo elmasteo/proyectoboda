@@ -67,7 +67,6 @@ body { padding-top: 100px; } /* espacio para navbar fijo */
 }
 
 .btn-container.btn-right {
-  text-align: right;
   margin: 1.5rem 0;
 }
 
@@ -121,6 +120,34 @@ main.container {
 </footer>
 
 <script>
+
+  (function initCountdown(){
+  const target = new Date('2026-03-21T16:00:00'); 
+  const elDays = document.getElementById('cd-days');
+  const elHours = document.getElementById('cd-hours');
+  const elMins = document.getElementById('cd-mins');
+  const elSecs = document.getElementById('cd-secs');
+
+  function tick(){
+    const now = new Date();
+    let diff = Math.max(0, target - now);
+    const days = Math.floor(diff / (1000*60*60*24));
+    diff -= days * (1000*60*60*24);
+    const hours = Math.floor(diff / (1000*60*60));
+    diff -= hours * (1000*60*60);
+    const mins = Math.floor(diff / (1000*60));
+    diff -= mins * (1000*60);
+    const secs = Math.floor(diff / 1000);
+
+    if(elDays) elDays.textContent = String(days);
+    if(elHours) elHours.textContent = String(hours).padStart(2,'0');
+    if(elMins) elMins.textContent = String(mins).padStart(2,'0');
+    if(elSecs) elSecs.textContent = String(secs).padStart(2,'0');
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
 const gallery = document.getElementById('gallery');
 const uploadForm = document.getElementById('upload-form');
 const photoInput = document.getElementById('photo-input');
