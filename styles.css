@@ -717,3 +717,33 @@ input:focus, select:focus, textarea:focus {
     display: flex; /* vuelve a mostrarse al abrir */
   }
 }
+
+/* Invitados de Honor sin fotos */
+.honor-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+.honor-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.honor-card h3 {
+  font-family: 'Gwendolyn', cursive;
+  font-size: 1.8rem;
+  margin: 0.5rem 0;
+  color: var(--gold);
+}
+
+.honor-names {
+  font-family: 'Alex Brush', cursive;
+  font-size: 1.5rem;
+  color: var(--muted);
+  margin: 0;
+}
