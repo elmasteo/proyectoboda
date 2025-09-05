@@ -76,33 +76,17 @@ main.container {
   <nav>
     <a href="/index.html#inicio" class="btn btn-gold">Inicio</a>
     <a href="/index.html#detalle" class="btn btn-gold">Detalles</a>
+    <a href="/index.html#dresscode" class="btn btn-gold">Código de vestimenta</a>
+    <a href="/index.html#itinerario" class="btn btn-gold">Itinerario</a>
+    <a href="/index.html#regalos" class="btn btn-gold">Regalos</a>
+    <a href="/index.html#canciones" class="btn btn-gold">Canciones</a>
     <a href="/index.html#rsvp" class="btn btn-gold">Confirmar Asistencia</a>
   </nav>
   <button class="hamburger" aria-label="Abrir menú" aria-expanded="false">☰</button>
 </header>
 
 <main class="container">
-    <section id="contador" class="section countdown-section">
-    <h2 class="countdown-title">Faltan</h2>
-    <div class="countdown-grid">
-      <div class="countdown-item">
-        <span id="cd-days">--</span>
-        <p>Días</p>
-      </div>
-      <div class="countdown-item">
-        <span id="cd-hours">--</span>
-        <p>Horas</p>
-      </div>
-      <div class="countdown-item">
-        <span id="cd-mins">--</span>
-        <p>Minutos</p>
-      </div>
-      <div class="countdown-item">
-        <span id="cd-secs">--</span>
-        <p>Segundos</p>
-      </div>
-    </div>
-  </section>
+
   <h2 style="text-align:center;">Sube aquí las fotos que tomaste ❤</h2>
 
   <div class="btn-container btn-right">
@@ -127,34 +111,6 @@ main.container {
 </footer>
 
 <script>
-
-  (function initCountdown(){
-  const target = new Date('2026-03-22T16:00:00'); 
-  const elDays = document.getElementById('cd-days');
-  const elHours = document.getElementById('cd-hours');
-  const elMins = document.getElementById('cd-mins');
-  const elSecs = document.getElementById('cd-secs');
-
-  function tick(){
-    const now = new Date();
-    let diff = Math.max(0, target - now);
-    const days = Math.floor(diff / (1000*60*60*24));
-    diff -= days * (1000*60*60*24);
-    const hours = Math.floor(diff / (1000*60*60));
-    diff -= hours * (1000*60*60);
-    const mins = Math.floor(diff / (1000*60));
-    diff -= mins * (1000*60);
-    const secs = Math.floor(diff / 1000);
-
-    if(elDays) elDays.textContent = String(days);
-    if(elHours) elHours.textContent = String(hours).padStart(2,'0');
-    if(elMins) elMins.textContent = String(mins).padStart(2,'0');
-    if(elSecs) elSecs.textContent = String(secs).padStart(2,'0');
-  }
-  tick();
-  setInterval(tick, 1000);
-})();
-
 const gallery = document.getElementById('gallery');
 const uploadForm = document.getElementById('upload-form');
 const photoInput = document.getElementById('photo-input');
