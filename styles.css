@@ -876,3 +876,62 @@ input:focus, select:focus, textarea:focus {
   font-weight: 600;
   margin: 0;
 }
+
+.highlight-date-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* centra horizontalmente todo el bloque */
+  gap: 0.5rem;
+  color: #fff;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+  margin-bottom: 2rem;
+  max-width: 100%;       /* evita desbordes en móviles */
+  word-break: break-word; /* evita que el texto salga del contenedor */
+}
+
+.highlight-date-vertical .day {
+  font-size: 5rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.highlight-date-vertical .weekday,
+.highlight-date-vertical .month {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
+  position: relative;
+  text-align: center;
+  width: 100%;
+}
+
+.highlight-date-vertical .weekday::before,
+.highlight-date-vertical .weekday::after,
+.highlight-date-vertical .month::before,
+.highlight-date-vertical .month::after {
+  content: "";
+  display: block;
+  height: 3px;
+  width: 80px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-2));
+  margin: 0.5rem auto; /* centra las líneas */
+}
+
+@media (max-width: 600px) {
+  .highlight-date-vertical .day {
+    font-size: 4rem; /* reduce tamaño en móviles */
+  }
+
+  .highlight-date-vertical .weekday,
+  .highlight-date-vertical .month {
+    font-size: 1.5rem;
+  }
+
+  .highlight-date-vertical .weekday::before,
+  .highlight-date-vertical .weekday::after,
+  .highlight-date-vertical .month::before,
+  .highlight-date-vertical .month::after {
+    width: 60px; /* ajusta las líneas en móviles */
+  }
+}
