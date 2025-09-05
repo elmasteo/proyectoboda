@@ -935,3 +935,29 @@ input:focus, select:focus, textarea:focus {
     width: 60px; /* ajusta las líneas en móviles */
   }
 }
+
+.highlight-date-vertical {
+  display: flex;
+  flex-direction: row;       /* horizontal */
+  align-items: center;       /* centra verticalmente cada elemento dentro del row */
+  justify-content: center;   /* centra todo el bloque horizontalmente */
+  gap: 1rem;                 /* espacio entre día, weekday y month */
+  color: #fff;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+  margin-bottom: 2rem;
+  flex-wrap: wrap;           /* opcional: que los elementos bajen de línea en móvil */
+}
+
+.highlight-date-vertical .day {
+  font-size: 5rem;
+  font-weight: 700;
+  color: var(--gold);
+  line-height: 1;
+}
+
+.highlight-date-vertical .weekday,
+.highlight-date-vertical .month {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
+}
