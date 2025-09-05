@@ -997,3 +997,78 @@ nav.open {
   flex-direction: column;
 }
 
+.hero-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  color: #feffff;
+  flex-wrap: nowrap;       /* evita salto de línea */
+}
+
+.hero-title span, .hero-title p {
+  white-space: nowrap;     /* evita que se rompan las palabras */
+}
+
+/* Contador: corrige que MINUTOS y SEGUNDOS se salgan */
+.countdown-item {
+  flex: 1 1 120px;        /* asegura tamaño mínimo pero flexible */
+  max-width: 140px;       /* evita crecer demasiado */
+  word-break: break-word; /* si fuera necesario */
+}
+.countdown-item p {
+  font-size: 0.9rem;      /* más compacto en móviles */
+}
+
+/* Desktop */
+.timeline {
+  position: relative;
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 2rem 0;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 2px;
+  background: var(--gold);
+  transform: translateX(-50%);
+}
+.timeline-item {
+  width: 50%;
+  position: relative;
+  padding: 1rem;
+}
+.timeline-item.left { left: 0; text-align: right; }
+.timeline-item.right { left: 50%; }
+
+/* Mobile fix */
+@media (max-width: 768px){
+  .timeline::before { left: 20px; transform: none; } /* línea a la izquierda */
+  .timeline-item, .timeline-item.left, .timeline-item.right {
+    width: 100%;
+    left: 0;
+    text-align: left;
+    margin-left: 40px; /* espacio respecto a la línea */
+  }
+}
+
+.nav nav {
+  display: flex;
+  gap: 1rem;
+}
+@media (max-width: 768px){
+  .nav nav {
+    display: none;
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    background: var(--bg);
+    flex-direction: column;
+    padding: 0.5rem 1rem;
+  }
+  .nav nav.open { display: flex; } /* visible solo cuando abre */
+}

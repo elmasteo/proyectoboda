@@ -188,18 +188,31 @@ function showQR(src) {
 }
 
 const hamburger = document.querySelector(".hamburger");
-const nav = document.querySelector("header nav");
-const navLinks = nav.querySelectorAll("a");
+const navMenu = document.querySelector(".nav nav");
 
 hamburger.addEventListener("click", () => {
-  nav.classList.toggle("open");
-  hamburger.setAttribute("aria-expanded", nav.classList.contains("open"));
+  navMenu.classList.toggle("open");
+  hamburger.setAttribute(
+    "aria-expanded",
+    navMenu.classList.contains("open")
+  );
 });
 
-// Cierra el menú al hacer clic en un enlace
-navLinks.forEach(link => {
+// Cierra el menú al dar clic en un enlace
+document.querySelectorAll(".nav nav a").forEach(link => {
   link.addEventListener("click", () => {
-    nav.classList.remove("open");
+    navMenu.classList.remove("open");
     hamburger.setAttribute("aria-expanded", "false");
   });
 });
+
+// Reset al volver a desktop
+window.addEventListener("resize", () => {
+  if (window.innerWidth > 768) {
+    navMenu.classList.remove("open");
+    navMenu.style.display = "flex"; // se mantiene visible en desktop
+  } else {
+    navMenu.style.display = ""; // reset
+  }
+});
+
