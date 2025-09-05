@@ -486,4 +486,73 @@ input:focus, select:focus, textarea:focus {
   .hero__bg { background-attachment: scroll; background-position:center; }
 }
 
+/* ===== Hero Responsive Fix ===== */
+.hero__content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+.hero .btn {
+  margin-top: 1rem;
+}
+@media (max-width: 768px){
+  .hero__content h1 { font-size: 2rem; }
+  .hero__content .subtitle { font-size: 1rem; }
+  .hero__content .btn { font-size: 0.9rem; padding: 0.6rem 1rem; }
+}
+
+/* ===== Fecha llamativa ===== */
+.highlight-date {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+  margin-bottom: 1.5rem;
+}
+
+/* ===== Itinerario con imágenes ===== */
+.timeline {
+  position:relative;
+  margin:2rem auto;
+  padding:0 1rem;
+}
+.timeline::before { display:none; } /* quitamos la línea central */
+.timeline-item {
+  width:45%;
+  margin-bottom:2rem;
+  text-align:center;
+}
+.timeline-item.left { float:left; clear:both; }
+.timeline-item.right { float:right; clear:both; }
+.timeline-img {
+  width:100%;
+  max-width:220px;
+  border-radius:12px;
+  margin:0 auto 0.5rem;
+  box-shadow: var(--shadow);
+}
+.timeline-item h3 { color: var(--gold); margin-bottom:0.3rem; }
+
+/* Responsive Itinerario */
+@media (max-width:768px){
+  .timeline-item {
+    width: 48%;
+  }
+  .timeline-item.left { float:left; }
+  .timeline-item.right { float:right; }
+}
+
+/* ===== Countdown más compacto en móvil ===== */
+@media (max-width: 600px){
+  .countdown-item span { font-size: 2rem; }
+  .countdown-item { padding: 1rem; min-width: 90px; }
+  .countdown-grid { gap: 1rem; flex-wrap: nowrap; }
+}
+
+/* ===== Centrar botón Playlist ===== */
+.playlist-btn {
+  display: flex;
+  margin: 1.5rem auto 0;
+  justify-content: center;
+  text-align: center;
+}
 
