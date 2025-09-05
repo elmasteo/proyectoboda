@@ -27,10 +27,13 @@ exports.handler = async (event) => {
       return { statusCode: 500, body: 'Faltan variables de WhatsApp en entorno' };
     }
 
-    const text = `👋 Hola ${name}, 
-    Tu respuesta a la asistencia fue: ${attendance}. 
-    Acompañantes: ${guests}. 
-    ${message ? 'Nota: ' + message : ''}`;
+    const text = `👋 Hola ${name},
+
+    Hemos registrado tu confirmación: "${attendance}".
+    Número de acompañantes: ${guests}.
+    ${message ? 'Mensaje adicional: ' + message : ''}
+
+    Gracias por informarnos. ¡Nos alegra que formes parte de este día especial, de la manera que sea! 💛`;
 
     const waRes = await fetch(WHATSAPP_ENDPOINT, {
       method: 'POST',
