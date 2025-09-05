@@ -78,7 +78,7 @@ body { padding-top:70px; } /* evita solapamiento con header fijo */
   /*font-family: 'Playfair Display', serif;*/
   text-decoration: none;
   color: var(--fg);
-  font-size: 1.2rem;
+  font-size: 2rem;
 }
 
 #countdown {
@@ -746,4 +746,93 @@ input:focus, select:focus, textarea:focus {
   font-size: 1.5rem;
   color: var(--muted);
   margin: 0;
+}
+
+.adult-message {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.highlight-date {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.highlight-date .day {
+  font-size: 5rem;
+  font-weight: 700;
+  color: var(--gold);
+  position: relative;
+  margin-bottom: 0.5rem;
+}
+
+.highlight-date .day::before,
+.highlight-date .day::after {
+  content: "";
+  display: block;
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-2));
+  margin: 0.5rem auto;
+}
+
+.highlight-date .month {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #fff;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
+}
+
+.timeline-img {
+  background: transparent !important;
+}
+
+.gift-cards {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+
+.gift-card {
+  text-align: center;
+  cursor: pointer;
+}
+
+.gift-logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 0.5rem;
+  transition: transform 0.2s;
+}
+
+.gift-logo:hover {
+  transform: scale(1.1);
+}
+
+.qr-modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0; top: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qr-image {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.4);
 }

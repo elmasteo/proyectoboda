@@ -39,7 +39,11 @@
         <span class="initial">S</span>antiago
       </h1>
       <p class="subtitle">Nos casamos</p>
-      <p class="date highlight-date">Domingo, 22 de Marzo de 2026</p>
+      <p class="date highlight-date">Domingo</p>
+      <p class="highlight-date">
+        <span class="day">22</span>
+        <span class="month">Marzo 2026</span>
+      </p>
       <a href="#rsvp" class="btn btn-gold btn-lg">Confirmar asistencia</a>
     </div>
 
@@ -67,6 +71,16 @@
       </div>
     </div>
   </section>
+
+<!--Sección solo adultos-->
+<section class="section section--alt">
+  <div class="container">
+    <p class="adult-message">
+      Nos encantan los niños <strong>pero</strong>, este será un evento exclusivo para adultos, te agradecemos dejar a los niños en casa.
+    </p>
+  </div>
+</section>
+
 
 <!--Sección: Detalles-->
   <section id="detalle" class="section">
@@ -103,11 +117,11 @@
     <div class="honor-grid">
       <div class="honor-card">
         <h3>Padres de la Novia</h3>
-        <p class="honor-names">Wilson Rojas & Mercedes Beltrán</p>
+        <p class="honor-names">Wilson Rojas <br>& <br>Mercedes Beltrán</p>
       </div>
       <div class="honor-card">
         <h3>Padres del Novio</h3>
-        <p class="honor-names">Alberto Gómez & Ana Caicedo</p>
+        <p class="honor-names">Alberto Gómez <br>& <br> Ana Caicedo</p>
       </div>
     </div>
   </div>
@@ -176,21 +190,34 @@
 <section id="regalos" class="section section--alt">
   <div class="container">
     <h2 class="section__title">Regalos</h2>
-    <p class="center-text">Su presencia es lo más importante para nosotros. Si quieren ayudarnos a comenzar esta nueva etapa. Cualquier aporte será recibido con gratitud.<strong>lluvia de sobres ✉️</strong></p>
-    <div class="gift-card">
-      <p><strong>Cuenta Bancaria:</strong> 3219779439</p>
-      <p>Nequi</p>
-      <p>Daviplata</p>
+    <p class="center-text">
+      Su presencia es lo más importante. Si desean apoyarnos en esta nueva etapa, cualquier aporte será recibido con gratitud. <strong>💌</strong>
+    </p>
+    <div class="gift-cards">
+      <div class="gift-card">
+        <img src="icons/qr-nequi.png" alt="Nequi" class="gift-logo" onclick="showQR('assets/qr-nequi.png')">
+        <p>Nequi</p>
+      </div>
+      <div class="gift-card">
+        <img src="icons/qr-daviplata.jpg" alt="Daviplata" class="gift-logo" onclick="showQR('assets/qr-daviplata.png')">
+        <p>Daviplata</p>
+      </div>
     </div>
   </div>
 </section>
+
+<!-- Modal QR -->
+<div id="qr-modal" class="qr-modal" onclick="this.style.display='none'">
+  <img id="qr-img" src="" alt="QR" class="qr-image">
+</div>
+
 
 <!-- NUEVO: Canciones -->
 <section id="canciones" class="section">
   <div class="container">
     <h2 class="section__title">Sugerencias de Canciones</h2>
     <p class="center-text">Haz clic en nuestra lista de Spotify y agrega tu canción favorita 💿</p>
-    <a href="https://open.spotify.com/playlist/XXXXXXXX" target="_blank" class="btn btn-gold btn-lg playlist-btn">Ver Playlist</a>
+    <a href="https://open.spotify.com/playlist/5jpIwgjsWyXZsPRzxt2ovs?si=C5um-n1oRmq7GOAwa3Zs0Q&pt=0bf312c4cb255f8ec4121424ec0850af&pi=hJDOuMwlQnyjM" target="_blank" class="btn btn-gold btn-lg playlist-btn">Ver Playlist</a>
   </div>
 </section>
 

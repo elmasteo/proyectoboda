@@ -178,3 +178,11 @@ musicBtn.addEventListener('click', () => {
     musicBtn.classList.remove('active');
   }
 });
+
+//Mostra QR pagos
+function showQR(src) {
+  const modal = document.getElementById('qr-modal');
+  const img = document.getElementById('qr-img');
+  img.src = src;
+  modal.style.display = 'flex';
+}
