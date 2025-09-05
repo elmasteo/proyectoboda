@@ -164,3 +164,17 @@ rsvpForm?.addEventListener('submit', async (e)=>{
     rsvpStatus.textContent = 'Error enviando Confirmación. Intenta de nuevo.';
   }
 });
+
+// Música
+const musicBtn = document.getElementById('music-btn');
+const bgMusic = document.getElementById('bg-music');
+
+musicBtn.addEventListener('click', () => {
+  if (bgMusic.paused) {
+    bgMusic.play();
+    musicBtn.classList.add('active');
+  } else {
+    bgMusic.pause();
+    musicBtn.classList.remove('active');
+  }
+});
