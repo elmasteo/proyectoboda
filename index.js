@@ -167,17 +167,23 @@ rsvpForm?.addEventListener('submit', async (e)=>{
 
 // Música
 const musicBtn = document.getElementById('music-btn');
+const musicIcon = document.getElementById('music-icon');
 const bgMusic = document.getElementById('bg-music');
 
 musicBtn.addEventListener('click', () => {
   if (bgMusic.paused) {
     bgMusic.play();
-    musicBtn.classList.add('active');
+    musicIcon.src = "icons/pausa.png";   // cambia a pause
+    musicIcon.alt = "Pause";
+    musicBtn.setAttribute("aria-label", "Pausar música");
   } else {
     bgMusic.pause();
-    musicBtn.classList.remove('active');
+    musicIcon.src = "icons/play.png";    // cambia a play
+    musicIcon.alt = "Play";
+    musicBtn.setAttribute("aria-label", "Reproducir música");
   }
 });
+
 
 //Mostra QR pagos
 function showQR(src) {
@@ -186,4 +192,12 @@ function showQR(src) {
   img.src = src;
   modal.style.display = 'flex';
 }
+
+document.querySelectorAll('.nav nav a').forEach(link => {
+  link.addEventListener('click', () => {
+    const nav = document.querySelector('.nav nav');
+    nav.style.display = 'none';
+    document.querySelector('.hamburger')?.setAttribute('aria-expanded', "false");
+  });
+});
 

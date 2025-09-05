@@ -110,17 +110,6 @@ body { padding-top:70px; } /* evita solapamiento con header fijo */
   text-align:center;
   overflow:hidden;
 }
-/*
-.hero__bg {
-  position:absolute;
-  inset:0;
-  background:
-    radial-gradient(1000px 500px at 10% -10%, rgba(232,214,164,.35), transparent 60%),
-    radial-gradient(1000px 500px at 110% 110%, rgba(232,214,164,.35), transparent 60%),
-    linear-gradient(180deg, #fff, #fffaf0 60%, #fff7e6);
-  animation:bg-pan 18s linear infinite alternate;
-}
-*/
 .hero__bg {
   position: absolute;
   inset: 0;
@@ -147,8 +136,6 @@ body { padding-top:70px; } /* evita solapamiento con header fijo */
   .hero__content .subtitle { font-size: 0.9rem; }
   .hero__content .date { font-size: 1rem; }
 }
-
-
 
 @keyframes bg-pan {
   from{transform:translateX(-2%);}
@@ -425,15 +412,40 @@ input:focus, select:focus, textarea:focus {
   text-shadow: 1px 1px 5px rgba(0,0,0,0.7); /* para que resalte sobre cualquier fondo */
 }
 
+/* Contenedor texto + botón */
+.music-control {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;              /* espacio entre texto y botón */
+  margin-left: 1rem;
+}
+
+/* Texto */
+.music-label {
+  font-size: 1.5rem;
+  color: var(--gold);       /* usa tu color dorado */
+  font-family: 'Gwendolyn', cursive; /* mismo estilo cursivo elegante */
+  white-space: nowrap;      /* evita que se corte en varias líneas */
+}
+
 /* Botón Música */
 .music-btn {
   background: none;
   border: none;
-  font-size: 1.5rem;
   cursor: pointer;
-  margin-left: 1rem;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.music-btn.active { color: var(--gold); }
+
+.music-btn img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+}
+
 
 /* Fecha llamativa */
 .highlight-date {
@@ -474,10 +486,6 @@ input:focus, select:focus, textarea:focus {
 /* Responsive fix */
 @media (max-width:768px){
   .grid-2 { grid-template-columns:1fr; }
-  .timeline::before { left:20px; }
-  .timeline-item, .timeline-item.left, .timeline-item.right {
-    width:100%; left:0; margin-left:40px;
-  }
   .hero__bg { background-attachment: scroll; background-position:center; }
 }
 
@@ -490,7 +498,7 @@ input:focus, select:focus, textarea:focus {
   margin-top: 1rem;
 }
 @media (max-width: 768px){
-  .hero__content h1 { font-size: 2rem; }
+  .hero__content h1 { font-size: 1.5rem; }
   .hero__content .subtitle { font-size: 1rem; }
   .hero__content .btn { font-size: 0.9rem; padding: 0.6rem 1rem; }
 }
@@ -529,14 +537,10 @@ input:focus, select:focus, textarea:focus {
 /* cada fila: 2 columnas (izq / der) */
 .timeline-item {
   position: relative;
+  /*
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;*/
   align-items: start;
-  gap: 0;
-  padding: 1rem 0;
-  /* separación vertical entre filas */
-  margin-bottom: 1.5rem;
-  z-index: 2; /* encima de la línea */
 }
 
 /* bolita / hit en el centro de la fila */
@@ -574,8 +578,7 @@ input:focus, select:focus, textarea:focus {
 /* imagen y textos dentro del bloque */
 .timeline-img {
   display: block;
-  width: 100%;
-  max-width: 220px;
+  width: 80%;
   border-radius: 12px;
   margin: 0 auto 0.5rem;
   box-shadow: var(--shadow);
@@ -584,28 +587,6 @@ input:focus, select:focus, textarea:focus {
 /* estilos de encabezado/título */
 .timeline-item h3 { color: var(--gold); margin: 0.25rem 0; }
 .timeline-item p { margin: 0; color: var(--muted); }
-
-/* ajustar para pantallas pequeñas: colapsar a una columna,
-   la línea se desplaza a la izquierda y los items quedan uno debajo de otro */
-@media (max-width: 768px) {
-  .timeline::before {
-    left: 20px;
-    transform: none;
-  }
-  .timeline-item {
-    grid-template-columns: 1fr; /* una sola columna por fila */
-    padding-left: 40px;        /* espacio para la línea */
-  }
-  .timeline-item::after {
-    left: 20px;
-  }
-  .timeline-item.left > *, .timeline-item.right > * {
-    grid-column: 1;
-    justify-self: start;
-    width: 100%;
-    text-align: left;
-  }
-}
 .timeline-content {
   background: #fff;
   padding: 1rem;
@@ -614,7 +595,7 @@ input:focus, select:focus, textarea:focus {
   display: flex;
   flex-direction: column;
   align-items: center;
-  width: calc(50% - 2rem);
+  width: calc(40% - 2rem);
 }
 
 .timeline-item.left .timeline-content {
@@ -631,7 +612,7 @@ input:focus, select:focus, textarea:focus {
 
 .timeline-img {
   display: block;
-  width: 50%;
+  width: 30%;
   max-width: 220px;
   border-radius: 12px;
   margin: 0 auto 0.75rem;
@@ -670,18 +651,18 @@ input:focus, select:focus, textarea:focus {
   }
 
   .timeline-item {
-    grid-template-columns: 1fr 1fr; /* mantiene izquierda y derecha */
-    gap: 0.5rem;
+    grid-template-columns: 1fr 1fr; 
+    gap: 0.2rem;
   }
 
   .timeline-content {
-    width: 90%;
+    width: 100%;
     padding: 0.5rem;
   }
 
   .timeline-img {
-    width: 60%;
-    max-width: 140px;
+    width: 50%;
+    max-width: 200px;
   }
 
   .timeline-item h3 {
@@ -692,10 +673,9 @@ input:focus, select:focus, textarea:focus {
   }
 }
 
-/* Navbar desktop */
 .nav nav {
   display: flex;
-  justify-content: center; /* centra botones */
+  justify-content: center;
   gap: 1rem;
 }
 
@@ -717,6 +697,11 @@ input:focus, select:focus, textarea:focus {
   }
   .nav nav.active {
     display: flex; /* vuelve a mostrarse al abrir */
+  }
+  .nav nav a {
+    display: block;
+    width: 100%;
+    text-align: center;
   }
 }
 
@@ -892,12 +877,12 @@ input:focus, select:focus, textarea:focus {
 
 @media (max-width: 600px) {
   .highlight-date-vertical .day {
-    font-size: 4rem; /* reduce tamaño en móviles */
+    font-size: 3rem; /* reduce tamaño en móviles */
   }
 
   .highlight-date-vertical .weekday,
   .highlight-date-vertical .month {
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
 
   .highlight-date-vertical .weekday::before,
@@ -968,9 +953,9 @@ input:focus, select:focus, textarea:focus {
 }
 
 /* Ajustes tipográficos en móvil */
-@media (max-width: 768px) {
+@media (max-width: 500px) {
   .hero-title {
-    font-size: 2rem; /* reducimos tamaño */
+    font-size: 1.5rem; /* reducimos tamaño */
     line-height: 1.2;
     word-break: break-word; /* permite cortes */
   }
@@ -980,12 +965,15 @@ input:focus, select:focus, textarea:focus {
   }
 
   .countdown-grid {
-    gap: 0.5rem;
+    gap: 0.1rem;
     font-size: 0.8rem;
   }
 
   .countdown-item span {
     font-size: 1.5rem; /* más pequeño en móviles */
+  }
+  .countdown-item p {
+    font-size: 0.5rem; /* más pequeño en móviles */
   }
 }
 
@@ -995,5 +983,21 @@ nav {
 nav.open {
   display: flex;
   flex-direction: column;
+}
+
+#rsvpForm label div {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;         /* permite que salte de línea en pantallas pequeñas */
+}
+#phone-country {
+  order: 1;               /* siempre primero */
+  flex: 0 0 20%;
+}
+
+#phone-number {
+  order: 2;               /* siempre después del código */
+  flex: 1 1 auto;         
 }
 
