@@ -949,3 +949,51 @@ input:focus, select:focus, textarea:focus {
   font-size: clamp(2rem, 6vw, 4rem); /* ✅ también responsivo */
 }
 
+.map-icon {
+  width: 48px;
+  height: 48px;
+  display: block;
+  margin: 0 auto;
+  transition: transform 0.3s;
+}
+.map-icon:hover {
+  transform: scale(1.2);
+}
+
+.music-img {
+  width: 64px;
+  height: 64px;
+  display: block;
+  margin: 0 auto 1rem;
+}
+
+/* Ajustes tipográficos en móvil */
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: 2rem; /* reducimos tamaño */
+    line-height: 1.2;
+    word-break: break-word; /* permite cortes */
+  }
+
+  .highlight-date-vertical {
+    font-size: 1.2rem; 
+  }
+
+  .countdown-grid {
+    gap: 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  .countdown-item span {
+    font-size: 1.5rem; /* más pequeño en móviles */
+  }
+}
+
+nav {
+  display: none;
+}
+nav.open {
+  display: flex;
+  flex-direction: column;
+}
+

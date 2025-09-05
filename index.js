@@ -186,3 +186,20 @@ function showQR(src) {
   img.src = src;
   modal.style.display = 'flex';
 }
+
+const hamburger = document.querySelector(".hamburger");
+const nav = document.querySelector("header nav");
+const navLinks = nav.querySelectorAll("a");
+
+hamburger.addEventListener("click", () => {
+  nav.classList.toggle("open");
+  hamburger.setAttribute("aria-expanded", nav.classList.contains("open"));
+});
+
+// Cierra el menú al hacer clic en un enlace
+navLinks.forEach(link => {
+  link.addEventListener("click", () => {
+    nav.classList.remove("open");
+    hamburger.setAttribute("aria-expanded", "false");
+  });
+});
