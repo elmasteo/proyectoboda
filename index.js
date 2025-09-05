@@ -193,11 +193,32 @@ function showQR(src) {
   modal.style.display = 'flex';
 }
 
+const nav = document.querySelector('.nav nav');
+const hamburger = document.querySelector('.hamburger');
+
+// Abrir/cerrar menú en móvil
+hamburger?.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('active'); // activa/desactiva clase
+  hamburger.setAttribute('aria-expanded', String(isOpen));
+});
+
+// Cerrar menú solo si es móvil
 document.querySelectorAll('.nav nav a').forEach(link => {
   link.addEventListener('click', () => {
-    const nav = document.querySelector('.nav nav');
-    nav.style.display = 'none';
-    document.querySelector('.hamburger')?.setAttribute('aria-expanded', "false");
+    if (window.innerWidth <= 768) { // móvil
+      nav.classList.remove('active');
+      hamburger.setAttribute('aria-expanded', "false");
+    }
   });
 });
+
+// Opcional: reiniciar estilos si cambia el tamaño de la ventana
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) {
+    nav.classList.remove('active'); // siempre visible en desktop
+    nav.style.display = '';         // limpia cualquier estilo inline
+    hamburger.setAttribute('aria-expanded', "false");
+  }
+});
+
 
