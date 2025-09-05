@@ -6,5 +6,13 @@
     "guests": 2,
     "message": "Gracias por la invitación, claro que voy a participar.",
     "created_at": "2025-09-05T00:29:42.538Z"
+  },
+  {
+    "name": "santiago gomez",
+    "phone": "+573157862008",
+    "attendance": "Sí",
+    "guests": 2,
+    "message": "Asistiré probando.",
+    "created_at": "2025-09-05T20:16:08.528Z"
   }
 ]
