@@ -1,12 +1,3 @@
-// Menú móvil simple
-document.querySelector('.hamburger')?.addEventListener('click', (e)=>{
-  const nav = document.querySelector('.nav nav');
-  const btn = e.currentTarget;
-  const isOpen = nav.style.display === 'flex';
-  nav.style.display = isOpen ? 'none' : 'flex';
-  btn.setAttribute('aria-expanded', String(!isOpen));
-});
-
 // Animaciones con IntersectionObserver
 const io = new IntersectionObserver((entries)=>{
   entries.forEach(el=>{
@@ -192,7 +183,6 @@ function showQR(src) {
   img.src = src;
   modal.style.display = 'flex';
 }
-
 const nav = document.querySelector('.nav nav');
 const hamburger = document.querySelector('.hamburger');
 
@@ -202,23 +192,23 @@ hamburger?.addEventListener('click', () => {
   hamburger.setAttribute('aria-expanded', String(isOpen));
 });
 
-// Cerrar menú solo si es móvil
+// Cerrar menú automáticamente al pulsar un link en móvil
 document.querySelectorAll('.nav nav a').forEach(link => {
   link.addEventListener('click', () => {
-    if (window.innerWidth <= 768) { // móvil
+    if (window.innerWidth <= 768) { // solo en móvil
       nav.classList.remove('active');
       hamburger.setAttribute('aria-expanded', "false");
     }
   });
 });
 
-// Opcional: reiniciar estilos si cambia el tamaño de la ventana
+// Asegurar que el menú esté visible en desktop si se cambia de tamaño
 window.addEventListener('resize', () => {
   if (window.innerWidth > 768) {
     nav.classList.remove('active'); // siempre visible en desktop
-    nav.style.display = '';         // limpia cualquier estilo inline
     hamburger.setAttribute('aria-expanded', "false");
   }
 });
+
 
 
