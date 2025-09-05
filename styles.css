@@ -908,4 +908,44 @@ input:focus, select:focus, textarea:focus {
   }
 }
 
+.map-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  font-weight: 600;
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 1rem;
+  transition: color .2s ease;
+}
+.map-link:hover { color: var(--fg); }
+
+.music-icon {
+  font-size: 2rem;
+  text-align: center;
+  margin: 0.5rem 0 1rem;
+  color: var(--gold);
+}
+
+.hero-title {
+  display: flex;
+  flex-wrap: wrap; /* ✅ evita corte en pantallas pequeñas */
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  color: #feffff;
+}
+
+.initial {
+  font-size: clamp(3rem, 10vw, 8rem); /* ✅ se adapta según pantalla */
+  font-weight: 700;
+  color: #d4af37;
+  text-shadow: 3px 3px 10px rgba(0,0,0,0.25);
+  line-height: 1;
+}
+.hero-title .amp {
+  font-size: clamp(2rem, 6vw, 4rem); /* ✅ también responsivo */
+}
 
