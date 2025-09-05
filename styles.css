@@ -34,8 +34,9 @@ h1 { font-size: clamp(2.2rem, 5vw, 4rem); }
 h2 { font-size: clamp(1.6rem, 3.2vw, 2.4rem); }
 
 .subtitle {
-  letter-spacing:.2em;
-  text-transform:uppercase;
+  font-family: 'Alex Brush', cursive;
+  font-size: 4rem;
+  letter-spacing:.1em;
   color:var(--gold);
   font-weight:600;
 }
@@ -798,7 +799,7 @@ input:focus, select:focus, textarea:focus {
 .gift-cards {
   display: flex;
   justify-content: center;
-  gap: 2rem;
+  gap: 0.5rem;
   flex-wrap: wrap;
   margin-top: 1rem;
 }
@@ -852,41 +853,16 @@ input:focus, select:focus, textarea:focus {
   text-align: center;
   margin-bottom: 2rem;
 }  
-
 .highlight-date-vertical {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start; /* alinea a la izquierda */
-  gap: 0.2rem;
-  color: #fff;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
-  margin-bottom: 1.5rem;
-}
-
-.highlight-date-vertical .day {
-  font-size: 6rem;
-  font-weight: 700;
-  color: var(--gold);
-  line-height: 1;
-}
-
-.highlight-date-vertical .weekday,
-.highlight-date-vertical .month {
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 0;
-}
-
-.highlight-date-vertical {
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* centra horizontalmente todo el bloque */
-  gap: 0.5rem;
+  flex-direction: row;       /* horizontal */
+  align-items: center;       /* centra verticalmente cada elemento dentro del row */
+  justify-content: center;   /* centra todo el bloque horizontalmente */
+  gap: 1rem;                 /* espacio entre día, weekday y month */
   color: #fff;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
   margin-bottom: 2rem;
-  max-width: 100%;       /* evita desbordes en móviles */
-  word-break: break-word; /* evita que el texto salga del contenedor */
+  flex-wrap: wrap;           /* opcional: que los elementos bajen de línea en móvil */
 }
 
 .highlight-date-vertical .day {
@@ -896,26 +872,21 @@ input:focus, select:focus, textarea:focus {
   line-height: 1;
 }
 
-.highlight-date-vertical .weekday,
-.highlight-date-vertical .month {
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 0.5rem 0;
-  position: relative;
-  text-align: center;
-  width: 100%;
-}
-
-.highlight-date-vertical .weekday::before,
-.highlight-date-vertical .weekday::after,
-.highlight-date-vertical .month::before,
-.highlight-date-vertical .month::after {
+.highlight-date-vertical .day::before,
+.highlight-date-vertical .day::after {
   content: "";
   display: block;
   height: 3px;
   width: 80px;
   background: linear-gradient(90deg, var(--gold), var(--gold-2));
   margin: 0.5rem auto; /* centra las líneas */
+}
+
+.highlight-date-vertical .weekday,
+.highlight-date-vertical .month {
+  font-size: 2rem;
+  font-weight: 600;
+  margin: 0;
 }
 
 @media (max-width: 600px) {
@@ -936,28 +907,4 @@ input:focus, select:focus, textarea:focus {
   }
 }
 
-.highlight-date-vertical {
-  display: flex;
-  flex-direction: row;       /* horizontal */
-  align-items: center;       /* centra verticalmente cada elemento dentro del row */
-  justify-content: center;   /* centra todo el bloque horizontalmente */
-  gap: 1rem;                 /* espacio entre día, weekday y month */
-  color: #fff;
-  text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
-  margin-bottom: 2rem;
-  flex-wrap: wrap;           /* opcional: que los elementos bajen de línea en móvil */
-}
 
-.highlight-date-vertical .day {
-  font-size: 5rem;
-  font-weight: 700;
-  color: var(--gold);
-  line-height: 1;
-}
-
-.highlight-date-vertical .weekday,
-.highlight-date-vertical .month {
-  font-size: 2rem;
-  font-weight: 600;
-  margin: 0;
-}
