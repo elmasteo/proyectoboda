@@ -123,10 +123,29 @@ body { padding-top:70px; } /* evita solapamiento con header fijo */
   position: absolute;
   inset: 0;
   background: 
-  linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
-  url("assets/nosotrosv3.jpg") center 70% / cover no-repeat fixed;
+    linear-gradient(rgba(0,0,0,0.35), rgba(0,0,0,0.35)),
+    url("assets/nosotrosv3.jpg") center center / cover no-repeat;
+  background-attachment: fixed;
   z-index: -1;
 }
+
+/* Ajuste responsive hero */
+@media (max-width: 768px) {
+  .hero__bg {
+    background-attachment: scroll; /* evita el bug de móviles */
+    background-position: center top; /* muestra más la parte baja */
+  }
+  .hero__content h1 {
+    font-size: 1.8rem;
+    line-height: 1.2;
+  }
+  .hero__content .initial {
+    font-size: 4rem;
+  }
+  .hero__content .subtitle { font-size: 0.9rem; }
+  .hero__content .date { font-size: 1rem; }
+}
+
 
 
 @keyframes bg-pan {
@@ -483,74 +502,150 @@ input:focus, select:focus, textarea:focus {
   margin-bottom: 1.5rem;
 }
 
-/* ===== Itinerario mejorado ===== */
+/* ===== Itinerario Alterno (fila por fila) ===== */
 .timeline {
   position: relative;
+  max-width: 1100px;
   margin: 2rem auto;
   padding: 2rem 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  row-gap: 4rem; /* espacio vertical entre eventos */
+  /* cada .timeline-item será una fila independiente */
 }
 
+/* línea vertical central */
 .timeline::before {
   content: "";
   position: absolute;
+  left: 50%;
   top: 0;
   bottom: 0;
-  left: 50%;
-  width: 3px;
+  width: 4px;
   background: var(--gold);
   transform: translateX(-50%);
+  z-index: 1;
 }
 
+/* cada fila: 2 columnas (izq / der) */
 .timeline-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: start;
+  gap: 0;
+  padding: 1rem 0;
+  /* separación vertical entre filas */
+  margin-bottom: 1.5rem;
+  z-index: 2; /* encima de la línea */
+}
+
+/* bolita / hit en el centro de la fila */
+.timeline-item::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  background: var(--gold);
+  border-radius: 50%;
+  border: 3px solid #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+  z-index: 3;
+}
+
+/* CONTENIDO pegado hacia el centro: izquierda */
+.timeline-item.left > * {
+  grid-column: 1;
+  justify-self: end;           /* pega el contenido hacia el centro */
+  width: calc(50% - 2rem);    /* evita tocar la línea */
+  text-align: right;
+}
+
+/* CONTENIDO pegado hacia el centro: derecha */
+.timeline-item.right > * {
+  grid-column: 2;
+  justify-self: start;        /* pega el contenido hacia el centro */
+  width: calc(50% - 2rem);
+  text-align: left;
+}
+
+/* imagen y textos dentro del bloque */
+.timeline-img {
+  display: block;
+  width: 100%;
+  max-width: 220px;
+  border-radius: 12px;
+  margin: 0 auto 0.5rem;
+  box-shadow: var(--shadow);
+}
+
+/* estilos de encabezado/título */
+.timeline-item h3 { color: var(--gold); margin: 0.25rem 0; }
+.timeline-item p { margin: 0; color: var(--muted); }
+
+/* ajustar para pantallas pequeñas: colapsar a una columna,
+   la línea se desplaza a la izquierda y los items quedan uno debajo de otro */
+@media (max-width: 768px) {
+  .timeline::before {
+    left: 20px;
+    transform: none;
+  }
+  .timeline-item {
+    grid-template-columns: 1fr; /* una sola columna por fila */
+    padding-left: 40px;        /* espacio para la línea */
+  }
+  .timeline-item::after {
+    left: 20px;
+  }
+  .timeline-item.left > *, .timeline-item.right > * {
+    grid-column: 1;
+    justify-self: start;
+    width: 100%;
+    text-align: left;
+  }
+}
+.timeline-content {
   background: #fff;
   padding: 1rem;
   border-radius: 10px;
   box-shadow: var(--shadow);
-  text-align: center;
-  position: relative;
-  width: 85%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: calc(50% - 2rem);
 }
 
-.timeline-item.left {
+.timeline-item.left .timeline-content {
   grid-column: 1;
-  justify-self: end;   /* se pega a la línea central */
+  justify-self: end;
+  text-align: center; /* centrado interno */
 }
 
-.timeline-item.right {
+.timeline-item.right .timeline-content {
   grid-column: 2;
-  justify-self: start; /* se pega a la línea central */
+  justify-self: start;
+  text-align: center;
 }
 
 .timeline-img {
-  width: 100%;
+  display: block;
+  width: 50%;
   max-width: 220px;
   border-radius: 12px;
   margin: 0 auto 0.75rem;
   box-shadow: var(--shadow);
 }
 
-.timeline-item h3 {
-  color: var(--gold);
-  margin-bottom: 0.3rem;
+.timeline-content p {
+  margin: 0.3rem 0;
+  color: var(--muted);
 }
 
-/* Responsive: todo en una columna */
-@media (max-width:768px){
-  .timeline {
-    grid-template-columns: 1fr;
-    row-gap: 2rem;
-  }
-  .timeline::before { left: 20px; }
-  .timeline-item {
-    width: 100%;
-    justify-self: start;
-    margin-left: 40px;
-    text-align: left;
-  }
+.timeline-content h3 {
+  color: var(--gold);
+  margin: 0.3rem 0 0;
 }
+
 /* ===== Countdown más compacto en móvil ===== */
 @media (max-width: 600px){
   .countdown-item span { font-size: 2rem; }
@@ -566,3 +661,59 @@ input:focus, select:focus, textarea:focus {
   text-align: center;
 }
 
+@media (max-width: 768px) {
+  .timeline::before {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .timeline-item {
+    grid-template-columns: 1fr 1fr; /* mantiene izquierda y derecha */
+    gap: 0.5rem;
+  }
+
+  .timeline-content {
+    width: 90%;
+    padding: 0.5rem;
+  }
+
+  .timeline-img {
+    width: 60%;
+    max-width: 140px;
+  }
+
+  .timeline-item h3 {
+    font-size: 1rem;
+  }
+  .timeline-item p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Navbar desktop */
+.nav nav {
+  display: flex;
+  justify-content: center; /* centra botones */
+  gap: 1rem;
+}
+
+/* Navbar móvil */
+@media (max-width: 768px) {
+  .nav {
+    grid-template-columns: auto auto auto;
+  }
+  .nav nav {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: var(--bg);
+    flex-direction: column;
+    align-items: center;
+    gap: 0.8rem;
+    padding: 1rem;
+  }
+  .nav nav.active {
+    display: flex; /* vuelve a mostrarse al abrir */
+  }
+}

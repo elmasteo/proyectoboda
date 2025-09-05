@@ -15,13 +15,17 @@
     <a href="#inicio" class="brand">A ❤ S</a>
     <nav>
       <a href="#detalle" class="btn btn-gold">Detalles</a>
+      <a href="#dresscode" class="btn btn-gold">Código de vestimenta</a>
+      <a href="#itinerario" class="btn btn-gold">Itinerario</a>
+      <a href="#regalos" class="btn btn-gold">Regalos</a>
+      <a href="#canciones" class="btn btn-gold">Canciones</a>
       <a href="galeria.html" class="btn btn-gold">Galería</a>
       <a href="#rsvp" class="btn btn-gold">Confirmar Asistencia</a>
     </nav>
     <button class="hamburger" aria-label="Abrir menú" aria-expanded="false">☰</button>
     <!-- NUEVO: Botón Música -->
   <button id="music-btn" class="music-btn" aria-label="Reproducir música">🎵</button>
-  <audio id="bg-music" src="assets/musica.mp3" preload="auto"></audio>
+  <audio id="bg-music" src="assets/cancion.mp3" preload="auto"></audio>
 
   </header>
 
@@ -93,7 +97,7 @@
 <section id="dresscode" class="section section--alt">
   <div class="container">
     <h2 class="section__title">Código de Vestimenta</h2>
-    <p class="center-text">Elegante. Nos reservamos el blanco para la novia 🤍</p>
+    <p class="center-text">Elegante. <strong>Nos reservamos el blanco para la novia 🤍</strong></p>
     <div class="palette">
       <span style="background:#d4af37"></span>
       <span style="background:#5a5a5a"></span>
@@ -108,24 +112,39 @@
     <h2 class="section__title">Itinerario</h2>
     <div class="timeline">
       <div class="timeline-item left">
-        <img src="assets/iglesia.jpg" alt="Ceremonia" class="timeline-img">
-        <h3>4:00 PM</h3>
-        <p>Ceremonia</p>
+        <div class="timeline-content">
+          <img src="icons/iglesia.png" alt="Ceremonia" class="timeline-img">
+          <h3>4:00 PM</h3>
+          <p>Ceremonia</p>
+        </div>
       </div>
       <div class="timeline-item right">
-        <img src="assets/recepcion.jpg" alt="Recepción" class="timeline-img">
-        <h3>6:00 PM</h3>
-        <p>Recepción</p>
+        <div class="timeline-content">
+          <img src="icons/recepcion.png" alt="Recepción" class="timeline-img">
+          <h3>6:00 PM</h3>
+          <p>Recepción</p>
+        </div>
       </div>
       <div class="timeline-item left">
-        <img src="assets/baile.jpg" alt="Primer baile" class="timeline-img">
-        <h3>8:00 PM</h3>
-        <p>Primer baile</p>
+        <div class="timeline-content">
+          <img src="icons/cena.png" alt="Primer baile" class="timeline-img">
+          <h3>7:00 PM</h3>
+          <p>Cena</p>
+        </div>
       </div>
       <div class="timeline-item right">
-        <img src="assets/fiesta.jpg" alt="Fiesta" class="timeline-img">
-        <h3>9:00 PM</h3>
-        <p>Fiesta 🎉</p>
+        <div class="timeline-content">
+          <img src="icons/fiesta.png" alt="Fiesta" class="timeline-img">
+          <h3>9:00 PM</h3>
+          <p>Fiesta 🎉</p>
+        </div>
+      </div>
+      <div class="timeline-item left">
+        <div class="timeline-content">
+          <img src="icons/casados.png" alt="Fiesta" class="timeline-img">
+          <h3>11:00 PM</h3>
+          <p>Felices para siempre</p>
+        </div>
       </div>
     </div>
   </div>
