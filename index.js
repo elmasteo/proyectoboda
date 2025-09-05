@@ -187,32 +187,3 @@ function showQR(src) {
   modal.style.display = 'flex';
 }
 
-const hamburger = document.querySelector(".hamburger");
-const navMenu = document.querySelector(".nav nav");
-
-hamburger.addEventListener("click", () => {
-  navMenu.classList.toggle("open");
-  hamburger.setAttribute(
-    "aria-expanded",
-    navMenu.classList.contains("open")
-  );
-});
-
-// Cierra el menú al dar clic en un enlace
-document.querySelectorAll(".nav nav a").forEach(link => {
-  link.addEventListener("click", () => {
-    navMenu.classList.remove("open");
-    hamburger.setAttribute("aria-expanded", "false");
-  });
-});
-
-// Reset al volver a desktop
-window.addEventListener("resize", () => {
-  if (window.innerWidth > 768) {
-    navMenu.classList.remove("open");
-    navMenu.style.display = "flex"; // se mantiene visible en desktop
-  } else {
-    navMenu.style.display = ""; // reset
-  }
-});
-
