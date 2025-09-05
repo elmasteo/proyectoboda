@@ -439,32 +439,6 @@ input:focus, select:focus, textarea:focus {
   box-shadow:0 0 8px rgba(0,0,0,0.2);
 }
 
-/* Itinerario */
-.timeline {
-  position:relative;
-  margin:2rem auto;
-  padding:0 1rem;
-}
-.timeline::before {
-  content:"";
-  position:absolute;
-  top:0; bottom:0; left:50%;
-  width:3px;
-  background: var(--gold);
-}
-.timeline-item {
-  width:45%;
-  padding:1rem;
-  margin-bottom:2rem;
-  background:#fff;
-  border-radius:10px;
-  box-shadow:var(--shadow);
-  position:relative;
-}
-.timeline-item.left { left:0; }
-.timeline-item.right { left:55%; }
-.timeline-item h3 { color: var(--gold); }
-
 /* Regalos */
 .gift-card {
   text-align:center;
@@ -514,8 +488,8 @@ input:focus, select:focus, textarea:focus {
   position: relative;
   margin: 2rem auto;
   padding: 0 1rem;
-  overflow: hidden; /* 🔑 evita que se superponga con lo siguiente */
-  clear: both;      /* 🔑 empuja secciones posteriores */
+  overflow: hidden; /* evita que se superponga con lo siguiente */
+  clear: both;      /* empuja secciones posteriores */
 }
 .timeline::before {
   content: "";
@@ -536,7 +510,7 @@ input:focus, select:focus, textarea:focus {
   text-align: center;
 }
 .timeline-item.left { float: left; }
-.timeline-item.right { float: right; }
+.timeline-item.right { float: right; }  /* ✅ esta es la única regla que debe quedar */
 
 .timeline-img {
   width: 100%;
