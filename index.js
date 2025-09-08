@@ -163,18 +163,21 @@ const bgMusic = document.getElementById('bg-music');
 
 musicBtn.addEventListener('click', () => {
   if (bgMusic.paused) {
+    // Inicia desde el segundo 13
+    bgMusic.currentTime = 13;
     bgMusic.play();
-    musicIcon.src = "icons/pausa.png";   // cambia a pause
+
+    musicIcon.src = "icons/pausa.png";   // cambia a pausa
     musicIcon.alt = "Pause";
     musicBtn.setAttribute("aria-label", "Pausar música");
   } else {
     bgMusic.pause();
+
     musicIcon.src = "icons/play.png";    // cambia a play
     musicIcon.alt = "Play";
     musicBtn.setAttribute("aria-label", "Reproducir música");
   }
 });
-
 
 //Mostra QR pagos
 function showQR(src) {
