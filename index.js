@@ -156,24 +156,49 @@ rsvpForm?.addEventListener('submit', async (e)=>{
   }
 });
 
-// Música
+//Botón de música
 const musicBtn = document.getElementById('music-btn');
 const musicIcon = document.getElementById('music-icon');
 const bgMusic = document.getElementById('bg-music');
 
+// Intentar reproducir automáticamente al cargar
+window.addEventListener("DOMContentLoaded", async () => {
+  try {
+    bgMusic.currentTime = 13; // iniciar desde el segundo 13
+    await bgMusic.play();
+
+    // Cambiar icono a pausa
+    musicIcon.src = "icons/pausa.png";
+    musicIcon.alt = "Pause";
+    musicBtn.setAttribute("aria-label", "Pausar música");
+
+    // Quitar mute en la primera interacción del usuario
+    document.addEventListener("click", () => {
+      if (bgMusic.muted) {
+        bgMusic.muted = false;
+      }
+    }, { once: true });
+  } catch (e) {
+    console.log("Autoplay bloqueado por el navegador:", e);
+  }
+});
+
+// Control manual con el botón
 musicBtn.addEventListener('click', () => {
   if (bgMusic.paused) {
+    bgMusic.currentTime = 13; // siempre retoma desde el segundo 13
     bgMusic.play();
-    musicIcon.src = "icons/pausa.png";   // cambia a pause
+    musicIcon.src = "icons/pausa.png";
     musicIcon.alt = "Pause";
     musicBtn.setAttribute("aria-label", "Pausar música");
   } else {
     bgMusic.pause();
-    musicIcon.src = "icons/play.png";    // cambia a play
+    musicIcon.src = "icons/play.png";
     musicIcon.alt = "Play";
     musicBtn.setAttribute("aria-label", "Reproducir música");
   }
 });
+
 
 
 //Mostra QR pagos

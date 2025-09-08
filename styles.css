@@ -37,12 +37,12 @@ h2 { font-size: clamp(1.6rem, 3.2vw, 2.4rem); }
   font-family: 'Alex Brush', cursive;
   font-size: 2rem;
   letter-spacing:.1em;
-  color:var(--gold);
+  color:var(--card);
   font-weight:600;
 }
 .date { opacity:.9; margin:.25rem 0 1rem; color: #feffff}
 .container { width:min(1100px, 92%); margin-inline:auto; }
-.section { padding:72px 0; }
+.section { padding:35px 0; }
 .section--alt { background:var(--alt); }
 .section__title {
   color: var(--fg);
@@ -216,7 +216,7 @@ body { padding-top:70px; } /* evita solapamiento con header fijo */
 }
 
 /* ===== Form ===== */
-.form label { display:grid; gap:.35rem; font-weight:600; }
+.form label { display:grid; font-weight:490; }
 input, select, textarea {
   appearance:none;
   font:inherit;
@@ -499,8 +499,8 @@ input:focus, select:focus, textarea:focus {
 }
 @media (max-width: 768px){
   .hero__content h1 { font-size: 1.5rem; }
-  .hero__content .subtitle { font-size: 1rem; }
-  .hero__content .btn { font-size: 0.9rem; padding: 0.6rem 1rem; }
+  .hero__content .subtitle { font-size: 1.4rem; }
+  .hero__content .btn { font-size: 1.5rem; padding: 0.6rem 1rem; }
 }
 
 /* ===== Fecha llamativa ===== */
@@ -847,7 +847,6 @@ input:focus, select:focus, textarea:focus {
   gap: 1rem;                 /* espacio entre día, weekday y month */
   color: #fff;
   text-shadow: 2px 2px 8px rgba(0,0,0,0.6);
-  margin-bottom: 2rem;
   flex-wrap: wrap;           /* opcional: que los elementos bajen de línea en móvil */
 }
 
