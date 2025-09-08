@@ -164,7 +164,7 @@ const bgMusic = document.getElementById('bg-music');
 musicBtn.addEventListener('click', () => {
   if (bgMusic.paused) {
     // Inicia desde el segundo 13
-    bgMusic.currentTime = 13;
+    bgMusic.currentTime = 11;
     bgMusic.play();
 
     musicIcon.src = "icons/pausa.png";   // cambia a pausa
