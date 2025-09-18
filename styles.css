@@ -151,7 +151,7 @@ body { padding-top:70px; } /* evita solapamiento con header fijo */
   padding:1.25rem;
   box-shadow:var(--shadow);
 }
-.grid-2 { display:grid; grid-template-columns:repeat(2,1fr); gap:1rem; }
+.grid-2 { display:grid; grid-template-columns:repeat(1,1fr); gap:1rem; }
 .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:.75rem; }
 .mt-32 { margin-top:32px; }
 .photo img {
@@ -991,8 +991,8 @@ nav.open {
   flex-wrap: wrap;         /* permite que salte de línea en pantallas pequeñas */
 }
 #phone-country {
-  order: 1;               /* siempre primero */
-  flex: 0 0 20%;
+  order: 1;                
+  /*flex: 0 0 20%;*/
 }
 
 #phone-number {
