@@ -393,8 +393,8 @@ input:focus, select:focus, textarea:focus {
 .carousel-track {
   display: flex;
   width: max-content;
-  transition: transform 0.3s linear;
   will-change: transform;
+  transition: none; /* default sin transición */
 }
 
 .carousel-track img {

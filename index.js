@@ -239,40 +239,25 @@ document.addEventListener("DOMContentLoaded", () => {
   let isPaused = false;
   let startX = 0;
   let endX = 0;
+  let isSwiping = false;
 
   function animate() {
-    if (!isPaused) {
+    if (!isPaused && !isSwiping) {
       position += direction * speed;
 
       const itemWidth = items[0].offsetWidth + 10;
 
       if (direction === -1 && Math.abs(position) >= itemWidth) {
-        // desactiva transición para evitar salto
-        track.style.transition = "none";
-
+        track.style.transition = "none"; // sin transición en auto scroll
         track.appendChild(track.firstElementChild);
-        position += itemWidth; // ajusta posición manteniendo continuidad
-
+        position += itemWidth;
         track.style.transform = `translateX(${position}px)`;
-
-        // reactivar transición después de reflow
-        requestAnimationFrame(() => {
-          track.style.transition = "transform 0.3s linear";
-        });
-
         items = document.querySelectorAll(".carousel-item");
       } else if (direction === 1 && position > 0) {
         track.style.transition = "none";
-
         track.prepend(track.lastElementChild);
         position -= itemWidth;
-
         track.style.transform = `translateX(${position}px)`;
-
-        requestAnimationFrame(() => {
-          track.style.transition = "transform 0.3s linear";
-        });
-
         items = document.querySelectorAll(".carousel-item");
       }
 
@@ -288,9 +273,11 @@ document.addEventListener("DOMContentLoaded", () => {
     isPaused = !isPaused;
   });
 
-  // Swipe en móviles → cambia dirección
+  // Swipe en móviles
   track.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
+    isSwiping = true;
+    track.style.transition = "transform 0.3s ease-out"; // activa transición solo para swipe
   });
 
   track.addEventListener("touchend", e => {
@@ -300,5 +287,11 @@ document.addEventListener("DOMContentLoaded", () => {
     } else if (endX - startX > 50) {
       direction = 1;
     }
+
+    // después del swipe, volver a modo continuo sin transición
+    setTimeout(() => {
+      isSwiping = false;
+      track.style.transition = "none";
+    }, 300); // coincide con duración de la transición
   });
 });
