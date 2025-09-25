@@ -369,6 +369,7 @@ input:focus, select:focus, textarea:focus {
   z-index: 0;
 }
 
+/*
 .carousel-track {
   display: flex;
   width: max-content;
@@ -376,8 +377,8 @@ input:focus, select:focus, textarea:focus {
 }
 
 .carousel-track img {
-  width: 400px;   /* mismo ancho para todas */
-  height: 300px;  /* mismo alto */
+  width: 400px;   
+  height: 300px;  
   object-fit: cover;
   flex-shrink: 0;
   border-radius: 10px;
@@ -388,6 +389,23 @@ input:focus, select:focus, textarea:focus {
   from { transform: translateX(0); }
   to { transform: translateX(-50%); }
 }
+*/
+.carousel-track {
+  display: flex;
+  width: max-content;
+  transition: transform 0.3s ease-out;
+  will-change: transform;
+}
+
+.carousel-track img {
+  width: 400px;
+  height: 300px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border-radius: 10px;
+  margin-right: 10px;
+}
+
 
 .carousel-item {
   position: relative;
@@ -998,5 +1016,32 @@ nav.open {
 #phone-number {
   order: 2;               /* siempre después del código */
   flex: 1 1 auto;         
+}
+
+/* Flecha flotante en móviles */
+.mobile-arrow {
+  position: absolute;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  font-size: 2.2rem;
+  cursor: pointer;
+  color: var(--gold);
+  animation: bounce 1.2s infinite;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 20;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translate(-50%, 0); }
+  50% { transform: translate(-50%, -10px); }
+}
+
+/* Solo en móviles */
+@media (max-width: 768px) {
+  .mobile-arrow {
+    opacity: 1;
+  }
 }
 

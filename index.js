@@ -213,5 +213,80 @@ window.addEventListener('resize', () => {
   }
 });
 
+document.addEventListener("DOMContentLoaded", () => {
+  const arrow = document.getElementById("mobile-arrow");
+
+  if (arrow) {
+    // Ocultar después de 6 segundos
+    setTimeout(() => {
+      arrow.style.opacity = "0";
+    }, 6000);
+
+    // Click → scroll a la sección contador
+    arrow.addEventListener("click", () => {
+      document.getElementById("contador")?.scrollIntoView({ behavior: "smooth" });
+    });
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const track = document.querySelector(".carousel-track");
+  const items = document.querySelectorAll(".carousel-item");
+
+  let position = 0;
+  let direction = -1; // -1 = izquierda, 1 = derecha
+  let speed = 1; // píxeles por frame
+  let isPaused = false;
+  let startX = 0;
+  let endX = 0;
+
+  // Animación manual con requestAnimationFrame
+  function animate() {
+    if (!isPaused) {
+      position += direction * speed;
+
+      // ancho total de un item (incluye margin)
+      const itemWidth = items[0].offsetWidth + 10;
+      const totalWidth = itemWidth * items.length;
+
+      // Reseteo tipo carrusel infinito
+      if (direction === -1 && Math.abs(position) >= itemWidth) {
+        track.appendChild(track.firstElementChild);
+        position += itemWidth;
+      } else if (direction === 1 && position >= 0) {
+        track.prepend(track.lastElementChild);
+        position -= itemWidth;
+      }
+
+      track.style.transform = `translateX(${position}px)`;
+    }
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+
+  // Click en imagen → pausa/reanuda
+  items.forEach(item => {
+    item.addEventListener("click", () => {
+      isPaused = !isPaused;
+    });
+  });
+
+  // Swipe en móviles → cambia dirección
+  track.addEventListener("touchstart", e => {
+    startX = e.touches[0].clientX;
+  });
+
+  track.addEventListener("touchend", e => {
+    endX = e.changedTouches[0].clientX;
+    if (startX - endX > 50) {
+      // deslizó a la izquierda
+      direction = -1;
+    } else if (endX - startX > 50) {
+      // deslizó a la derecha
+      direction = 1;
+    }
+  });
+});
 
 
