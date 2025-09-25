@@ -236,19 +236,18 @@ document.addEventListener("DOMContentLoaded", () => {
   let position = 0;
   let direction = -1; // -1 = izquierda, 1 = derecha
   let speed = 1;
-  let isPaused = false;
   let startX = 0;
   let endX = 0;
   let isSwiping = false;
 
   function animate() {
-    if (!isPaused && !isSwiping) {
+    if (!isSwiping) {
       position += direction * speed;
 
       const itemWidth = items[0].offsetWidth + 10;
 
       if (direction === -1 && Math.abs(position) >= itemWidth) {
-        track.style.transition = "none"; // sin transición en auto scroll
+        track.style.transition = "none"; 
         track.appendChild(track.firstElementChild);
         position += itemWidth;
         track.style.transform = `translateX(${position}px)`;
@@ -268,16 +267,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
   requestAnimationFrame(animate);
 
-  // Click en track → pausa/reanuda
-  track.addEventListener("click", () => {
-    isPaused = !isPaused;
-  });
-
   // Swipe en móviles
   track.addEventListener("touchstart", e => {
     startX = e.touches[0].clientX;
     isSwiping = true;
-    track.style.transition = "transform 0.3s ease-out"; // activa transición solo para swipe
+    track.style.transition = "transform 0.3s ease-out";
   });
 
   track.addEventListener("touchend", e => {
@@ -288,10 +282,10 @@ document.addEventListener("DOMContentLoaded", () => {
       direction = 1;
     }
 
-    // después del swipe, volver a modo continuo sin transición
+    // volver al autoplay
     setTimeout(() => {
       isSwiping = false;
       track.style.transition = "none";
-    }, 300); // coincide con duración de la transición
+    }, 300);
   });
 });

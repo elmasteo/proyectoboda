@@ -418,6 +418,11 @@ input:focus, select:focus, textarea:focus {
   height: 300px;
   object-fit: cover;
   border-radius: 10px;
+  transition: transform 0.3s ease; /* transición suave */
+}
+
+.carousel-item img:hover {
+  transform: scale(1.05); /* zoom al pasar o pulsar */
 }
 
 .carousel-item .year {
