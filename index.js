@@ -231,11 +231,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   const track = document.querySelector(".carousel-track");
-  let items = document.querySelectorAll(".carousel-item"); // ojo: lo actualizamos después de mover nodos
+  let items = document.querySelectorAll(".carousel-item");
 
   let position = 0;
   let direction = -1; // -1 = izquierda, 1 = derecha
-  let speed = 1; // píxeles por frame
+  let speed = 1;
   let isPaused = false;
   let startX = 0;
   let endX = 0;
@@ -244,17 +244,35 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!isPaused) {
       position += direction * speed;
 
-      const itemWidth = items[0].offsetWidth + 10; // ancho + margen
+      const itemWidth = items[0].offsetWidth + 10;
 
       if (direction === -1 && Math.abs(position) >= itemWidth) {
-        // mueve el primero al final
+        // desactiva transición para evitar salto
+        track.style.transition = "none";
+
         track.appendChild(track.firstElementChild);
-        position = 0; // 🔥 resetea posición
+        position += itemWidth; // ajusta posición manteniendo continuidad
+
+        track.style.transform = `translateX(${position}px)`;
+
+        // reactivar transición después de reflow
+        requestAnimationFrame(() => {
+          track.style.transition = "transform 0.3s linear";
+        });
+
         items = document.querySelectorAll(".carousel-item");
       } else if (direction === 1 && position > 0) {
-        // mueve el último al inicio
+        track.style.transition = "none";
+
         track.prepend(track.lastElementChild);
-        position = -itemWidth; // 🔥 evita salto
+        position -= itemWidth;
+
+        track.style.transform = `translateX(${position}px)`;
+
+        requestAnimationFrame(() => {
+          track.style.transition = "transform 0.3s linear";
+        });
+
         items = document.querySelectorAll(".carousel-item");
       }
 
@@ -265,7 +283,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   requestAnimationFrame(animate);
 
-  // Click en imagen → pausa/reanuda
+  // Click en track → pausa/reanuda
   track.addEventListener("click", () => {
     isPaused = !isPaused;
   });
