@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 document.addEventListener("DOMContentLoaded", () => {
   const track = document.querySelector(".carousel-track");
-  const items = document.querySelectorAll(".carousel-item");
+  let items = document.querySelectorAll(".carousel-item"); // ojo: lo actualizamos después de mover nodos
 
   let position = 0;
   let direction = -1; // -1 = izquierda, 1 = derecha
@@ -240,22 +240,22 @@ document.addEventListener("DOMContentLoaded", () => {
   let startX = 0;
   let endX = 0;
 
-  // Animación manual con requestAnimationFrame
   function animate() {
     if (!isPaused) {
       position += direction * speed;
 
-      // ancho total de un item (incluye margin)
-      const itemWidth = items[0].offsetWidth + 10;
-      const totalWidth = itemWidth * items.length;
+      const itemWidth = items[0].offsetWidth + 10; // ancho + margen
 
-      // Reseteo tipo carrusel infinito
       if (direction === -1 && Math.abs(position) >= itemWidth) {
+        // mueve el primero al final
         track.appendChild(track.firstElementChild);
-        position += itemWidth;
-      } else if (direction === 1 && position >= 0) {
+        position = 0; // 🔥 resetea posición
+        items = document.querySelectorAll(".carousel-item");
+      } else if (direction === 1 && position > 0) {
+        // mueve el último al inicio
         track.prepend(track.lastElementChild);
-        position -= itemWidth;
+        position = -itemWidth; // 🔥 evita salto
+        items = document.querySelectorAll(".carousel-item");
       }
 
       track.style.transform = `translateX(${position}px)`;
@@ -266,10 +266,8 @@ document.addEventListener("DOMContentLoaded", () => {
   requestAnimationFrame(animate);
 
   // Click en imagen → pausa/reanuda
-  items.forEach(item => {
-    item.addEventListener("click", () => {
-      isPaused = !isPaused;
-    });
+  track.addEventListener("click", () => {
+    isPaused = !isPaused;
   });
 
   // Swipe en móviles → cambia dirección
@@ -280,13 +278,9 @@ document.addEventListener("DOMContentLoaded", () => {
   track.addEventListener("touchend", e => {
     endX = e.changedTouches[0].clientX;
     if (startX - endX > 50) {
-      // deslizó a la izquierda
       direction = -1;
     } else if (endX - startX > 50) {
-      // deslizó a la derecha
       direction = 1;
     }
   });
 });
-
-
