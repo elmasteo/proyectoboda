@@ -286,6 +286,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       isSwiping = false;
       track.style.transition = "none";
-    }, 300);
+    }, 1000);
   });
 });
