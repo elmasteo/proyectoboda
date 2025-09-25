@@ -1021,7 +1021,7 @@ nav.open {
 /* Flecha flotante en móviles */
 .mobile-arrow {
   position: absolute;
-  left: 80%;
+  left: 90%;
   bottom: 20px;
   transform: translateX(-50%);
   font-size: 2.2rem;
