@@ -180,9 +180,9 @@ phoneCountry?.addEventListener('change', ()=>{
   phoneError.style.display = isValid ? 'none' : 'inline';
 });
 
-rsvpForm?.addEventListener('submit', async (e)=>{
+rsvpForm?.addEventListener('submit', async (e) => {
   e.preventDefault();
-  
+
   const country = phoneCountry.value;
   const number = phoneNumber.value.replace(/\D/g,'');
   if(!validatePhone(country, number)){
@@ -190,12 +190,12 @@ rsvpForm?.addEventListener('submit', async (e)=>{
     phoneNumber.focus();
     return;
   }
-  
+
   rsvpStatus.textContent = 'Enviando…';
   const formData = Object.fromEntries(new FormData(rsvpForm).entries());
   formData.phone = `${country}${number}`;
-  
-  try{
+
+  try {
     const res = await fetch(CONFIG.API_RSVP, {
       method:'POST',
       headers:{'Content-Type':'application/json'},
@@ -204,10 +204,27 @@ rsvpForm?.addEventListener('submit', async (e)=>{
     if(!res.ok) throw new Error(await res.text() || 'Error servidor');
     const body = await res.json();
     if(!body.ok) throw new Error(body.message || 'No OK');
+
+    // --- reset del form ---
     rsvpForm.reset();
     phoneError.style.display = 'none';
     rsvpStatus.textContent = '¡Recibido! Te llegará una confirmación por WhatsApp.';
-  }catch(err){
+
+    // restaurar estado inicial acompañantes
+    const guestFields = document.getElementById('guest-fields');
+    const guestsWrapper = document.getElementById('guests-wrapper');
+    guestFields.innerHTML = '';
+    guestsWrapper.style.display = 'none';
+
+    // restaurar select de asistencia vacío
+    const attendanceSelect = rsvpForm.querySelector("select[name='attendance']");
+    if (attendanceSelect) attendanceSelect.value = "";
+
+    // reset detalle dietario
+    const dietaryWrapper = document.getElementById('dietary-details-wrapper');
+    if (dietaryWrapper) dietaryWrapper.style.display = 'none';
+
+  } catch(err) {
     console.error(err);
     rsvpStatus.textContent = 'Error enviando Confirmación. Intenta de nuevo.';
   }
