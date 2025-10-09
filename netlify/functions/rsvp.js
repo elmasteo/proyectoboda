@@ -12,8 +12,13 @@ exports.handler = async (event) => {
     const name = (payload.name || '').trim();
     const phone = (payload.phone || '').trim();
     const attendance = (payload.attendance || '').trim();
-    const guests = Number(payload.guests) || 0;
     const message = (payload.message || '').trim();
+    const guests = [];
+    Object.keys(payload).forEach(k => {
+      if (k.startsWith("guest_")) guests.push(payload[k]);
+    });
+    const dietary = payload.dietary || "No";
+    const dietaryDetails = payload.dietary_details || "";
 
     if (!name || !phone || !attendance) {
       return { statusCode: 400, body: 'Campos requeridos: name, phone, attendance' };
@@ -30,10 +35,13 @@ exports.handler = async (event) => {
     const text = `👋 Hola ${name},
 
     Hemos registrado tu confirmación: "${attendance}".
-    Número de acompañantes: ${guests}.
+
+    Acompañantes: ${guests.length ? guests.join(", ") : "Ninguno"}.
+    Restricción alimenticia: ${dietary}${dietary === "Sí" ? ` (${dietaryDetails})` : ""}.
     ${message ? 'Mensaje adicional: ' + message : ''}
 
     Gracias por informarnos. ¡Nos alegra que formes parte de este día especial, de la manera que sea! 💛`;
+
 
     const waRes = await fetch(WHATSAPP_ENDPOINT, {
       method: 'POST',
@@ -84,7 +92,16 @@ exports.handler = async (event) => {
     }
 
     // Agregar nuevo RSVP
-    existing.push({ name, phone, attendance, guests, message, created_at: new Date().toISOString() });
+    existing.push({
+      name,
+      phone,
+      attendance,
+      guests, // array de nombres
+      dietary,
+      dietaryDetails,
+      message,
+      created_at: new Date().toISOString()
+    });
 
     // Subir archivo actualizado
     const putRes = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`, {

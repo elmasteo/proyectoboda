@@ -402,9 +402,24 @@
               <option value="Tal vez">Tal vez</option>
             </select>
           </label>
-          <label>Número de acompañantes
-            <input name="guests" type="number" min="0" max="8" value="0" />
+          <div id="guests-wrapper" class="grid-1">
+            <label>Acompañantes</label>
+            <div id="guest-fields"></div>
+            <button type="button" id="addGuestBtn" class="btn btn-sm">Agregar acompañante</button>
+          </div>
+          <label>¿Tienes alguna restricción alimenticia?
+            <select id="dietary-select" name="dietary" required>
+              <option value="">Selecciona…</option>
+              <option value="No">No</option>
+              <option value="Sí">Sí</option>
+            </select>
           </label>
+
+          <div id="dietary-details-wrapper" style="display:none;">
+            <label>Especifica tu restricción
+              <input type="text" name="dietary_details" placeholder="Ej: Vegetariano, Sin gluten..." />
+            </label>
+          </div>
         </div>
         <label>Mensaje (opcional)
           <textarea name="message" rows="3" placeholder="Alguna nota especial"></textarea>

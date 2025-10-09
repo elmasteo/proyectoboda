@@ -1,3 +1,41 @@
+//Restricción por # de acompañantes
+const urlParams = new URLSearchParams(window.location.search);
+const maxGuests = parseInt(urlParams.get("max")) || 1; // default 1
+
+//Captura de acompañantes
+const guestFields = document.getElementById("guest-fields");
+const addGuestBtn = document.getElementById("addGuestBtn");
+
+let guestCount = 0;
+const urlParams = new URLSearchParams(window.location.search);
+const maxGuests = parseInt(urlParams.get("max")) || 1;
+
+addGuestBtn.addEventListener("click", () => {
+  if (guestCount >= maxGuests) return alert(`Solo puedes agregar hasta ${maxGuests} acompañantes`);
+  
+  guestCount++;
+  const div = document.createElement("div");
+  div.className = "guest-input";
+  div.innerHTML = `
+    <input name="guest_${guestCount}" required placeholder="Nombre y Apellido del acompañante ${guestCount}" />
+  `;
+  guestFields.appendChild(div);
+});
+
+//Restricciones alimenticias
+const dietarySelect = document.getElementById("dietary-select");
+const dietaryWrapper = document.getElementById("dietary-details-wrapper");
+
+dietarySelect.addEventListener("change", () => {
+  if (dietarySelect.value === "Sí") {
+    dietaryWrapper.style.display = "block";
+    dietaryWrapper.querySelector("input").setAttribute("required", "true");
+  } else {
+    dietaryWrapper.style.display = "none";
+    dietaryWrapper.querySelector("input").removeAttribute("required");
+  }
+});
+
 // Animaciones con IntersectionObserver
 const io = new IntersectionObserver((entries)=>{
   entries.forEach(el=>{
