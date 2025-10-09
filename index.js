@@ -7,8 +7,6 @@ const guestFields = document.getElementById("guest-fields");
 const addGuestBtn = document.getElementById("addGuestBtn");
 
 let guestCount = 0;
-const urlParams = new URLSearchParams(window.location.search);
-const maxGuests = parseInt(urlParams.get("max")) || 1;
 
 addGuestBtn.addEventListener("click", () => {
   if (guestCount >= maxGuests) return alert(`Solo puedes agregar hasta ${maxGuests} acompañantes`);
