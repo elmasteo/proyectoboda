@@ -1,13 +1,27 @@
-//Restricción por # de acompañantes
+// Restricción por # de acompañantes
 const urlParams = new URLSearchParams(window.location.search);
 const maxGuests = parseInt(urlParams.get("max")) || 1; // default 1
 
-//Captura de acompañantes
+// Captura de acompañantes
 const guestFields = document.getElementById("guest-fields");
 const addGuestBtn = document.getElementById("addGuestBtn");
+const guestsWrapper = document.getElementById("guests-wrapper");
+const attendanceSelect = document.querySelector("select[name='attendance']");
 
 let guestCount = 0;
 
+// Mostrar/ocultar acompañantes según asistencia
+attendanceSelect.addEventListener("change", () => {
+  if (attendanceSelect.value === "Sí") {
+    guestsWrapper.style.display = "flex";
+  } else {
+    guestsWrapper.style.display = "none";
+    guestFields.innerHTML = "";
+    guestCount = 0;
+  }
+});
+
+// Agregar acompañantes
 addGuestBtn.addEventListener("click", () => {
   if (guestCount >= maxGuests) return alert(`Solo puedes agregar hasta ${maxGuests} acompañantes`);
   
@@ -16,11 +30,18 @@ addGuestBtn.addEventListener("click", () => {
   div.className = "guest-input";
   div.innerHTML = `
     <input name="guest_${guestCount}" required placeholder="Nombre y Apellido del acompañante ${guestCount}" />
+    <button type="button" class="removeGuestBtn">✕</button>
   `;
   guestFields.appendChild(div);
+
+  // Eliminar acompañante
+  div.querySelector(".removeGuestBtn").addEventListener("click", () => {
+    div.remove();
+    guestCount--;
+  });
 });
 
-//Restricciones alimenticias
+// Restricciones alimenticias
 const dietarySelect = document.getElementById("dietary-select");
 const dietaryWrapper = document.getElementById("dietary-details-wrapper");
 

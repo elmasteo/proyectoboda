@@ -1050,39 +1050,55 @@ nav.open {
   }
 }
 
-/* Ajusta el contenedor de acompañantes */
+/* Contenedor de acompañantes */
 .guests-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem; /* separación uniforme */
-  grid-column: 1 / -1; /* ocupa todo el ancho en grid */
+  gap: 0.75rem;
+  grid-column: 1 / -1;
 }
 
-/* Campos de acompañantes */
-#guest-fields label {
-  display: block;
-  width: 100%;
+/* Estilo de los campos acompañantes con botón X */
+.guest-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-#guest-fields input {
-  width: 100%;
-  margin-bottom: 0.5rem;
+.guest-input input {
+  flex: 1;
 }
 
-/* Botón Agregar acompañante */
-#addGuestBtn {
-  align-self: flex-start; /* se queda alineado a la izquierda */
-  margin-top: 0.25rem;
-  padding: 0.6rem 1.2rem;
-  border-radius: 12px;
-  background: var(--gold);
-  color: #fff;
-  font-weight: 500;
+.guest-input button {
+  background: none;
   border: none;
+  color: #d9534f; /* rojo sutil */
+  font-size: 1.2rem;
   cursor: pointer;
-  transition: background 0.3s ease;
+  padding: 0 0.4rem;
+  border-radius: 50%;
+  transition: background 0.2s ease;
 }
 
-#addGuestBtn:hover {
-  background: #bfa046; /* un dorado más oscuro */
+.guest-input button:hover {
+  background: rgba(217, 83, 79, 0.1);
 }
+
+/* Estilo del botón agregar acompañante */
+#addGuestBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .7rem 1rem;
+  border-radius: 999px;
+  border: 1px solid rgba(0,0,0,.1);
+  cursor: pointer;
+  transition: transform .15s ease, box-shadow .2s ease;
+  background: linear-gradient(90deg, var(--gold), var(--gold-2));
+  color: #2b2b2b;
+  font-weight: 500;
+}
+
+#addGuestBtn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
+#addGuestBtn:active { transform: translateY(0); }
