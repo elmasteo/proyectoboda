@@ -1050,3 +1050,39 @@ nav.open {
   }
 }
 
+/* Ajusta el contenedor de acompañantes */
+.guests-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* separación uniforme */
+  grid-column: 1 / -1; /* ocupa todo el ancho en grid */
+}
+
+/* Campos de acompañantes */
+#guest-fields label {
+  display: block;
+  width: 100%;
+}
+
+#guest-fields input {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+/* Botón Agregar acompañante */
+#addGuestBtn {
+  align-self: flex-start; /* se queda alineado a la izquierda */
+  margin-top: 0.25rem;
+  padding: 0.6rem 1.2rem;
+  border-radius: 12px;
+  background: var(--gold);
+  color: #fff;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+#addGuestBtn:hover {
+  background: #bfa046; /* un dorado más oscuro */
+}
