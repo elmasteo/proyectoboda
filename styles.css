@@ -674,14 +674,10 @@ input:focus, select:focus, textarea:focus {
     left: 50%;
     transform: translateX(-50%);
   }
-  /*
+  */
   .timeline-item {
     grid-template-columns: 1fr 1fr; 
     gap: 0.2rem;
-  }*/
-
-  .timeline-item {
-    display: block;
   }
 
   .timeline-content {
