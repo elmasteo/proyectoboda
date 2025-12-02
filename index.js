@@ -303,6 +303,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+/*
 document.addEventListener("DOMContentLoaded", () => {
   const track = document.querySelector(".carousel-track");
   let items = document.querySelectorAll(".carousel-item");
@@ -363,3 +364,107 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1000);
   });
 });
+*/
+document.addEventListener("DOMContentLoaded", () => {
+  const track = document.querySelector(".carousel-track");
+  let items = document.querySelectorAll(".carousel-item");
+
+  let position = 0;
+  let direction = -1;
+  let speed = 1;
+  let isSwiping = false;
+
+  // ===========================
+  // FUNCIÓN QUE RECICLA ITEMS
+  // ===========================
+  function normalizePosition() {
+    const itemWidth = items[0].offsetWidth + 10;
+
+    // mover hacia la izquierda (position muy negativo)
+    while (Math.abs(position) >= itemWidth) {
+      track.appendChild(track.firstElementChild);
+      position += itemWidth;
+      items = document.querySelectorAll(".carousel-item");
+    }
+
+    // mover hacia la derecha (position muy positivo)
+    while (position > 0) {
+      track.prepend(track.lastElementChild);
+      position -= itemWidth;
+      items = document.querySelectorAll(".carousel-item");
+    }
+
+    track.style.transform = `translateX(${position}px)`;
+  }
+
+  // ===========================
+  // AUTOPLAY
+  // ===========================
+  function animate() {
+    if (!isSwiping) {
+      position += direction * speed;
+      normalizePosition();
+    }
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+
+  // ===========================
+  // SWIPE + INERCIA EN MÓVIL
+  // ===========================
+  const isMobile = window.innerWidth <= 768;
+
+  if (isMobile) {
+    let lastTouchX = 0;
+    let lastMoveTime = 0;
+    let velocity = 0;
+
+    track.addEventListener("touchstart", (e) => {
+      isSwiping = true;
+      track.style.transition = "none";
+
+      lastTouchX = e.touches[0].clientX;
+      lastMoveTime = Date.now();
+      velocity = 0;
+    });
+
+    track.addEventListener("touchmove", (e) => {
+      const currentX = e.touches[0].clientX;
+      const deltaX = currentX - lastTouchX;
+
+      position += deltaX;
+      normalizePosition();
+
+      const now = Date.now();
+      const dt = now - lastMoveTime;
+
+      if (dt > 0) velocity = deltaX / dt;
+
+      lastTouchX = currentX;
+      lastMoveTime = now;
+    });
+
+    track.addEventListener("touchend", () => {
+      isSwiping = false;
+
+      // ===========================
+      // INERCIA CON RECICLAJE
+      // ===========================
+      const friction = 0.95;
+
+      function inertia() {
+        if (Math.abs(velocity) < 0.01) return;
+
+        position += velocity * 40;
+        normalizePosition();
+
+        velocity *= friction;
+        requestAnimationFrame(inertia);
+      }
+
+      inertia();
+    });
+  }
+});
+
