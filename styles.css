@@ -1104,3 +1104,28 @@ nav.open {
 
 #addGuestBtn:hover { transform: translateY(-1px); box-shadow: var(--shadow); }
 #addGuestBtn:active { transform: translateY(0); }
+
+/* FIX exclusivo para iPhone / iOS */
+@supports (-webkit-touch-callout: none) {
+
+  .timeline-item {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+  }
+
+  .timeline-item.left > * {
+    grid-column: 1 !important;
+    justify-self: end !important;
+    text-align: right !important;
+  }
+
+  .timeline-item.right > * {
+    grid-column: 2 !important;
+    justify-self: start !important;
+    text-align: left !important;
+  }
+
+  .timeline-content {
+    width: 100% !important;
+  }
+}
