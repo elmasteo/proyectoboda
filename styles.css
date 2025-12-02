@@ -1,4 +1,4 @@
-/* Fuente decorativa para iniciales */
+ /* Fuente decorativa para iniciales */
 @import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Great+Vibes&display=swap');
 
 :root {
@@ -672,10 +672,14 @@ input:focus, select:focus, textarea:focus {
     left: 50%;
     transform: translateX(-50%);
   }
-
+  /*
   .timeline-item {
     grid-template-columns: 1fr 1fr; 
     gap: 0.2rem;
+  }*/
+
+  .timeline-item {
+    display: block;
   }
 
   .timeline-content {
