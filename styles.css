@@ -559,11 +559,15 @@ input:focus, select:focus, textarea:focus {
 
 /* cada fila: 2 columnas (izq / der) */
 .timeline-item {
-  position: relative;
-  /*
+  /*position: relative; 
   display: grid;
-  grid-template-columns: 1fr 1fr;*/
+  grid-template-columns: 1fr 1fr;
+  align-items: start;*/
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   align-items: start;
+  justify-items: center;
 }
 
 /* bolita / hit en el centro de la fila */
