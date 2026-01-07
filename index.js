@@ -302,3 +302,149 @@ musicBtn?.addEventListener('click', () => {
     musicIcon.src = "icons/play.png";
   }
 });
+
+const nav = document.querySelector('.nav nav');
+const hamburger = document.querySelector('.hamburger');
+
+// Abrir/cerrar menú en móvil
+hamburger?.addEventListener('click', () => {
+  const isOpen = nav.classList.toggle('active'); // activa/desactiva clase
+  hamburger.setAttribute('aria-expanded', String(isOpen));
+});
+
+// Cerrar menú automáticamente al pulsar un link en móvil
+document.querySelectorAll('.nav nav a').forEach(link => {
+  link.addEventListener('click', () => {
+    if (window.innerWidth <= 768) { // solo en móvil
+      nav.classList.remove('active');
+      hamburger.setAttribute('aria-expanded', "false");
+    }
+  });
+});
+
+// Asegurar que el menú esté visible en desktop si se cambia de tamaño
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768) {
+    nav.classList.remove('active'); // siempre visible en desktop
+    hamburger.setAttribute('aria-expanded', "false");
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const arrow = document.getElementById("mobile-arrow");
+
+  if (arrow) {
+    // Ocultar después de 6 segundos
+    setTimeout(() => {
+      arrow.style.opacity = "0";
+    }, 6000);
+
+    // Click → scroll a la sección contador
+    arrow.addEventListener("click", () => {
+      document.getElementById("contador")?.scrollIntoView({ behavior: "smooth" });
+    });
+  }
+});
+
+document.addEventListener("DOMContentLoaded", () => {
+  const track = document.querySelector(".carousel-track");
+  let items = document.querySelectorAll(".carousel-item");
+
+  let position = 0;
+  let direction = -1;
+  let speed = 1;
+  let isSwiping = false;
+
+  // ===========================
+  // FUNCIÓN QUE RECICLA ITEMS
+  // ===========================
+  function normalizePosition() {
+    const itemWidth = items[0].offsetWidth + 10;
+
+    // mover hacia la izquierda (position muy negativo)
+    while (Math.abs(position) >= itemWidth) {
+      track.appendChild(track.firstElementChild);
+      position += itemWidth;
+      items = document.querySelectorAll(".carousel-item");
+    }
+
+    // mover hacia la derecha (position muy positivo)
+    while (position > 0) {
+      track.prepend(track.lastElementChild);
+      position -= itemWidth;
+      items = document.querySelectorAll(".carousel-item");
+    }
+
+    track.style.transform = `translateX(${position}px)`;
+  }
+
+  // ===========================
+  // AUTOPLAY
+  // ===========================
+  function animate() {
+    if (!isSwiping) {
+      position += direction * speed;
+      normalizePosition();
+    }
+    requestAnimationFrame(animate);
+  }
+
+  requestAnimationFrame(animate);
+
+  // ===========================
+  // SWIPE + INERCIA EN MÓVIL
+  // ===========================
+  const isMobile = window.innerWidth <= 768;
+
+  if (isMobile) {
+    let lastTouchX = 0;
+    let lastMoveTime = 0;
+    let velocity = 0;
+
+    track.addEventListener("touchstart", (e) => {
+      isSwiping = true;
+      track.style.transition = "none";
+
+      lastTouchX = e.touches[0].clientX;
+      lastMoveTime = Date.now();
+      velocity = 0;
+    });
+
+    track.addEventListener("touchmove", (e) => {
+      const currentX = e.touches[0].clientX;
+      const deltaX = currentX - lastTouchX;
+
+      position += deltaX;
+      normalizePosition();
+
+      const now = Date.now();
+      const dt = now - lastMoveTime;
+
+      if (dt > 0) velocity = deltaX / dt;
+
+      lastTouchX = currentX;
+      lastMoveTime = now;
+    });
+
+    track.addEventListener("touchend", () => {
+      isSwiping = false;
+
+      // ===========================
+      // INERCIA CON RECICLAJE
+      // ===========================
+      const friction = 0.95;
+
+      function inertia() {
+        if (Math.abs(velocity) < 0.01) return;
+
+        position += velocity * 40;
+        normalizePosition();
+
+        velocity *= friction;
+        requestAnimationFrame(inertia);
+      }
+
+      inertia();
+    });
+  }
+});
