@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin RSVP</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .admin-wrapper{
+      max-width: 1100px;
+      margin: 40px auto;
+      padding: 16px;
+    }
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:20px;
+    }
+    th,td{
+      padding:12px 10px;
+      border-bottom:1px solid #eee;
+    }
+    th{
+      text-align:left;
+      color:var(--gold);
+      font-weight:600;
+    }
+    tr:hover{
+      background:#fff8ec;
+    }
+    .badge{
+      padding:4px 10px;
+      border-radius:20px;
+      font-size:.8rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="admin-wrapper">
+  <h1>Panel de Confirmaciones</h1>
+  <p>Total registros: <span id="total"></span></p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Teléfono</th>
+        <th>Asistencia</th>
+        <th>Acompañantes</th>
+        <th>Restricción</th>
+        <th>Mensaje</th>
+        <th>Fecha</th>
+      </tr>
+    </thead>
+    <tbody id="tbody"></tbody>
+  </table>
+</div>
+
+<script>
+let datos = [];
+
+async function init() {
+  const clave = await new Promise(resolve => {
+    const overlay = document.createElement("div");
+    overlay.style.position = "fixed";
+    overlay.style.inset = "0";
+    overlay.style.background = "rgba(0,0,0,.8)";
+    overlay.style.display = "flex";
+    overlay.style.flexDirection = "column";
+    overlay.style.justifyContent = "center";
+    overlay.style.alignItems = "center";
+    overlay.style.zIndex = 9999;
+
+    const input = document.createElement("input");
+    input.type = "password";
+    input.placeholder = "🔒 Ingresa tu clave";
+    input.style.padding = "12px";
+    input.style.fontSize = "16px";
+    input.style.marginBottom = "10px";
+    input.style.borderRadius = "8px";
+
+    const btn = document.createElement("button");
+    btn.textContent = "Acceder";
+    btn.onclick = () => {
+      const val = input.value;
+      document.body.removeChild(overlay);
+      resolve(val);
+    };
+
+    overlay.appendChild(input);
+    overlay.appendChild(btn);
+    document.body.appendChild(overlay);
+  });
+
+  // validar clave
+  const res = await fetch('/.netlify/functions/validarClave', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({ clave })
+  });
+
+  const { autorizado } = await res.json();
+  if (!autorizado){
+    document.body.innerHTML = "<h2 style='text-align:center;margin-top:20%'>🚫 Acceso denegado</h2>";
+    return;
+  }
+
+  // obtener RSVPs
+  const res2 = await fetch('/.netlify/functions/obtenerInvitados');
+  const { rsvps } = await res2.json();
+
+  datos = rsvps || [];
+  pintarTabla();
+}
+
+function pintarTabla(){
+  const tbody = document.getElementById('tbody');
+  const total = document.getElementById('total');
+  tbody.innerHTML = "";
+  total.textContent = datos.length;
+
+  datos.forEach(r => {
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+      <td>${r.name || ''}</td>
+      <td>${r.phone || ''}</td>
+      <td>${r.attendance}</td>
+      <td>${(r.guests||[]).join('<br>')}</td>
+      <td>${r.dietary === 'Sí' ? r.dietaryDetails : '—'}</td>
+      <td>${r.message || ''}</td>
+      <td>${new Date(r.created_at).toLocaleString()}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+init();
+</script>
+
+</body>
+</html>
