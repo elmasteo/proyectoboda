@@ -21,10 +21,11 @@ if (!hasValidInvite) {
       <p>Usa el enlace personalizado enviado para confirmar asistencia.</p>
     </div>
   `;
+  return;   // ← IMPORTANTE
 }
 
 // Mostrar/ocultar acompañantes según asistencia
-attendanceSelect.addEventListener("change", () => {
+attendanceSelect?.addEventListener("change", () => {
   if (attendanceSelect.value === "Sí") {
     guestsWrapper.style.display = "flex";
   } else {
