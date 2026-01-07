@@ -32,16 +32,33 @@ let guestCount = 0;
 // Solo ejecuta lógica del formulario si el enlace es válido
 if (hasValidInvite) {
 
-  // Mostrar/ocultar acompañantes según asistencia
-  attendanceSelect?.addEventListener("change", () => {
-    if (attendanceSelect.value === "Sí") {
-      guestsWrapper.style.display = "flex";
-    } else {
-      guestsWrapper.style.display = "none";
-      guestFields.innerHTML = "";
-      guestCount = 0;
-    }
-  });
+// ===============================
+attendanceSelect?.addEventListener("change", () => {
+
+  const attends = attendanceSelect.value === "Sí";
+
+  // Acompañantes
+  if (attends) {
+    guestsWrapper.style.display = "flex";
+  } else {
+    guestsWrapper.style.display = "none";
+    guestFields.innerHTML = "";
+    guestCount = 0;
+  }
+
+  // Restricción alimenticia (bloque completo)
+  const dietaryBlock = document.getElementById("dietary-block");
+
+  if (attends) {
+    dietaryBlock.style.display = "block";
+  } else {
+    dietaryBlock.style.display = "none";
+    dietarySelect.value = "";
+    dietaryWrapper.style.display = "none";
+    dietaryWrapper.querySelector("input")?.removeAttribute("required");
+  }
+});
+
 
   // Agregar acompañantes
   addGuestBtn?.addEventListener("click", () => {
