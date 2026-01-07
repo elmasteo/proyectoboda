@@ -21,53 +21,57 @@ if (!hasValidInvite) {
       <p>Usa el enlace personalizado enviado para confirmar asistencia.</p>
     </div>
   `;
-  return;   // ← IMPORTANTE
 }
 
-// Mostrar/ocultar acompañantes según asistencia
-attendanceSelect?.addEventListener("change", () => {
-  if (attendanceSelect.value === "Sí") {
-    guestsWrapper.style.display = "flex";
-  } else {
-    guestsWrapper.style.display = "none";
-    guestFields.innerHTML = "";
-    guestCount = 0;
-  }
-});
+if (hasValidInvite) {
 
-// Agregar acompañantes
-addGuestBtn.addEventListener("click", () => {
-  if (guestCount >= maxGuests) return alert(`Solo puedes agregar hasta ${maxGuests} acompañantes`);
-  
-  guestCount++;
-  const div = document.createElement("div");
-  div.className = "guest-input";
-  div.innerHTML = `
-    <input name="guest_${guestCount}" required placeholder="Nombre y Apellido del acompañante ${guestCount}" />
-    <button type="button" class="removeGuestBtn">✕</button>
-  `;
-  guestFields.appendChild(div);
-
-  // Eliminar acompañante
-  div.querySelector(".removeGuestBtn").addEventListener("click", () => {
-    div.remove();
-    guestCount--;
+  // Mostrar/ocultar acompañantes según asistencia
+  attendanceSelect?.addEventListener("change", () => {
+    if (attendanceSelect.value === "Sí") {
+      guestsWrapper.style.display = "flex";
+    } else {
+      guestsWrapper.style.display = "none";
+      guestFields.innerHTML = "";
+      guestCount = 0;
+    }
   });
-});
 
-// Restricciones alimenticias
-const dietarySelect = document.getElementById("dietary-select");
-const dietaryWrapper = document.getElementById("dietary-details-wrapper");
+  // Agregar acompañantes
+  addGuestBtn?.addEventListener("click", () => {
+    if (guestCount >= maxGuests) return alert(`Solo puedes agregar hasta ${maxGuests} acompañantes`);
+    guestCount++;
+    const div = document.createElement("div");
+    div.className = "guest-input";
+    div.innerHTML = `
+      <input name="guest_${guestCount}" required placeholder="Nombre y Apellido del acompañante ${guestCount}" />
+      <button type="button" class="removeGuestBtn">✕</button>
+    `;
+    guestFields.appendChild(div);
 
-dietarySelect.addEventListener("change", () => {
-  if (dietarySelect.value === "Sí") {
-    dietaryWrapper.style.display = "block";
-    dietaryWrapper.querySelector("input").setAttribute("required", "true");
-  } else {
-    dietaryWrapper.style.display = "none";
-    dietaryWrapper.querySelector("input").removeAttribute("required");
-  }
-});
+    div.querySelector(".removeGuestBtn").addEventListener("click", () => {
+      div.remove();
+      guestCount--;
+    });
+  });
+
+  // Restricciones alimenticias
+  dietarySelect?.addEventListener("change", () => {
+    if (dietarySelect.value === "Sí") {
+      dietaryWrapper.style.display = "block";
+      dietaryWrapper.querySelector("input").setAttribute("required", "true");
+    } else {
+      dietaryWrapper.style.display = "none";
+      dietaryWrapper.querySelector("input").removeAttribute("required");
+    }
+  });
+
+  // submit RSVP
+  rsvpForm?.addEventListener("submit", async (e) => {
+    // tu lógica actual…
+  });
+
+}
+
 
 // Animaciones con IntersectionObserver
 const io = new IntersectionObserver((entries)=>{
