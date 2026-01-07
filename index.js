@@ -1,6 +1,25 @@
 // Restricción por # de acompañantes
 const urlParams = new URLSearchParams(window.location.search);
-const maxGuests = parseInt(urlParams.get("max")) || 1; // default 1
+const maxGuestsParam = urlParams.get("max");
+const maxGuests = maxGuestsParam !== null ? parseInt(maxGuestsParam) : 0;
+const hasValidInvite = !isNaN(maxGuests) && maxGuests > 0;
+
+const rsvpSection = document.getElementById("rsvp");
+if (!hasValidInvite) {
+  rsvpSection.innerHTML = `
+    <div class="container">
+      <h2>Invitación no válida</h2>
+      <p>Usa el enlace personalizado enviado para confirmar asistencia.</p>
+    </div>
+  `;
+}
+
+
+if (!hasValidInvite) {
+  // deshabilita botón agregar acompañantes
+  addGuestBtn.disabled = true;
+  addGuestBtn.textContent = "Solo con invitación";
+}
 
 // Captura de acompañantes
 const guestFields = document.getElementById("guest-fields");
@@ -23,6 +42,7 @@ attendanceSelect.addEventListener("change", () => {
 
 // Agregar acompañantes
 addGuestBtn.addEventListener("click", () => {
+  if (!hasValidInvite) return alert("Solo puedes agregar acompañantes usando tu enlace de invitación");
   if (guestCount >= maxGuests) return alert(`Solo puedes agregar hasta ${maxGuests} acompañantes`);
   
   guestCount++;
@@ -182,6 +202,11 @@ phoneCountry?.addEventListener('change', ()=>{
 
 rsvpForm?.addEventListener('submit', async (e) => {
   e.preventDefault();
+
+   if (!hasValidInvite) {
+    rsvpStatus.textContent = "Este enlace no es válido para confirmar asistencia.";
+    return;
+  }
 
   const country = phoneCountry.value;
   const number = phoneNumber.value.replace(/\D/g,'');
