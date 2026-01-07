@@ -38,7 +38,7 @@ attendanceSelect?.addEventListener("change", () => {
   const attends = attendanceSelect.value === "Sí";
 
   // Acompañantes
-  if (attends) {
+  if (attends && maxGuests>0) {
     guestsWrapper.style.display = "flex";
   } else {
     guestsWrapper.style.display = "none";
