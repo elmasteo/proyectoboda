@@ -14,13 +14,6 @@ if (!hasValidInvite) {
   `;
 }
 
-
-if (!hasValidInvite) {
-  // deshabilita botón agregar acompañantes
-  addGuestBtn.disabled = true;
-  addGuestBtn.textContent = "Solo con invitación";
-}
-
 // Captura de acompañantes
 const guestFields = document.getElementById("guest-fields");
 const addGuestBtn = document.getElementById("addGuestBtn");
