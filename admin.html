@@ -32,6 +32,15 @@
       border-radius:20px;
       font-size:.8rem;
     }
+    tbody td {
+      vertical-align: top;
+    }
+
+    .badge{
+      display:inline-block;
+      border:1px solid #ddd;
+    }
+
   </style>
 </head>
 <body>
@@ -106,34 +115,44 @@ async function init() {
   }
 
   // obtener RSVPs
-  const res2 = await fetch('/.netlify/functions/obtenerInvitados');
-  const { rsvps } = await res2.json();
+const res2 = await fetch('/.netlify/functions/obtenerInvitados');
+const json = await res2.json();
 
-  datos = rsvps || [];
-  pintarTabla();
+// si devuelve arreglo directamente
+datos = Array.isArray(json) ? json : (json.rsvps || []);
+
+pintarTabla();
+
 }
 
 function pintarTabla(){
   const tbody = document.getElementById('tbody');
   const total = document.getElementById('total');
+
   tbody.innerHTML = "";
   total.textContent = datos.length;
 
   datos.forEach(r => {
     const tr = document.createElement('tr');
 
+    const asistencia = r.attendance === "Sí"
+      ? `<span class="badge" style="background:#e9f8ef">Asiste</span>`
+      : `<span class="badge" style="background:#fdeaea">No asiste</span>`;
+
     tr.innerHTML = `
-      <td>${r.name || ''}</td>
-      <td>${r.phone || ''}</td>
-      <td>${r.attendance}</td>
-      <td>${(r.guests||[]).join('<br>')}</td>
-      <td>${r.dietary === 'Sí' ? r.dietaryDetails : '—'}</td>
-      <td>${r.message || ''}</td>
-      <td>${new Date(r.created_at).toLocaleString()}</td>
+      <td>${r.name || '—'}</td>
+      <td>${r.phone || '—'}</td>
+      <td>${asistencia}</td>
+      <td>${(r.guests || []).join('<br>') || '—'}</td>
+      <td>${r.dietary === 'Sí' ? (r.dietaryDetails || '—') : '—'}</td>
+      <td>${r.message || '—'}</td>
+      <td>${r.created_at ? new Date(r.created_at).toLocaleString() : '—'}</td>
     `;
+
     tbody.appendChild(tr);
   });
 }
+
 
 init();
 </script>
