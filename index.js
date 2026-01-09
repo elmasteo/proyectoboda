@@ -3,8 +3,10 @@
 // ===============================
 const urlParams = new URLSearchParams(window.location.search);
 const maxGuestsParam = urlParams.get("max");
-const maxGuests = maxGuestsParam !== null ? parseInt(maxGuestsParam) : 0;
-const hasValidInvite = !isNaN(maxGuests) && maxGuests > 0;
+const maxGuests = maxGuestsParam !== null ? parseInt(maxGuestsParam) : null;
+const hasValidInvite = Number.isInteger(maxGuests) && maxGuests >= 0;
+const canHaveGuests = maxGuests > 0;
+
 const rsvpSection = document.getElementById("rsvp");
 
 // ===============================
@@ -34,11 +36,12 @@ if (hasValidInvite) {
 
 // ===============================
 attendanceSelect?.addEventListener("change", () => {
-
   const attends = attendanceSelect.value === "Sí";
 
-  // Acompañantes
-  if (attends && maxGuests>0) {
+  // ======================
+  // ACOMPAÑANTES
+  // ======================
+  if (attends && canHaveGuests) {
     guestsWrapper.style.display = "flex";
   } else {
     guestsWrapper.style.display = "none";
@@ -46,7 +49,9 @@ attendanceSelect?.addEventListener("change", () => {
     guestCount = 0;
   }
 
-  // Restricción alimenticia (bloque completo)
+  // ======================
+  // RESTRICCIÓN ALIMENTICIA
+  // ======================
   const dietaryBlock = document.getElementById("dietary-block");
 
   if (attends) {
@@ -58,6 +63,7 @@ attendanceSelect?.addEventListener("change", () => {
     dietaryWrapper.querySelector("input")?.removeAttribute("required");
   }
 });
+
 
 
   // Agregar acompañantes
