@@ -4,7 +4,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const maxGuestsParam = urlParams.get("max");
 const maxGuests = maxGuestsParam !== null ? parseInt(maxGuestsParam) : 0;
-const hasValidInvite = !isNaN(maxGuests) && maxGuests >= 0;
+const hasValidInvite = !isNaN(maxGuests) && maxGuests > 0;
 const rsvpSection = document.getElementById("rsvp");
 
 // ===============================
