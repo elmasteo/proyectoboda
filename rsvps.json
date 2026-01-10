@@ -68,5 +68,17 @@
     "dietaryDetails": "",
     "message": "Me baño ese día?",
     "created_at": "2026-01-10T02:00:21.272Z"
+  },
+  {
+    "name": "Omar Gonzalez",
+    "phone": "+573245459800",
+    "attendance": "Sí",
+    "guests": [
+      "Betty Gomez"
+    ],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "",
+    "created_at": "2026-01-10T02:25:28.151Z"
   }
 ]
