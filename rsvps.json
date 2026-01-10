@@ -58,5 +58,15 @@
     "dietaryDetails": "",
     "message": "Aprovechamos para desearles mucho amor mucha felicidad y mucha prosperidad.",
     "created_at": "2026-01-10T01:58:37.340Z"
+  },
+  {
+    "name": "jorge alberto gomez fernandez",
+    "phone": "+573153103595",
+    "attendance": "Sí",
+    "guests": [],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "Me baño ese día?",
+    "created_at": "2026-01-10T02:00:21.272Z"
   }
 ]
