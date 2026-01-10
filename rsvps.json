@@ -16,7 +16,7 @@
     "phone": "+573202600562",
     "attendance": "Sí",
     "guests": [
-      "José ALen Solano y Camilo solano"
+      "José ALen Solano"
     ],
     "dietary": "No",
     "dietaryDetails": "",
@@ -48,22 +48,10 @@
     "created_at": "2026-01-10T01:58:35.134Z"
   },
   {
-    "name": "Nelson E Garzón",
-    "phone": "+573212243009",
-    "attendance": "Sí",
-    "guests": [
-      "Alexandra Lugo"
-    ],
-    "dietary": "No",
-    "dietaryDetails": "",
-    "message": "Aprovechamos para desearles mucho amor mucha felicidad y mucha prosperidad.",
-    "created_at": "2026-01-10T01:58:37.340Z"
-  },
-  {
     "name": "jorge alberto gomez fernandez",
     "phone": "+573153103595",
     "attendance": "Sí",
-    "guests": [],
+    "guests": ["Ana Caicedo"],
     "dietary": "No",
     "dietaryDetails": "",
     "message": "Me baño ese día?",
