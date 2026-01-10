@@ -22,5 +22,17 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-01-10T01:44:44.385Z"
+  },
+  {
+    "name": "Mateo Gómez",
+    "phone": "+573178632828",
+    "attendance": "Sí",
+    "guests": [
+      "Luisa Murgas"
+    ],
+    "dietary": "Sí",
+    "dietaryDetails": "Cerdo",
+    "message": "",
+    "created_at": "2026-01-10T01:47:53.081Z"
   }
 ]
