@@ -918,18 +918,76 @@ input:focus, select:focus, textarea:focus {
   }
 }
 
-.map-link {
+.map-link{
+  position: relative;
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-top: 0.75rem;
+  gap: .6rem;
+  margin-top: .75rem;
   font-weight: 600;
   color: var(--gold);
   text-decoration: none;
-  font-size: 1rem;
-  transition: color .2s ease;
+  font-size: .95rem;
 }
-.map-link:hover { color: var(--fg); }
+
+/* Ícono */
+.map-icon{
+  width: 42px;
+  flex-shrink: 0;
+  transition: transform .25s ease;
+}
+
+/* Texto */
+.map-hint{
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity .25s ease, transform .25s ease;
+  white-space: nowrap;
+}
+
+/* Flecha */
+.arrow{
+  display: inline-block;
+  transition: transform .25s ease;
+}
+
+/* Desktop hover */
+@media (hover: hover) {
+  .map-link:hover .map-hint{
+    opacity: 1;
+    transform: translateX(0);
+  }
+
+  .map-link:hover .map-icon{
+    transform: scale(1.08);
+  }
+
+  .map-link:hover .arrow{
+    transform: translateX(4px);
+  }
+}
+
+/* =========================
+   MOBILE
+   ========================= */
+@media (max-width: 768px) {
+
+  .map-link{
+    gap: .4rem;
+  }
+
+  .map-hint{
+    opacity: 1;
+    transform: none;
+    font-size: .9rem;
+  }
+
+  /* Orden: icono → flecha → texto */
+  .map-icon{ order: 1; }
+  .arrow{ order: 2; margin: 0 .2rem; }
+  .map-hint{ order: 3; }
+}
+
 
 .music-icon {
   font-size: 2rem;
