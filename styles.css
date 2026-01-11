@@ -522,7 +522,7 @@ input:focus, select:focus, textarea:focus {
   margin-top: 1rem;
 }
 @media (max-width: 768px){
-  .hero__content h1 { font-size: 1.6rem; }
+  .hero__content h1 { font-size: 1.5rem; }
   .hero__content .subtitle { font-size: 1.5rem; }
   .hero__content .btn { font-size: 1.5rem; padding: 0.6rem 1rem; }
 }
