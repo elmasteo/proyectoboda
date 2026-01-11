@@ -1188,3 +1188,23 @@ nav.open {
     width: 100% !important;
   }
 }
+
+.palette {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.palette span {
+  width: 44px;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+@media (max-width: 480px) {
+  .palette span {
+    width: 36px;
+  }
+}
