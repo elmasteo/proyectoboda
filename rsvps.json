@@ -51,7 +51,9 @@
     "name": "jorge alberto gomez fernandez",
     "phone": "+573153103595",
     "attendance": "Sí",
-    "guests": ["Ana Caicedo"],
+    "guests": [
+      "Ana Caicedo"
+    ],
     "dietary": "No",
     "dietaryDetails": "",
     "message": "Me baño ese día?",
@@ -68,5 +70,15 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-01-10T02:25:28.151Z"
+  },
+  {
+    "name": "Yulieth Caterin Velasquez Pira",
+    "phone": "+573123072902",
+    "attendance": "Sí",
+    "guests": [],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "☺️",
+    "created_at": "2026-01-11T00:28:19.180Z"
   }
 ]
