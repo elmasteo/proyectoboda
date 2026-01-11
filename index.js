@@ -135,7 +135,7 @@ const CONFIG = {
 // Countdown
 // ===============================
 (function initCountdown(){
-  const target = new Date('2026-03-22T16:00:00'); 
+  const target = new Date('2026-03-22T17:00:00'); 
   const elDays = document.getElementById('cd-days');
   const elHours = document.getElementById('cd-hours');
   const elMins = document.getElementById('cd-mins');
