@@ -126,5 +126,17 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-01-12T23:15:30.942Z"
+  },
+  {
+    "name": "Mercedes Beltrán M",
+    "phone": "+573124806625",
+    "attendance": "Sí",
+    "guests": [
+      "Jhon Wilson Rojas P"
+    ],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "",
+    "created_at": "2026-01-12T23:20:22.237Z"
   }
 ]
