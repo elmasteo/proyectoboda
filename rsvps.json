@@ -94,5 +94,17 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-01-12T22:50:21.763Z"
+  },
+  {
+    "name": "Erika millan",
+    "phone": "+573204883268",
+    "attendance": "Sí",
+    "guests": [
+      "Brayam Rodríguez "
+    ],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "",
+    "created_at": "2026-01-12T22:50:23.983Z"
   }
 ]
