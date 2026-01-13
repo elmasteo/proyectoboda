@@ -172,5 +172,17 @@
     "dietaryDetails": "Vegetariana ",
     "message": "",
     "created_at": "2026-01-13T03:06:17.842Z"
+  },
+  {
+    "name": "Carolina Lopez",
+    "phone": "+573017837504",
+    "attendance": "Sí",
+    "guests": [
+      "Diego Andres Herrera"
+    ],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "",
+    "created_at": "2026-01-13T03:53:51.520Z"
   }
 ]
