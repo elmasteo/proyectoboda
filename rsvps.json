@@ -184,5 +184,17 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-01-13T03:53:51.520Z"
+  },
+  {
+    "name": "ANDRES FELIPE FLOREZ BELTRAN",
+    "phone": "+573134383273",
+    "attendance": "Sí",
+    "guests": [
+      "KARENT PAOLA VALDERRA GARCÍA "
+    ],
+    "dietary": "Sí",
+    "dietaryDetails": "Alergia a la pimienta ",
+    "message": "",
+    "created_at": "2026-01-13T04:55:16.701Z"
   }
 ]
