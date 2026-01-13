@@ -162,5 +162,15 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-01-13T03:05:03.836Z"
+  },
+  {
+    "name": "Julieth Tatiana Montaña Ruiz",
+    "phone": "+573177301126",
+    "attendance": "Sí",
+    "guests": [],
+    "dietary": "Sí",
+    "dietaryDetails": "Vegetariana ",
+    "message": "",
+    "created_at": "2026-01-13T03:06:17.842Z"
   }
 ]
