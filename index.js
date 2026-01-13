@@ -213,54 +213,34 @@ uploadBtn?.addEventListener('click', async ()=>{
   }
 });
 
-// ===============================
-// RSVP — envía al backend
-// ===============================
-const rsvpForm = document.getElementById('rsvpForm');
-const rsvpStatus = document.getElementById('rsvpStatus');
+const submitBtn = rsvpForm.querySelector('button[type="submit"]');
+const modal = document.getElementById('rsvpModal');
+const modalBtn = document.getElementById('rsvpModalBtn');
+const modalText = document.getElementById('rsvpModalText');
 
-const phoneCountry = document.getElementById('phone-country');
-const phoneNumber = document.getElementById('phone-number');
-const phoneError = document.getElementById('phone-error');
-
-function validatePhone(country, number) {
-  const clean = number.replace(/\D/g,''); 
-  if(country === '+57') return clean.length === 10;
-  if(country === '+1') return clean.length === 10;
-  return false;
-}
-
-phoneNumber?.addEventListener('input', ()=>{
-  if(phoneNumber.value.length > 10){
-    phoneNumber.value = phoneNumber.value.slice(0,10);
-  }
-  const isValid = validatePhone(phoneCountry.value, phoneNumber.value);
-  phoneError.style.display = isValid ? 'none' : 'inline';
-});
-
-phoneCountry?.addEventListener('change', ()=>{
-  const isValid = validatePhone(phoneCountry.value, phoneNumber.value);
-  phoneError.style.display = isValid ? 'none' : 'inline';
-});
+let sending = false;
 
 rsvpForm?.addEventListener('submit', async (e) => {
   e.preventDefault();
+  if (sending) return;
 
-  // Si no es invitación válida no se envía
-  if (!hasValidInvite) {
-    rsvpStatus.textContent = 'Este enlace no permite confirmar asistencia.';
-    return;
-  }
+  if (!hasValidInvite) return;
 
   const country = phoneCountry.value;
   const number = phoneNumber.value.replace(/\D/g,'');
-  if(!validatePhone(country, number)){
+
+  if (!validatePhone(country, number)) {
     phoneError.style.display = 'inline';
     phoneNumber.focus();
     return;
   }
 
-  rsvpStatus.textContent = 'Enviando…';
+  sending = true;
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Enviando…';
+
+  modal.classList.add('active');
+  modalText.textContent = 'Enviando confirmación…';
 
   const formData = Object.fromEntries(new FormData(rsvpForm).entries());
   formData.phone = `${country}${number}`;
@@ -272,22 +252,28 @@ rsvpForm?.addEventListener('submit', async (e) => {
       body: JSON.stringify(formData)
     });
 
-    if(!res.ok) throw new Error(await res.text() || 'Error servidor');
+    if (!res.ok) throw new Error();
+
+    modalText.textContent = 'Hemos enviado un mensaje vía WhatsApp';
 
     rsvpForm.reset();
     phoneError.style.display = 'none';
-    rsvpStatus.textContent = '¡Recibido! Te llegará una confirmación por WhatsApp.';
-
     guestFields.innerHTML = '';
     guestsWrapper.style.display = 'none';
-
     dietaryWrapper.style.display = 'none';
 
-  } catch(err) {
-    console.error(err);
-    rsvpStatus.textContent = 'Error enviando Confirmación. Intenta de nuevo.';
+  } catch {
+    modalText.textContent = 'Error enviando confirmación';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Enviar confirmación';
+    sending = false;
   }
 });
+
+modalBtn?.addEventListener('click', () => {
+  modal.classList.remove('active');
+});
+
 
 // ===============================
 // Música
