@@ -213,6 +213,36 @@ uploadBtn?.addEventListener('click', async ()=>{
   }
 });
 
+// ===============================
+// RSVP — envía al backend
+// ===============================
+const rsvpForm = document.getElementById('rsvpForm');
+const rsvpStatus = document.getElementById('rsvpStatus');
+
+const phoneCountry = document.getElementById('phone-country');
+const phoneNumber = document.getElementById('phone-number');
+const phoneError = document.getElementById('phone-error');
+
+function validatePhone(country, number) {
+  const clean = number.replace(/\D/g,''); 
+  if(country === '+57') return clean.length === 10;
+  if(country === '+1') return clean.length === 10;
+  return false;
+}
+
+phoneNumber?.addEventListener('input', ()=>{
+  if(phoneNumber.value.length > 10){
+    phoneNumber.value = phoneNumber.value.slice(0,10);
+  }
+  const isValid = validatePhone(phoneCountry.value, phoneNumber.value);
+  phoneError.style.display = isValid ? 'none' : 'inline';
+});
+
+phoneCountry?.addEventListener('change', ()=>{
+  const isValid = validatePhone(phoneCountry.value, phoneNumber.value);
+  phoneError.style.display = isValid ? 'none' : 'inline';
+});
+
 const submitBtn = rsvpForm.querySelector('button[type="submit"]');
 const modal = document.getElementById('rsvpModal');
 const modalBtn = document.getElementById('rsvpModalBtn');
