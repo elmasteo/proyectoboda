@@ -292,17 +292,31 @@ rsvpForm?.addEventListener('submit', async (e) => {
     guestsWrapper.style.display = 'none';
     dietaryWrapper.style.display = 'none';
 
+    // 🔹 restaurar botón
+    resetSubmitButton();
+
+    // 🔹 cerrar popup automático en 10s
+    setTimeout(() => {
+      modal.classList.remove('active');
+    }, 10000);
+
   } catch {
     modalText.textContent = 'Error enviando confirmación';
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Enviar confirmación';
+    resetSubmitButton();
     sending = false;
   }
+
 });
 
 modalBtn?.addEventListener('click', () => {
   modal.classList.remove('active');
+  resetSubmitButton();
 });
+
+function resetSubmitButton() {
+  submitBtn.disabled = false;
+  submitBtn.textContent = 'Enviar confirmación';
+}
 
 
 // ===============================
