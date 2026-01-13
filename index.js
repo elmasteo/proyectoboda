@@ -282,7 +282,12 @@ rsvpForm?.addEventListener('submit', async (e) => {
       body: JSON.stringify(formData)
     });
 
-    if (!res.ok) throw new Error();
+    const data = await res.json().catch(() => ({}));
+
+    if (!res.ok) {
+      // 👉 MENSAJE REAL DEL BACKEND
+      throw new Error(data.error || 'Error enviando confirmación');
+    }
 
     modalText.textContent = 'Hemos enviado un mensaje vía WhatsApp';
 
@@ -292,21 +297,21 @@ rsvpForm?.addEventListener('submit', async (e) => {
     guestsWrapper.style.display = 'none';
     dietaryWrapper.style.display = 'none';
 
-    // 🔹 restaurar botón
-    resetSubmitButton();
+  } catch (err) {
+    modalText.textContent = err.message;
+  } finally {
+    // 🔁 Restaurar botón
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Enviar confirmación';
+    sending = false;
 
-    // 🔹 cerrar popup automático en 10s
+    // ⏱️ Cerrar modal automáticamente en 10s
     setTimeout(() => {
       modal.classList.remove('active');
     }, 10000);
-
-  } catch {
-    modalText.textContent = 'Error enviando confirmación';
-    resetSubmitButton();
-    sending = false;
   }
-
 });
+
 
 modalBtn?.addEventListener('click', () => {
   modal.classList.remove('active');
