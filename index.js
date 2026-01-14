@@ -22,7 +22,7 @@ if (!hasValidInvite && rsvpSection) {
 }
 
 // ===============================
-// Captura de acompañantes (solo si hay formulario)
+// Captura de acompañantes
 // ===============================
 const guestFields = document.getElementById("guest-fields");
 const addGuestBtn = document.getElementById("addGuestBtn");
@@ -31,42 +31,32 @@ const attendanceSelect = document.querySelector("select[name='attendance']");
 
 let guestCount = 0;
 
-// Solo ejecuta lógica del formulario si el enlace es válido
 if (hasValidInvite) {
 
-// ===============================
-attendanceSelect?.addEventListener("change", () => {
-  const attends = attendanceSelect.value === "Sí";
+  attendanceSelect?.addEventListener("change", () => {
+    const attends = attendanceSelect.value === "Sí";
 
-  // ======================
-  // ACOMPAÑANTES
-  // ======================
-  if (attends && canHaveGuests) {
-    guestsWrapper.style.display = "flex";
-  } else {
-    guestsWrapper.style.display = "none";
-    guestFields.innerHTML = "";
-    guestCount = 0;
-  }
+    // Acompañantes
+    if (attends && canHaveGuests) {
+      guestsWrapper.style.display = "flex";
+    } else {
+      guestsWrapper.style.display = "none";
+      guestFields.innerHTML = "";
+      guestCount = 0;
+    }
 
-  // ======================
-  // RESTRICCIÓN ALIMENTICIA
-  // ======================
-  const dietaryBlock = document.getElementById("dietary-block");
+    // Restricción alimenticia
+    const dietaryBlock = document.getElementById("dietary-block");
+    if (attends) {
+      dietaryBlock.style.display = "block";
+    } else {
+      dietaryBlock.style.display = "none";
+      dietarySelect.value = "";
+      dietaryWrapper.style.display = "none";
+      dietaryWrapper.querySelector("input")?.removeAttribute("required");
+    }
+  });
 
-  if (attends) {
-    dietaryBlock.style.display = "block";
-  } else {
-    dietaryBlock.style.display = "none";
-    dietarySelect.value = "";
-    dietaryWrapper.style.display = "none";
-    dietaryWrapper.querySelector("input")?.removeAttribute("required");
-  }
-});
-
-
-
-  // Agregar acompañantes
   addGuestBtn?.addEventListener("click", () => {
     if (guestCount >= maxGuests) {
       alert(`Solo puedes agregar hasta ${maxGuests} acompañantes`);
@@ -83,8 +73,7 @@ attendanceSelect?.addEventListener("change", () => {
     `;
     guestFields.appendChild(div);
 
-    // Eliminar acompañante
-    div.querySelector(".removeGuestBtn").addEventListener("click", () => {
+    div.querySelector(".removeGuestBtn")?.addEventListener("click", () => {
       div.remove();
       guestCount--;
     });
@@ -108,7 +97,7 @@ dietarySelect?.addEventListener("change", () => {
 });
 
 // ===============================
-// Animaciones con IntersectionObserver
+// Animaciones
 // ===============================
 const io = new IntersectionObserver((entries)=>{
   entries.forEach(el=>{
@@ -140,6 +129,7 @@ const CONFIG = {
   const elHours = document.getElementById('cd-hours');
   const elMins = document.getElementById('cd-mins');
   const elSecs = document.getElementById('cd-secs');
+  if (!elDays || !elHours || !elMins || !elSecs) return;
 
   function tick(){
     const now = new Date();
@@ -169,160 +159,97 @@ document.querySelectorAll('a[href="#galeria"]').forEach(el=>{
 });
 
 // ===============================
-// Uploader Cloudinary
-// ===============================
-const input = document.getElementById('photoInput');
-const preview = document.getElementById('preview');
-const uploadBtn = document.getElementById('uploadBtn');
-const statusEl = document.getElementById('uploadStatus');
-
-input?.addEventListener('change', ()=>{
-  preview.innerHTML='';
-  [...input.files].forEach(file=>{
-    const url = URL.createObjectURL(file);
-    const img = new Image(); 
-    img.src=url; 
-    preview.appendChild(img);
-  });
-});
-
-uploadBtn?.addEventListener('click', async ()=>{
-  if(!input.files?.length){ 
-    statusEl.textContent = 'Selecciona al menos una foto.'; 
-    return; 
-  }
-
-  statusEl.textContent = 'Subiendo a Cloudinary…';
-  try{
-    for(const file of input.files){
-      const form = new FormData();
-      form.append('file', file);
-      form.append('upload_preset', CONFIG.CLOUDINARY_UPLOAD_PRESET);
-
-      const url = `https://api.cloudinary.com/v1_1/${CONFIG.CLOUDINARY_CLOUD_NAME}/upload`;
-      const res = await fetch(url, { method: 'POST', body: form });
-      if(!res.ok) throw new Error(`Cloudinary error ${res.status}`);
-      await res.json();
-    }
-    statusEl.textContent = '¡Listo! Fotos subidas.';
-    input.value = ''; 
-    preview.innerHTML='';
-  }catch(err){
-    console.error(err);
-    statusEl.textContent = 'Error subiendo fotos. Intenta de nuevo.';
-  }
-});
-
-// ===============================
-// RSVP — envía al backend
+// RSVP — frontend blindado
 // ===============================
 const rsvpForm = document.getElementById('rsvpForm');
 const rsvpStatus = document.getElementById('rsvpStatus');
 
-const phoneCountry = document.getElementById('phone-country');
-const phoneNumber = document.getElementById('phone-number');
-const phoneError = document.getElementById('phone-error');
+if (rsvpForm && hasValidInvite) {
 
-function validatePhone(country, number) {
-  const clean = number.replace(/\D/g,''); 
-  if(country === '+57') return clean.length === 10;
-  if(country === '+1') return clean.length === 10;
-  return false;
-}
+  const phoneCountry = document.getElementById('phone-country');
+  const phoneNumber = document.getElementById('phone-number');
+  const phoneError = document.getElementById('phone-error');
 
-phoneNumber?.addEventListener('input', ()=>{
-  if(phoneNumber.value.length > 10){
-    phoneNumber.value = phoneNumber.value.slice(0,10);
-  }
-  const isValid = validatePhone(phoneCountry.value, phoneNumber.value);
-  phoneError.style.display = isValid ? 'none' : 'inline';
-});
+  const submitBtn = rsvpForm.querySelector('button[type="submit"]');
+  const modal = document.getElementById('rsvpModal');
+  const modalBtn = document.getElementById('rsvpModalBtn');
+  const modalText = document.getElementById('rsvpModalText');
 
-phoneCountry?.addEventListener('change', ()=>{
-  const isValid = validatePhone(phoneCountry.value, phoneNumber.value);
-  phoneError.style.display = isValid ? 'none' : 'inline';
-});
-
-const submitBtn = rsvpForm.querySelector('button[type="submit"]');
-const modal = document.getElementById('rsvpModal');
-const modalBtn = document.getElementById('rsvpModalBtn');
-const modalText = document.getElementById('rsvpModalText');
-
-let sending = false;
-
-rsvpForm?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-  if (sending) return;
-
-  if (!hasValidInvite) return;
-
-  const country = phoneCountry.value;
-  const number = phoneNumber.value.replace(/\D/g,'');
-
-  if (!validatePhone(country, number)) {
-    phoneError.style.display = 'inline';
-    phoneNumber.focus();
-    return;
+  function validatePhone(country, number) {
+    const clean = number.replace(/\D/g,''); 
+    if(country === '+57') return clean.length === 10;
+    if(country === '+1') return clean.length === 10;
+    return false;
   }
 
-  sending = true;
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Enviando…';
+  phoneNumber?.addEventListener('input', ()=>{
+    if(phoneNumber.value.length > 10){
+      phoneNumber.value = phoneNumber.value.slice(0,10);
+    }
+    phoneError.style.display =
+      validatePhone(phoneCountry.value, phoneNumber.value) ? 'none' : 'inline';
+  });
 
-  modal.classList.add('active');
-  modalText.textContent = 'Enviando confirmación…';
+  phoneCountry?.addEventListener('change', ()=>{
+    phoneError.style.display =
+      validatePhone(phoneCountry.value, phoneNumber.value) ? 'none' : 'inline';
+  });
 
-  const formData = Object.fromEntries(new FormData(rsvpForm).entries());
-  formData.phone = `${country}${number}`;
+  let sending = false;
 
-  try {
-    const res = await fetch(CONFIG.API_RSVP, {
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body: JSON.stringify(formData)
-    });
+  rsvpForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (sending) return;
 
-    const data = await res.json().catch(() => ({}));
+    const country = phoneCountry.value;
+    const number = phoneNumber.value.replace(/\D/g,'');
 
-    if (!res.ok) {
-      // 👉 MENSAJE REAL DEL BACKEND
-      throw new Error(data.error || 'Error enviando confirmación');
+    if (!validatePhone(country, number)) {
+      phoneError.style.display = 'inline';
+      phoneNumber.focus();
+      return;
     }
 
-    modalText.textContent = 'Hemos enviado un mensaje vía WhatsApp';
+    sending = true;
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Enviando…';
 
-    rsvpForm.reset();
-    phoneError.style.display = 'none';
-    guestFields.innerHTML = '';
-    guestsWrapper.style.display = 'none';
-    dietaryWrapper.style.display = 'none';
+    modal?.classList.add('active');
+    if (modalText) modalText.textContent = 'Enviando confirmación…';
 
-  } catch (err) {
-    modalText.textContent = err.message;
-  } finally {
-    // 🔁 Restaurar botón
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Enviar confirmación';
-    sending = false;
+    const formData = Object.fromEntries(new FormData(rsvpForm).entries());
+    formData.phone = `${country}${number}`;
 
-    // ⏱️ Cerrar modal automáticamente en 10s
-    setTimeout(() => {
-      modal.classList.remove('active');
-    }, 10000);
-  }
-});
+    try {
+      const res = await fetch(CONFIG.API_RSVP, {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify(formData)
+      });
 
+      const data = await res.json().catch(()=>({}));
 
-modalBtn?.addEventListener('click', () => {
-  modal.classList.remove('active');
-  resetSubmitButton();
-});
+      if (!res.ok) throw new Error(data.error || 'Error enviando confirmación');
 
-function resetSubmitButton() {
-  submitBtn.disabled = false;
-  submitBtn.textContent = 'Enviar confirmación';
+      modalText.textContent = 'Hemos enviado un mensaje vía WhatsApp';
+      rsvpForm.reset();
+      guestFields.innerHTML = '';
+      guestsWrapper.style.display = 'none';
+      dietaryWrapper.style.display = 'none';
+
+    } catch (err) {
+      modalText.textContent = err.message;
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Enviar confirmación';
+      sending = false;
+
+      setTimeout(()=>modal?.classList.remove('active'), 10000);
+    }
+  });
+
+  modalBtn?.addEventListener('click', ()=>modal.classList.remove('active'));
 }
-
 
 // ===============================
 // Música
@@ -333,7 +260,6 @@ const bgMusic = document.getElementById('bg-music');
 
 musicBtn?.addEventListener('click', () => {
   if (!bgMusic) return;
-
   if (bgMusic.paused) {
     bgMusic.currentTime = 11;
     bgMusic.play();
