@@ -40,6 +40,47 @@
       display:inline-block;
       border:1px solid #ddd;
     }
+    .badge.ok { background:#e9f8ef; }
+.badge.no { background:#fdeaea; }
+
+@media (max-width: 768px) {
+  table, thead, tbody, th, tr {
+    display: block;
+  }
+
+  thead {
+    display: none;
+  }
+
+  tr {
+    background: #fff;
+    margin-bottom: 16px;
+    border-radius: 12px;
+    padding: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,.05);
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    border: none;
+    font-size: 14px;
+  }
+
+  td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #777;
+    margin-right: 12px;
+    flex-shrink: 0;
+  }
+
+  td:last-child {
+    padding-bottom: 0;
+  }
+}
+
 
   </style>
 </head>
@@ -47,7 +88,11 @@
 
 <div class="admin-wrapper">
   <h1>Panel de Confirmaciones</h1>
-  <p>Total registros: <span id="total"></span></p>
+  <p>
+  Total registros: <span id="total-registros"></span><br>
+  Total invitados: <strong><span id="total-invitados"></span></strong>
+</p>
+
 
   <table>
     <thead>
@@ -127,31 +172,43 @@ pintarTabla();
 
 function pintarTabla(){
   const tbody = document.getElementById('tbody');
-  const total = document.getElementById('total');
+  const totalRegistros = document.getElementById('total-registros');
+  const totalInvitados = document.getElementById('total-invitados');
 
   tbody.innerHTML = "";
-  total.textContent = datos.length;
+
+  let invitados = 0;
 
   datos.forEach(r => {
+    // 👉 cuenta solo los que asisten
+    if (r.attendance === "Sí") {
+      invitados += 1; // titular
+      invitados += (r.guests || []).length; // acompañantes
+    }
+
     const tr = document.createElement('tr');
 
     const asistencia = r.attendance === "Sí"
-      ? `<span class="badge" style="background:#e9f8ef">Asiste</span>`
-      : `<span class="badge" style="background:#fdeaea">No asiste</span>`;
+      ? `<span class="badge ok">Asiste</span>`
+      : `<span class="badge no">No asiste</span>`;
 
     tr.innerHTML = `
-      <td>${r.name || '—'}</td>
-      <td>${r.phone || '—'}</td>
-      <td>${asistencia}</td>
-      <td>${(r.guests || []).join('<br>') || '—'}</td>
-      <td>${r.dietary === 'Sí' ? (r.dietaryDetails || '—') : '—'}</td>
-      <td>${r.message || '—'}</td>
-      <td>${r.created_at ? new Date(r.created_at).toLocaleString() : '—'}</td>
+      <td data-label="Nombre">${r.name || '—'}</td>
+      <td data-label="Teléfono">${r.phone || '—'}</td>
+      <td data-label="Asistencia">${asistencia}</td>
+      <td data-label="Acompañantes">${(r.guests || []).join('<br>') || '—'}</td>
+      <td data-label="Restricción">${r.dietary === 'Sí' ? (r.dietaryDetails || '—') : '—'}</td>
+      <td data-label="Mensaje">${r.message || '—'}</td>
+      <td data-label="Fecha">${r.created_at ? new Date(r.created_at).toLocaleString() : '—'}</td>
     `;
 
     tbody.appendChild(tr);
   });
+
+  totalRegistros.textContent = datos.length;
+  totalInvitados.textContent = invitados;
 }
+
 
 
 init();
