@@ -1,130 +1,148 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Admin RSVP</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" type="text/css" href="styles.css">
-  <style>
-    body { font-family: system-ui, sans-serif; }
+<meta charset="UTF-8">
+<title>Admin RSVP</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    .admin-wrapper{
-      max-width:1100px;
-      margin:40px auto;
-      padding:16px;
-    }
+<style>
+body{
+  font-family: system-ui, sans-serif;
+  background:#fafafa;
+}
 
-    h1 { margin-bottom: 8px; }
+.admin-wrapper{
+  max-width:1100px;
+  margin:40px auto;
+  padding:16px;
+}
 
-    .controls{
-      display:flex;
-      flex-wrap:wrap;
-      gap:8px;
-      margin:12px 0;
-    }
+h1{ margin-bottom:6px; }
 
-    .controls input{
-      flex:1;
-      padding:10px;
-      font-size:15px;
-    }
+.stats{
+  margin-bottom:16px;
+}
 
-    .controls button{
-      padding:10px 14px;
-      cursor:pointer;
-    }
+.controls{
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+  margin-bottom:16px;
+}
 
-    table{
-      width:100%;
-      border-collapse:collapse;
-      margin-top:16px;
-    }
+.controls input{
+  flex:1;
+  min-width:220px;
+  padding:10px;
+  font-size:15px;
+}
 
-    th,td{
-      padding:12px 10px;
-      border-bottom:1px solid #eee;
-      vertical-align:top;
-    }
+.actions{
+  display:flex;
+  gap:10px;
+}
 
-    th{
-      text-align:left;
-      font-weight:600;
-    }
+.actions button{
+  padding:10px 14px;
+  cursor:pointer;
+  border-radius:8px;
+  border:1px solid #ccc;
+  background:#fff;
+}
 
-    .badge{
-      display:inline-block;
-      padding:6px 12px;
-      border-radius:20px;
-      font-size:.85rem;
-      border:1px solid #ddd;
-    }
+.summary{
+  margin-bottom:20px;
+  padding:12px;
+  background:#fff;
+  border-radius:10px;
+  box-shadow:0 2px 6px rgba(0,0,0,.05);
+  font-size:14px;
+}
 
-    .badge.ok{ background:#e9f8ef; }
-    .badge.no{ background:#fdeaea; }
+table{
+  width:100%;
+  border-collapse:collapse;
+}
 
-    .summary{
-      margin-top:12px;
-      font-size:14px;
-    }
+th,td{
+  padding:12px 10px;
+  border-bottom:1px solid #eee;
+  vertical-align:top;
+}
 
-    /* ===== MOBILE / CARDS ===== */
-    body.cards-only thead { display:none; }
+th{ text-align:left; }
 
-    @media (max-width:768px), body.cards-only {
+.badge{
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:.85rem;
+  border:1px solid #ddd;
+}
 
-      .admin-wrapper{
-        margin:0;
-        padding:12px;
-      }
+.badge.ok{ background:#e9f8ef; }
+.badge.no{ background:#fdeaea; }
 
-      table, thead, tbody, th, tr{
-        display:block;
-      }
+/* ===== CARDS ===== */
+body.cards-only thead{ display:none; }
 
-      tr{
-        background:#fff;
-        margin-bottom:16px;
-        border-radius:12px;
-        padding:12px;
-        box-shadow:0 4px 10px rgba(0,0,0,.05);
-      }
+@media (max-width:768px), body.cards-only{
 
-      td{
-        display:flex;
-        justify-content:space-between;
-        gap:12px;
-        padding:6px 0;
-        border:none;
-        font-size:15px;
-      }
+  .admin-wrapper{
+    margin:0;
+    padding:12px;
+  }
 
-      td::before{
-        content:attr(data-label);
-        font-weight:600;
-        color:#777;
-        font-size:13px;
-      }
+  table, thead, tbody, th, tr{
+    display:block;
+  }
 
-      td[data-label="Mensaje"]{
-        flex-direction:column;
-      }
-    }
-  </style>
+  tr{
+    background:#fff;
+    margin-bottom:16px;
+    border-radius:12px;
+    padding:12px;
+    box-shadow:0 4px 10px rgba(0,0,0,.05);
+  }
+
+  td{
+    display:flex;
+    justify-content:space-between;
+    gap:12px;
+    padding:6px 0;
+    border:none;
+    font-size:15px;
+  }
+
+  td::before{
+    content:attr(data-label);
+    font-weight:600;
+    color:#666;
+    font-size:13px;
+  }
+
+  td[data-label="Mensaje"]{
+    flex-direction:column;
+  }
+}
+</style>
 </head>
+
 <body>
 
 <div class="admin-wrapper">
   <h1>Panel de Confirmaciones</h1>
 
-  <p>
+  <div class="stats">
     Total registros: <span id="total-registros"></span><br>
     Total invitados: <strong><span id="total-invitados"></span></strong>
-  </p>
+  </div>
 
   <div class="controls">
     <input id="buscador" placeholder="Buscar por nombre o teléfono">
-    <button onclick="exportarExcel()">📤 Exportar Excel</button>
-    <button onclick="toggleCards()">📱 Modo cards</button>
+    <div class="actions">
+      <button onclick="exportarExcel()">📤 Exportar Excel</button>
+      <button onclick="toggleCards()">📱 Modo cards</button>
+    </div>
   </div>
 
   <div class="summary" id="resumen"></div>
@@ -146,23 +164,15 @@
 </div>
 
 <script>
-let datos = [];
-let filtrados = [];
+let datos=[], filtrados=[];
 
-async function init() {
-  const clave = await new Promise(resolve => {
-    const o=document.createElement("div");
-    o.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:9999";
-    const c=document.createElement("div");
-    const i=document.createElement("input");
-    i.type="password"; i.placeholder="Clave"; i.style.padding="12px";
-    const b=document.createElement("button");
-    b.textContent="Acceder"; b.onclick=()=>{document.body.removeChild(o);resolve(i.value);}
-    c.append(i,b); o.appendChild(c); document.body.appendChild(o);
-  });
+async function init(){
+  const clave = await mostrarLogin();
 
   const res = await fetch('/.netlify/functions/validarClave',{
-    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clave})
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({clave})
   });
   const {autorizado}=await res.json();
   if(!autorizado){ document.body.innerHTML="Acceso denegado"; return; }
@@ -171,8 +181,29 @@ async function init() {
   const j=await r2.json();
   datos=Array.isArray(j)?j:(j.rsvps||[]);
   filtrados=[...datos];
-
   pintar();
+}
+
+function mostrarLogin(){
+  return new Promise(resolve=>{
+    const o=document.createElement("div");
+    o.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.75);display:flex;align-items:center;justify-content:center;z-index:9999";
+
+    const c=document.createElement("div");
+    c.style.cssText="background:#fff;padding:24px;border-radius:12px;width:280px;text-align:center";
+
+    const i=document.createElement("input");
+    i.type="password";
+    i.placeholder="Clave de acceso";
+    i.style.cssText="width:100%;padding:10px;margin-bottom:12px";
+
+    const b=document.createElement("button");
+    b.textContent="Acceder";
+    b.style.cssText="width:100%;padding:10px;border-radius:8px;border:1px solid #ccc;background:#f5f5f5";
+    b.onclick=()=>{ document.body.removeChild(o); resolve(i.value); };
+
+    c.append(i,b); o.appendChild(c); document.body.appendChild(o);
+  });
 }
 
 document.getElementById("buscador").addEventListener("input",e=>{
@@ -193,15 +224,14 @@ function pintar(){
   tbody.innerHTML="";
   tr.textContent=filtrados.length;
 
-  let invitados=0;
-  let dietas={};
+  let invitados=0, dietas={};
 
   filtrados.forEach(r=>{
     if(r.attendance==="Sí"){
       invitados+=1+(r.guests||[]).length;
       if(r.dietary==="Sí"){
-        const key=(r.dietaryDetails||"Sin detalle").trim();
-        dietas[key]=(dietas[key]||0)+1;
+        const k=(r.dietaryDetails||"Sin detalle");
+        dietas[k]=(dietas[k]||0)+1;
       }
     }
 
@@ -223,22 +253,32 @@ function pintar(){
   });
 
   ti.textContent=invitados;
-
-  resumen.innerHTML = "🥗 Restricciones: " +
+  resumen.innerHTML="🥗 Restricciones: "+
     (Object.keys(dietas).length
       ? Object.entries(dietas).map(([k,v])=>`${k}: ${v}`).join(" · ")
       : "Ninguna");
 }
 
 function exportarExcel(){
-  let csv="Nombre,Telefono,Asistencia,Acompanantes,Restriccion,Mensaje,Fecha\n";
+  let html=`<table border="1">
+  <tr><th>Nombre</th><th>Teléfono</th><th>Asistencia</th><th>Acompañantes</th><th>Restricción</th><th>Mensaje</th><th>Fecha</th></tr>`;
   filtrados.forEach(r=>{
-    csv+=`"${r.name||""}","${r.phone||""}","${r.attendance||""}","${(r.guests||[]).join(" / ")}","${r.dietaryDetails||""}","${(r.message||"").replace(/"/g,'""')}","${r.created_at||""}"\n`;
+    html+=`<tr>
+      <td>${r.name||""}</td>
+      <td>${r.phone||""}</td>
+      <td>${r.attendance||""}</td>
+      <td>${(r.guests||[]).join(" / ")}</td>
+      <td>${r.dietaryDetails||""}</td>
+      <td>${r.message||""}</td>
+      <td>${r.created_at||""}</td>
+    </tr>`;
   });
-  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  html+="</table>";
+
+  const blob=new Blob([html],{type:"application/vnd.ms-excel;charset=utf-8"});
   const a=document.createElement("a");
   a.href=URL.createObjectURL(blob);
-  a.download="rsvp.xlsx"; // Excel lo abre sin problema
+  a.download="rsvp.xls";
   a.click();
 }
 
