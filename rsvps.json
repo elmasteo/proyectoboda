@@ -199,7 +199,7 @@
     "name": "Ivonne Gomez",
     "phone": "+573102990340",
     "attendance": "Sí",
-    "guests": [],
+    "guests": ["Jefferson Fernández"],
     "dietary": "No",
     "dietaryDetails": "",
     "message": "El acompañante aún no se sabe",
@@ -213,8 +213,8 @@
       "Ana uvaldina Rodriguez "
     ],
     "dietary": "No",
-    "dietaryDetails": "",
-    "message": "Sin arroz para jaime gomez",
+    "dietaryDetails": "Sin arroz para jaime gomez",
+    "message": "",
     "created_at": "2026-01-28T22:31:49.467Z"
   }
 ]
