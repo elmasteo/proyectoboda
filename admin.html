@@ -3,95 +3,131 @@
 <head>
   <meta charset="UTF-8">
   <title>Admin RSVP</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
+    body { font-family: system-ui, sans-serif; }
+
     .admin-wrapper{
-      max-width: 1100px;
-      margin: 40px auto;
-      padding: 16px;
+      max-width:1100px;
+      margin:40px auto;
+      padding:16px;
     }
+
+    h1 { margin-bottom: 8px; }
+
+    .controls{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin:12px 0;
+    }
+
+    .controls input{
+      flex:1;
+      padding:10px;
+      font-size:15px;
+    }
+
+    .controls button{
+      padding:10px 14px;
+      cursor:pointer;
+    }
+
     table{
       width:100%;
       border-collapse:collapse;
-      margin-top:20px;
+      margin-top:16px;
     }
+
     th,td{
       padding:12px 10px;
       border-bottom:1px solid #eee;
+      vertical-align:top;
     }
+
     th{
       text-align:left;
-      color:var(--gold);
       font-weight:600;
-    }
-    tr:hover{
-      background:#fff8ec;
-    }
-    .badge{
-      padding:4px 10px;
-      border-radius:20px;
-      font-size:.8rem;
-    }
-    tbody td {
-      vertical-align: top;
     }
 
     .badge{
       display:inline-block;
+      padding:6px 12px;
+      border-radius:20px;
+      font-size:.85rem;
       border:1px solid #ddd;
     }
-    .badge.ok { background:#e9f8ef; }
-.badge.no { background:#fdeaea; }
 
-@media (max-width: 768px) {
-  table, thead, tbody, th, tr {
-    display: block;
-  }
+    .badge.ok{ background:#e9f8ef; }
+    .badge.no{ background:#fdeaea; }
 
-  thead {
-    display: none;
-  }
+    .summary{
+      margin-top:12px;
+      font-size:14px;
+    }
 
-  tr {
-    background: #fff;
-    margin-bottom: 16px;
-    border-radius: 12px;
-    padding: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,.05);
-  }
+    /* ===== MOBILE / CARDS ===== */
+    body.cards-only thead { display:none; }
 
-  td {
-    display: flex;
-    justify-content: space-between;
-    padding: 6px 0;
-    border: none;
-    font-size: 14px;
-  }
+    @media (max-width:768px), body.cards-only {
 
-  td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    color: #777;
-    margin-right: 12px;
-    flex-shrink: 0;
-  }
+      .admin-wrapper{
+        margin:0;
+        padding:12px;
+      }
 
-  td:last-child {
-    padding-bottom: 0;
-  }
-}
+      table, thead, tbody, th, tr{
+        display:block;
+      }
 
+      tr{
+        background:#fff;
+        margin-bottom:16px;
+        border-radius:12px;
+        padding:12px;
+        box-shadow:0 4px 10px rgba(0,0,0,.05);
+      }
 
+      td{
+        display:flex;
+        justify-content:space-between;
+        gap:12px;
+        padding:6px 0;
+        border:none;
+        font-size:15px;
+      }
+
+      td::before{
+        content:attr(data-label);
+        font-weight:600;
+        color:#777;
+        font-size:13px;
+      }
+
+      td[data-label="Mensaje"]{
+        flex-direction:column;
+      }
+    }
   </style>
 </head>
 <body>
 
 <div class="admin-wrapper">
   <h1>Panel de Confirmaciones</h1>
-  <p>
-  Total registros: <span id="total-registros"></span><br>
-  Total invitados: <strong><span id="total-invitados"></span></strong>
-</p>
 
+  <p>
+    Total registros: <span id="total-registros"></span><br>
+    Total invitados: <strong><span id="total-invitados"></span></strong>
+  </p>
+
+  <div class="controls">
+    <input id="buscador" placeholder="Buscar por nombre o teléfono">
+    <button onclick="exportarExcel()">📤 Exportar Excel</button>
+    <button onclick="toggleCards()">📱 Modo cards</button>
+  </div>
+
+  <div class="summary" id="resumen"></div>
 
   <table>
     <thead>
@@ -111,104 +147,104 @@
 
 <script>
 let datos = [];
+let filtrados = [];
 
 async function init() {
   const clave = await new Promise(resolve => {
-    const overlay = document.createElement("div");
-    overlay.style.position = "fixed";
-    overlay.style.inset = "0";
-    overlay.style.background = "rgba(0,0,0,.8)";
-    overlay.style.display = "flex";
-    overlay.style.flexDirection = "column";
-    overlay.style.justifyContent = "center";
-    overlay.style.alignItems = "center";
-    overlay.style.zIndex = 9999;
-
-    const input = document.createElement("input");
-    input.type = "password";
-    input.placeholder = "🔒 Ingresa tu clave";
-    input.style.padding = "12px";
-    input.style.fontSize = "16px";
-    input.style.marginBottom = "10px";
-    input.style.borderRadius = "8px";
-
-    const btn = document.createElement("button");
-    btn.textContent = "Acceder";
-    btn.onclick = () => {
-      const val = input.value;
-      document.body.removeChild(overlay);
-      resolve(val);
-    };
-
-    overlay.appendChild(input);
-    overlay.appendChild(btn);
-    document.body.appendChild(overlay);
+    const o=document.createElement("div");
+    o.style.cssText="position:fixed;inset:0;background:rgba(0,0,0,.8);display:flex;align-items:center;justify-content:center;z-index:9999";
+    const c=document.createElement("div");
+    const i=document.createElement("input");
+    i.type="password"; i.placeholder="Clave"; i.style.padding="12px";
+    const b=document.createElement("button");
+    b.textContent="Acceder"; b.onclick=()=>{document.body.removeChild(o);resolve(i.value);}
+    c.append(i,b); o.appendChild(c); document.body.appendChild(o);
   });
 
-  // validar clave
-  const res = await fetch('/.netlify/functions/validarClave', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify({ clave })
+  const res = await fetch('/.netlify/functions/validarClave',{
+    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({clave})
   });
+  const {autorizado}=await res.json();
+  if(!autorizado){ document.body.innerHTML="Acceso denegado"; return; }
 
-  const { autorizado } = await res.json();
-  if (!autorizado){
-    document.body.innerHTML = "<h2 style='text-align:center;margin-top:20%'>🚫 Acceso denegado</h2>";
-    return;
-  }
+  const r2=await fetch('/.netlify/functions/obtenerInvitados');
+  const j=await r2.json();
+  datos=Array.isArray(j)?j:(j.rsvps||[]);
+  filtrados=[...datos];
 
-  // obtener RSVPs
-const res2 = await fetch('/.netlify/functions/obtenerInvitados');
-const json = await res2.json();
-
-// si devuelve arreglo directamente
-datos = Array.isArray(json) ? json : (json.rsvps || []);
-
-pintarTabla();
-
+  pintar();
 }
 
-function pintarTabla(){
-  const tbody = document.getElementById('tbody');
-  const totalRegistros = document.getElementById('total-registros');
-  const totalInvitados = document.getElementById('total-invitados');
+document.getElementById("buscador").addEventListener("input",e=>{
+  const q=e.target.value.toLowerCase();
+  filtrados=datos.filter(r=>
+    (r.name||"").toLowerCase().includes(q) ||
+    (r.phone||"").toLowerCase().includes(q)
+  );
+  pintar();
+});
 
-  tbody.innerHTML = "";
+function pintar(){
+  const tbody=document.getElementById("tbody");
+  const tr=document.getElementById("total-registros");
+  const ti=document.getElementById("total-invitados");
+  const resumen=document.getElementById("resumen");
 
-  let invitados = 0;
+  tbody.innerHTML="";
+  tr.textContent=filtrados.length;
 
-  datos.forEach(r => {
-    // 👉 cuenta solo los que asisten
-    if (r.attendance === "Sí") {
-      invitados += 1; // titular
-      invitados += (r.guests || []).length; // acompañantes
+  let invitados=0;
+  let dietas={};
+
+  filtrados.forEach(r=>{
+    if(r.attendance==="Sí"){
+      invitados+=1+(r.guests||[]).length;
+      if(r.dietary==="Sí"){
+        const key=(r.dietaryDetails||"Sin detalle").trim();
+        dietas[key]=(dietas[key]||0)+1;
+      }
     }
 
-    const tr = document.createElement('tr');
-
-    const asistencia = r.attendance === "Sí"
+    const asis=r.attendance==="Sí"
       ? `<span class="badge ok">Asiste</span>`
-      : `<span class="badge no">No asiste</span>`;
+      : `<span class="badge no">No</span>`;
 
-    tr.innerHTML = `
-      <td data-label="Nombre">${r.name || '—'}</td>
-      <td data-label="Teléfono">${r.phone || '—'}</td>
-      <td data-label="Asistencia">${asistencia}</td>
-      <td data-label="Acompañantes">${(r.guests || []).join('<br>') || '—'}</td>
-      <td data-label="Restricción">${r.dietary === 'Sí' ? (r.dietaryDetails || '—') : '—'}</td>
-      <td data-label="Mensaje">${r.message || '—'}</td>
-      <td data-label="Fecha">${r.created_at ? new Date(r.created_at).toLocaleString() : '—'}</td>
+    const row=document.createElement("tr");
+    row.innerHTML=`
+      <td data-label="Nombre">${r.name||"—"}</td>
+      <td data-label="Teléfono">${r.phone||"—"}</td>
+      <td data-label="Asistencia">${asis}</td>
+      <td data-label="Acompañantes">${(r.guests||[]).join("<br>")||"—"}</td>
+      <td data-label="Restricción">${r.dietary==="Sí"?(r.dietaryDetails||"—"):"—"}</td>
+      <td data-label="Mensaje">${r.message||"—"}</td>
+      <td data-label="Fecha">${r.created_at?new Date(r.created_at).toLocaleString():"—"}</td>
     `;
-
-    tbody.appendChild(tr);
+    tbody.appendChild(row);
   });
 
-  totalRegistros.textContent = datos.length;
-  totalInvitados.textContent = invitados;
+  ti.textContent=invitados;
+
+  resumen.innerHTML = "🥗 Restricciones: " +
+    (Object.keys(dietas).length
+      ? Object.entries(dietas).map(([k,v])=>`${k}: ${v}`).join(" · ")
+      : "Ninguna");
 }
 
+function exportarExcel(){
+  let csv="Nombre,Telefono,Asistencia,Acompanantes,Restriccion,Mensaje,Fecha\n";
+  filtrados.forEach(r=>{
+    csv+=`"${r.name||""}","${r.phone||""}","${r.attendance||""}","${(r.guests||[]).join(" / ")}","${r.dietaryDetails||""}","${(r.message||"").replace(/"/g,'""')}","${r.created_at||""}"\n`;
+  });
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="rsvp.xlsx"; // Excel lo abre sin problema
+  a.click();
+}
 
+function toggleCards(){
+  document.body.classList.toggle("cards-only");
+}
 
 init();
 </script>
