@@ -199,7 +199,9 @@
     "name": "Ivonne Gomez",
     "phone": "+573102990340",
     "attendance": "Sí",
-    "guests": ["Jefferson Fernández"],
+    "guests": [
+      "Jefferson Fernández"
+    ],
     "dietary": "No",
     "dietaryDetails": "",
     "message": "El acompañante aún no se sabe",
@@ -216,5 +218,15 @@
     "dietaryDetails": "Sin arroz para jaime gomez",
     "message": "",
     "created_at": "2026-01-28T22:31:49.467Z"
+  },
+  {
+    "name": "Miguel Alejandro Gomez Garzon",
+    "phone": "+573203374025",
+    "attendance": "Sí",
+    "guests": [],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "\"¡Mis mejores deseos en esta nueva etapa pareja!\"",
+    "created_at": "2026-02-02T14:21:52.252Z"
   }
 ]
