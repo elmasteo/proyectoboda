@@ -248,5 +248,15 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-02-04T17:16:19.750Z"
+  },
+  {
+    "name": "David Fernando García Murcia",
+    "phone": "+573124328165",
+    "attendance": "Sí",
+    "guests": [],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "",
+    "created_at": "2026-02-05T19:05:19.073Z"
   }
 ]
