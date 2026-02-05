@@ -258,5 +258,15 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-02-05T19:05:19.073Z"
+  },
+  {
+    "name": "Andrés Solano Tovar",
+    "phone": "+573242219857",
+    "attendance": "Sí",
+    "guests": [],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "",
+    "created_at": "2026-02-05T19:41:13.904Z"
   }
 ]
