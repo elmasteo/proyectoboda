@@ -308,5 +308,17 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-02-12T09:45:49.655Z"
+  },
+  {
+    "name": "DANNY PINZON",
+    "phone": "+573005586235",
+    "attendance": "Sí",
+    "guests": [
+      "Paola Aguirre"
+    ],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "Gracias por invitarnos Adri.... 😃🤗",
+    "created_at": "2026-02-13T00:28:02.176Z"
   }
 ]
