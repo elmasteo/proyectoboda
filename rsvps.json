@@ -332,5 +332,17 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-02-13T17:29:41.141Z"
+  },
+  {
+    "name": "Pedro Leonardo Gómez Fernandez",
+    "phone": "+573102304576",
+    "attendance": "Sí",
+    "guests": [
+      "Martha Lucy Gonzales"
+    ],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "",
+    "created_at": "2026-02-21T14:44:02.744Z"
   }
 ]
