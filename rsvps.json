@@ -344,5 +344,17 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-02-21T14:44:02.744Z"
+  },
+  {
+    "name": "Natalia Carolina Gómez González",
+    "phone": "+573153724345",
+    "attendance": "Sí",
+    "guests": [
+      "Gerson Pineda "
+    ],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "",
+    "created_at": "2026-02-22T16:09:47.531Z"
   }
 ]
