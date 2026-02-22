@@ -368,5 +368,15 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-02-22T17:55:18.840Z"
+  },
+  {
+    "name": "Camilo Solano tovar",
+    "phone": "+573209071192",
+    "attendance": "Sí",
+    "guests": [],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "Pasarla delicioso",
+    "created_at": "2026-02-22T20:40:29.829Z"
   }
 ]
