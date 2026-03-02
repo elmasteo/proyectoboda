@@ -424,5 +424,17 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-03-02T00:26:10.343Z"
+  },
+  {
+    "name": "Vanessa Gómez",
+    "phone": "+573194702336",
+    "attendance": "Sí",
+    "guests": [
+      "Felipe Martinez"
+    ],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "",
+    "created_at": "2026-03-02T02:23:11.147Z"
   }
 ]
