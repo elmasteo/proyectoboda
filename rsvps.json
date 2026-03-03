@@ -448,5 +448,15 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-03-03T00:34:21.483Z"
+  },
+  {
+    "name": "María Alejandra Gómez",
+    "phone": "+573045582155",
+    "attendance": "Sí",
+    "guests": [],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "",
+    "created_at": "2026-03-03T14:42:15.120Z"
   }
 ]
