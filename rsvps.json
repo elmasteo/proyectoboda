@@ -470,5 +470,15 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-03-03T16:34:10.853Z"
+  },
+  {
+    "name": "Cristina Gómez",
+    "phone": "+573124857654",
+    "attendance": "Sí",
+    "guests": [],
+    "dietary": "No",
+    "dietaryDetails": "",
+    "message": "",
+    "created_at": "2026-03-03T16:35:36.825Z"
   }
 ]
