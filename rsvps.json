@@ -529,30 +529,6 @@
     "created_at": "2026-03-08T20:28:36.002Z"
   },
   {
-    "name": "Ligia Gómez",
-    "phone": "+573112215878",
-    "attendance": "Sí",
-    "guests": [
-      "William Chavez"
-    ],
-    "dietary": "No",
-    "dietaryDetails": "",
-    "message": "",
-    "created_at": "2026-03-09T00:10:38.773Z"
-  },
-  {
-    "name": "William Chavez",
-    "phone": "+573134115760",
-    "attendance": "Sí",
-    "guests": [
-      "María Paula Romero"
-    ],
-    "dietary": "No",
-    "dietaryDetails": "",
-    "message": "",
-    "created_at": "2026-03-09T00:16:18.999Z"
-  },
-  {
     "name": "Kelly Ordoñez",
     "phone": "+573124862114",
     "attendance": "Sí",
