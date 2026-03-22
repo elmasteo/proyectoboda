@@ -539,15 +539,5 @@
     "dietaryDetails": "",
     "message": "",
     "created_at": "2026-03-12T16:57:33.526Z"
-  },
-  {
-    "name": "Miguel velasco",
-    "phone": "+573106645892",
-    "attendance": "Sí",
-    "guests": [],
-    "dietary": "No",
-    "dietaryDetails": "",
-    "message": "",
-    "created_at": "2026-03-22T15:50:11.753Z"
   }
 ]
